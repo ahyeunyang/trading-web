@@ -10,7 +10,7 @@
   @include flex(center);
   height: $header-height;
   padding: $space-0 $space-12 $space-0 $space-16;
-  border-bottom: 1px solid $color-border;
+  border-bottom: .1rem solid $color-border;
   background: $color-surface;
 
   &__brand {
@@ -24,7 +24,7 @@
       position: absolute;
       top: 50%;
       right: 0;
-      width: 1px;
+      width: .1rem;
       height: 2.4rem;
       background: $color-border;
       content: "";
@@ -71,7 +71,7 @@
           right: 0;
           bottom: 0;
           left: 0;
-          height: 2px;
+          height: .2rem;
           background: $color-primary;
           content: "";
         }
@@ -93,7 +93,7 @@
       position: absolute;
       top: 50%;
       right: 0;
-      width: 1px;
+      width: .1rem;
       height: 2.4rem;
       background: $color-border;
       content: "";
@@ -129,6 +129,28 @@
     @include flex(center);
     gap: $space-8;
     margin-left: auto;
+  }
+
+  &__deposit {
+    @include flex-center;
+    height: 2.8rem;
+    gap: $space-6;
+    padding-inline: $space-12;
+    border-radius: 1.4rem;
+    color: $color-text;
+    background: $color-primary;
+    font-size: $font-md;
+    font-weight: $weight-medium;
+
+    svg {
+      width: 1.4rem;
+      height: 1.4rem;
+    }
+
+    &:hover,
+    &:focus-visible {
+      background: $color-primary-hover;
+    }
   }
 
   &__account {
@@ -171,7 +193,7 @@
   right: 0;
   width: 26.2rem;
   overflow: hidden;
-  border: 1px solid rgb(73 73 80 / 55%);
+  border: .1rem solid rgb(73 73 80 / 55%);
   border-radius: $radius-lg;
   color: $color-text-muted;
   background: #252528;
@@ -192,7 +214,7 @@
       height: 2.8rem;
       gap: $space-6;
       padding-inline: $space-8;
-      border: 1px solid $color-border;
+      border: .1rem solid $color-border;
       border-radius: 1.4rem;
       background: $color-surface-raised;
     }
@@ -205,27 +227,28 @@
     }
 
     img {
-      width: 1.6rem;
-      height: 1.6rem;
+      width: $icon-lg;
+      height: $icon-lg;
       object-fit: contain;
     }
 
     svg {
-      width: 1.6rem;
-      height: 1.6rem;
+      width: $icon-lg;
+      height: $icon-lg;
       flex: 0 0 auto;
     }
 
-    b {
+    .account-menu__copy {
+      width: 1.3rem;
+      height: 1.3rem;
       color: $color-text-muted;
-      font-size: $font-sm;
     }
   }
 
   &__balances {
     margin-inline: $space-6;
     overflow: hidden;
-    border: 1px solid $color-border;
+    border: .1rem solid $color-border;
     border-radius: $radius-md;
 
     > div {
@@ -234,10 +257,10 @@
       min-height: 6.4rem;
       align-content: center;
       gap: $space-4;
-      padding: $space-8 4.8rem $space-8 $space-16;
+      padding: $space-8 $space-48 $space-8 $space-16;
 
       & + div {
-        border-top: 1px solid $color-border;
+        border-top: .1rem solid $color-border;
       }
 
       > span {
@@ -253,8 +276,8 @@
         }
 
         img {
-          width: 1.4rem;
-          height: 1.4rem;
+          width: $icon-md;
+          height: $icon-md;
           object-fit: contain;
         }
 
@@ -278,7 +301,7 @@
         right: $space-16;
         width: 2.8rem;
         height: 2.8rem;
-        border: 1px solid $color-border;
+        border: .1rem solid $color-border;
         border-radius: $radius-md;
         background: $color-surface-raised;
         transform: translateY(-50%);
@@ -286,8 +309,13 @@
         i {
           width: 1.4rem;
           height: 1.4rem;
-          border: 1px solid $color-text-muted;
+          border: .1rem solid $color-text-muted;
           border-radius: 50%;
+        }
+
+        svg {
+          width: 1.8rem;
+          height: 1.8rem;
         }
       }
     }
@@ -315,13 +343,19 @@
         width: 1.4rem;
         height: 1.4rem;
         flex: 0 0 auto;
-        border: 1px solid $color-text-muted;
+        border: .1rem solid $color-text-muted;
         border-radius: $radius-xs;
+      }
+
+      > svg {
+        width: 1.4rem;
+        height: 1.4rem;
+        flex: 0 0 auto;
       }
 
       b {
         margin-left: $space-2;
-        padding: .125rem .219rem .125rem .25rem;
+        padding: $space-1-25 $space-2-19 $space-1-25 $space-2-5;
         border-radius: .25rem;
         color: $color-positive;
         background: $color-positive-soft;
@@ -346,7 +380,7 @@
 
   &__apps {
     padding: $space-10 $space-6 $space-8;
-    border-top: 1px solid $color-border;
+    border-top: .1rem solid $color-border;
 
     p {
       margin-bottom: $space-8;
@@ -384,7 +418,7 @@
     position: absolute;
     top: 50%;
     right: 0;
-    width: 1px;
+    width: .1rem;
     height: 2.4rem;
     background: $color-border;
     content: "";
@@ -440,7 +474,7 @@
     left: .6rem;
     width: 14.4rem;
     padding: $space-6;
-    border: 1px solid $color-border;
+    border: .1rem solid $color-border;
     border-radius: $radius-md;
     background: $color-surface-raised;
     box-shadow: 0 $space-12 $footer-height $color-shadow-strong;
@@ -507,7 +541,7 @@
     left: 50%;
     width: 24rem;
     padding: $space-8;
-    border: 1px solid $color-border;
+    border: .1rem solid $color-border;
     border-radius: $radius-md;
     background: $color-surface-raised;
     box-shadow: 0 $space-12 $footer-height $color-shadow;
@@ -579,7 +613,7 @@
       position: absolute;
       top: 50%;
       right: 0;
-      width: 1px;
+      width: .1rem;
       height: 2.8rem;
       background: $color-border;
       content: "";
@@ -641,7 +675,7 @@
       position: absolute;
       top: 50%;
       right: 0;
-      width: 1px;
+      width: .1rem;
       height: 2.8rem;
       background: $color-border;
       content: "";
@@ -718,7 +752,7 @@
 .leverage-modal {
   width: min(40rem, calc(100vw - 3.2rem));
   padding: $space-20 $space-24 $space-24;
-  border: 1px solid $color-border;
+  border: .1rem solid $color-border;
   border-radius: $radius-lg;
   background: #29292c;
   box-shadow: 0 1.6rem 4rem rgb(0 0 0 / 40%);
@@ -792,7 +826,7 @@
     input {
       width: 100%;
       height: 2.2rem;
-      margin: 0;
+      margin: $space-0;
       appearance: none;
       background: transparent;
       cursor: pointer;
@@ -802,22 +836,21 @@
         background:
           repeating-linear-gradient(
             to right,
-            $color-text-muted 0 .1rem,
-            transparent .1rem .3rem
-          );
-        -webkit-mask-image: linear-gradient(to right, rgb(0 0 0 / 25%), #000);
-        mask-image: linear-gradient(to right, rgb(0 0 0 / 25%), #000);
+            transparent 0 .1rem,
+            #29292c .1rem .3rem
+          ),
+          linear-gradient(to right, rgb(136 136 145 / 25%), $color-text-muted);
       }
 
       &::-webkit-slider-thumb {
         width: 2.2rem;
         height: 2.2rem;
-        margin-top: -.6rem;
+        margin-top: -$space-6;
         appearance: none;
         border: .1rem solid $color-text-muted;
         border-radius: 50%;
         background: $color-border;
-        box-shadow: none;
+        box-shadow: 0 0 0 .2rem #29292c;
       }
 
       &::-moz-range-track {
@@ -825,10 +858,10 @@
         background:
           repeating-linear-gradient(
             to right,
-            $color-text-muted 0 .1rem,
-            transparent .1rem .3rem
-          );
-        mask-image: linear-gradient(to right, rgb(0 0 0 / 25%), #000);
+            transparent 0 .1rem,
+            #29292c .1rem .3rem
+          ),
+          linear-gradient(to right, rgb(136 136 145 / 25%), $color-text-muted);
       }
 
       &::-moz-range-progress {
@@ -842,6 +875,7 @@
         border: .1rem solid $color-text-muted;
         border-radius: 50%;
         background: $color-border;
+        box-shadow: 0 0 0 .2rem #29292c;
       }
     }
 
@@ -876,7 +910,7 @@
 .deposit-modal {
   width: min(40rem, calc(100vw - 3.2rem));
   padding: $space-20 $space-24 $space-24;
-  border: 1px solid $color-border;
+  border: .1rem solid $color-border;
   border-radius: $radius-lg;
   background: #29292c;
   box-shadow: 0 1.6rem 4rem rgb(0 0 0 / 40%);
@@ -921,7 +955,7 @@
       width: 100%;
       height: 4.8rem;
       padding-inline: $space-12;
-      border: 1px solid $color-border;
+      border: .1rem solid $color-border;
       border-radius: $radius-md;
       color: $color-text;
       background: $color-surface-raised;
@@ -1000,7 +1034,7 @@
     height: 4.4rem;
     gap: $space-38;
     padding: $space-0 $space-22;
-    border-bottom: 1px solid $color-border;
+    border-bottom: .1rem solid $color-border;
     font-size: $font-nav;
 
     button {
@@ -1015,7 +1049,7 @@
           right: 0;
           bottom: 0;
           left: 0;
-          height: 2px;
+          height: .2rem;
           background: $color-primary;
           content: "";
         }
@@ -1033,8 +1067,8 @@
     position: relative;
     height: calc(100% - 8.4rem);
     background-image:
-      linear-gradient($color-grid 1px, transparent 1px),
-      linear-gradient(90deg, $color-grid 1px, transparent 1px);
+      linear-gradient($color-grid .1rem, transparent .1rem),
+      linear-gradient(90deg, $color-grid .1rem, transparent .1rem);
     background-size: 100% 4.8rem, 8rem 100%;
   }
 
@@ -1071,7 +1105,7 @@
     top: 52%;
     right: 0;
     left: 0;
-    border-top: 1px dashed $color-negative;
+    border-top: .1rem dashed $color-negative;
   }
 
   &__price {
@@ -1101,7 +1135,7 @@
       position: absolute;
       top: 50%;
       left: -$space-8;
-      width: 1px;
+      width: .1rem;
       height: 1.6rem;
       background: $color-border;
       content: "";
@@ -1144,7 +1178,7 @@
       position: absolute;
       top: 50%;
       left: 0;
-      width: 1px;
+      width: .1rem;
       height: 2rem;
       background: $color-border;
       content: "";
@@ -1161,7 +1195,7 @@
           position: absolute;
           top: 50%;
           left: -$space-5;
-          width: 1px;
+          width: .1rem;
           height: 2rem;
           background: $color-border;
           content: "";
@@ -1268,7 +1302,7 @@
   &__tabs {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    border-bottom: 1px solid $color-border;
+    border-bottom: .1rem solid $color-border;
 
     button {
       position: relative;
@@ -1282,9 +1316,9 @@
         &::after {
           position: absolute;
           right: $space-0;
-          bottom: -1px;
+          bottom: -.1rem;
           left: $space-0;
-          height: 2px;
+          height: .2rem;
           background: $color-primary;
           content: "";
         }
@@ -1295,7 +1329,7 @@
   &__tools {
     @include flex-between;
     padding-inline: $space-12;
-    border-bottom: 1px solid $color-border;
+    border-bottom: .1rem solid $color-border;
     color: $color-text-muted;
     font-size: $font-base;
 
@@ -1321,7 +1355,7 @@
     }
 
     i {
-      width: 1px;
+      width: .1rem;
       height: 2rem;
       background: $color-border;
     }
@@ -1339,7 +1373,7 @@
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
     padding-inline: $space-8;
-    border-bottom: 1px solid $color-border;
+    border-bottom: .1rem solid $color-border;
     color: $color-text-muted;
     font-size: $font-md;
     text-align: right;
@@ -1415,7 +1449,7 @@
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
     padding: $space-4 $space-8;
-    border-block: 1px solid $color-border;
+    border-block: .1rem solid $color-border;
     color: $color-text-muted;
     font-size: $font-md;
     text-align: right;
@@ -1446,7 +1480,7 @@
   &__account {
     margin-inline: -$space-16;
     padding: $space-16;
-    border-bottom: 1px solid $color-border;
+    border-bottom: .1rem solid $color-border;
     font-size: $font-md;
 
     dl,
@@ -1512,7 +1546,7 @@
     margin: (-$space-16) (-$space-16) $space-0;
     min-height: 4.2rem;
     padding: $space-0 $space-16;
-    border-bottom: 1px solid $color-border;
+    border-bottom: .1rem solid $color-border;
   }
 
   &__margin-mode {
@@ -1524,18 +1558,23 @@
     position: relative;
 
     & + &::before {
+      display: inline-block;
+      width: .1rem;
+      height: 1.4rem;
       margin-right: $space-8;
-      color: $color-text-muted;
-      content: "/";
+      background: $color-border;
+      content: "";
+      vertical-align: middle;
     }
 
     > button {
       min-height: 4.2rem;
-      padding: 0;
+      padding: $space-0;
       color: $color-text-muted;
       font-size: $font-nav;
-      text-decoration: underline;
-      text-decoration-style: dotted;
+      text-decoration-line: underline;
+      text-decoration-style: dashed;
+      text-decoration-thickness: .1rem;
       text-underline-offset: .4rem;
 
       &:hover,
@@ -1587,7 +1626,7 @@
     min-width: 6.4rem;
     height: 3rem;
     justify-content: center;
-    border: 1px solid $color-border;
+    border: .1rem solid $color-border;
     border-radius: $radius-md;
     color: $color-text;
     font-size: $font-nav;
@@ -1599,7 +1638,7 @@
     grid-template-columns: repeat(3, 1fr);
     height: 4.2rem;
     margin: (-$space-16) (-$space-16) $space-0;
-    border-bottom: 1px solid $color-border;
+    border-bottom: .1rem solid $color-border;
 
     button {
       @include flex-center;
@@ -1616,7 +1655,7 @@
           right: 1rem;
           bottom: 0;
           left: 1rem;
-          height: 2px;
+          height: .2rem;
           background: $color-primary;
           content: "";
         }
@@ -1645,22 +1684,21 @@
         background:
           repeating-linear-gradient(
             to right,
-            $color-text-muted 0 .1rem,
-            transparent .1rem .3rem
-          );
-        -webkit-mask-image: linear-gradient(to right, rgb(0 0 0 / 25%), #000);
-        mask-image: linear-gradient(to right, rgb(0 0 0 / 25%), #000);
+            transparent 0 .1rem,
+            $color-surface .1rem .3rem
+          ),
+          linear-gradient(to right, rgb(136 136 145 / 25%), $color-text-muted);
       }
 
       &::-webkit-slider-thumb {
         width: 2.2rem;
         height: 2.2rem;
-        margin-top: -.6rem;
+        margin-top: -$space-6;
         appearance: none;
         border: .1rem solid $color-text-muted;
         border-radius: 50%;
         background: $color-border;
-        box-shadow: none;
+        box-shadow: 0 0 0 .2rem $color-surface;
       }
 
       &::-moz-range-track {
@@ -1668,10 +1706,10 @@
         background:
           repeating-linear-gradient(
             to right,
-            $color-text-muted 0 .1rem,
-            transparent .1rem .3rem
-          );
-        mask-image: linear-gradient(to right, rgb(0 0 0 / 25%), #000);
+            transparent 0 .1rem,
+            $color-surface .1rem .3rem
+          ),
+          linear-gradient(to right, rgb(136 136 145 / 25%), $color-text-muted);
       }
 
       &::-moz-range-progress {
@@ -1685,6 +1723,7 @@
         border: .1rem solid $color-text-muted;
         border-radius: 50%;
         background: $color-border;
+        box-shadow: 0 0 0 .2rem $color-surface;
       }
     }
 
@@ -1771,6 +1810,7 @@
       width: 2rem;
       height: 1.8rem;
       flex: 0 0 auto;
+      color: #f5c84c;
     }
 
     &:disabled {
@@ -1870,7 +1910,7 @@
 
     .field__control {
       height: 5rem;
-      padding: $space-7 5.4rem $space-7 $space-10;
+      padding: $space-7 $space-54 $space-7 $space-10;
     }
 
     .field__amount-copy {
@@ -1911,7 +1951,7 @@
     }
 
     b {
-      padding: .2rem .4rem;
+      padding: $space-2 $space-4;
       border-radius: $radius-xs;
       color: $color-text;
       background: $color-border;
@@ -1940,8 +1980,9 @@
       transform: translateY(-50%);
 
       svg {
-        width: 2.6rem;
-        height: 2.6rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        transform: rotate(90deg);
       }
 
       &:hover {
@@ -2120,7 +2161,7 @@
     height: 3.4rem;
     align-self: center;
     margin-left: auto;
-    border: 1px solid $color-border;
+    border: .1rem solid $color-border;
     border-radius: $radius-sm;
 
     summary {
@@ -2191,7 +2232,7 @@
           right: 1.6rem;
           bottom: 0;
           left: 1.6rem;
-          height: 2px;
+          height: .2rem;
           background: $color-primary;
           content: "";
         }

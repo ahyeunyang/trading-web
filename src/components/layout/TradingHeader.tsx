@@ -9,12 +9,27 @@ import {
 import { BrandLogo } from "../icons/BrandLogo";
 import { BellIcon, DeviceIcon } from "../icons/HeaderIcons";
 import { SolanaIcon } from "../icons/SolanaIcon";
+import {
+  AccountIcon,
+  BalanceActionIcon,
+  CopyIcon,
+  DisconnectIcon,
+  GiftIcon,
+  HeaderDepositIcon,
+  MoonIcon,
+  QrIcon,
+  SettingsIcon,
+} from "../icons/AccountMenuIcons";
 import dydxCoinImage from "../../assets/images/coins/dydx.png";
 import usdcCoinImage from "../../assets/images/coins/usdc.png";
 import appStoreBadge from "../../assets/images/stores/app-store-badge.png";
 import googlePlayBadge from "../../assets/images/stores/google-play-badge.png";
 
-export function TradingHeader() {
+type TradingHeaderProps = {
+  onDepositClick: () => void;
+};
+
+export function TradingHeader({ onDepositClick }: TradingHeaderProps) {
   const { t } = useLocale();
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const accountMenuRef = useRef<HTMLDivElement>(null);
@@ -76,6 +91,10 @@ export function TradingHeader() {
       </nav>
 
       <div className="topbar__actions">
+        <button className="topbar__deposit" type="button" onClick={onDepositClick}>
+          <HeaderDepositIcon />
+          <span>입금</span>
+        </button>
         <button className="icon-btn tip" type="button" aria-label="모바일 앱" data-tip="모바일 앱">
           <DeviceIcon className="icon" />
         </button>
@@ -115,8 +134,8 @@ export function TradingHeader() {
           {isAccountOpen && (
             <div className="account-menu" role="menu">
               <div className="account-menu__markets">
-                <button type="button"><SolanaIcon /><span>스팟</span><b>□</b></button>
-                <button type="button"><img src={dydxCoinImage} alt="" /><span>무기한</span><b>□</b></button>
+                <button type="button"><SolanaIcon /><span>스팟</span><CopyIcon className="account-menu__copy" /></button>
+                <button type="button"><img src={dydxCoinImage} alt="" /><span>무기한</span><CopyIcon className="account-menu__copy" /></button>
               </div>
 
               <div className="account-menu__balances">
@@ -127,23 +146,23 @@ export function TradingHeader() {
                 <div>
                   <span>USDC 잔액 <img src={usdcCoinImage} alt="USDC" /></span>
                   <strong>0.00</strong>
-                  <button type="button" aria-label="USDC 입금"><i /></button>
+                  <button type="button" aria-label="USDC 전송"><BalanceActionIcon /></button>
                 </div>
                 <div>
                   <span>Spot Sol Balance <SolanaIcon /></span>
                   <strong>0.0000</strong>
-                  <button type="button" aria-label="SOL 입금"><i /></button>
+                  <button type="button" aria-label="SOL 전송"><BalanceActionIcon /></button>
                 </div>
               </div>
 
               <nav className="account-menu__links" aria-label="계정 메뉴">
-                <button type="button"><i /><span>계정 관리</span></button>
-                <button type="button"><i /><span>친구 초대</span><b>수수료 적립</b></button>
-                <button type="button"><i /><span>환경설정</span></button>
-                <button type="button"><i /><span>표시 설정</span></button>
-                <button type="button"><i /><span>모바일 앱 다운로드</span></button>
-                <button type="button"><i /><span>모바일로 로그인하세요</span></button>
-                <button type="button"><i /><span>연결 해제</span></button>
+                <button type="button"><AccountIcon /><span>계정 관리</span></button>
+                <button type="button"><GiftIcon /><span>친구 초대</span><b>수수료 적립</b></button>
+                <button type="button"><SettingsIcon /><span>환경설정</span></button>
+                <button type="button"><MoonIcon /><span>표시 설정</span></button>
+                <button type="button"><QrIcon /><span>모바일 앱 다운로드</span></button>
+                <button type="button"><QrIcon /><span>모바일로 로그인하세요</span></button>
+                <button type="button"><DisconnectIcon /><span>연결 해제</span></button>
               </nav>
 
               <div className="account-menu__apps">

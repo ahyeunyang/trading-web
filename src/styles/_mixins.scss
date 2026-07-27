@@ -1,7 +1,7 @@
 // dYdX-style responsive layout breakpoints
-$breakpoint-desktop: 1280px;
-$breakpoint-tablet: 1024px;
-$breakpoint-mobile: 768px;
+$breakpoint-desktop: 80rem;
+$breakpoint-tablet: 64rem;
+$breakpoint-mobile: 48rem;
 
 @mixin flex($align: null, $justify: null, $direction: null, $wrap: null) {
   display: flex;

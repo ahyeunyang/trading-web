@@ -8,11 +8,18 @@ type OrderSide = "buy" | "sell";
 type OrderFormProps = {
   quantityUnit: "BTC" | "USD";
   onQuantityUnitChange: (unit: "BTC" | "USD") => void;
+  isDepositOpen: boolean;
+  onDepositOpenChange: (isOpen: boolean) => void;
 };
 
 const BTC_USD_PRICE = 65_379;
 
-export function OrderForm({ quantityUnit, onQuantityUnitChange }: OrderFormProps) {
+export function OrderForm({
+  quantityUnit,
+  onQuantityUnitChange,
+  isDepositOpen,
+  onDepositOpenChange,
+}: OrderFormProps) {
   const [marginMode, setMarginMode] = useState<MarginMode>("cross");
   const [orderSide, setOrderSide] = useState<OrderSide>("buy");
   const [amount, setAmount] = useState("");
@@ -22,7 +29,6 @@ export function OrderForm({ quantityUnit, onQuantityUnitChange }: OrderFormProps
   const [leverage, setLeverage] = useState(50);
   const [draftLeverage, setDraftLeverage] = useState(50);
   const [isLeverageOpen, setIsLeverageOpen] = useState(false);
-  const [isDepositOpen, setIsDepositOpen] = useState(false);
   const [depositAmount, setDepositAmount] = useState("");
 
   useEffect(() => {
@@ -31,12 +37,12 @@ export function OrderForm({ quantityUnit, onQuantityUnitChange }: OrderFormProps
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
       setIsLeverageOpen(false);
-      setIsDepositOpen(false);
+      onDepositOpenChange(false);
     };
 
     window.addEventListener("keydown", closeOnEscape);
     return () => window.removeEventListener("keydown", closeOnEscape);
-  }, [isDepositOpen, isLeverageOpen]);
+  }, [isDepositOpen, isLeverageOpen, onDepositOpenChange]);
 
   const openLeverageModal = () => {
     setDraftLeverage(leverage);
@@ -129,7 +135,7 @@ export function OrderForm({ quantityUnit, onQuantityUnitChange }: OrderFormProps
           <button
             className="order__deposit"
             type="button"
-            onClick={() => setIsDepositOpen(true)}
+            onClick={() => onDepositOpenChange(true)}
           >
             입금
           </button>
@@ -137,7 +143,7 @@ export function OrderForm({ quantityUnit, onQuantityUnitChange }: OrderFormProps
             className="order__deposit-icon"
             type="button"
             aria-label="입금 모달 열기"
-            onClick={() => setIsDepositOpen(true)}
+            onClick={() => onDepositOpenChange(true)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -450,7 +456,7 @@ export function OrderForm({ quantityUnit, onQuantityUnitChange }: OrderFormProps
         <div
           className="leverage-modal__backdrop"
           onMouseDown={(event) => {
-            if (event.currentTarget === event.target) setIsDepositOpen(false);
+            if (event.currentTarget === event.target) onDepositOpenChange(false);
           }}
         >
           <div
@@ -465,7 +471,7 @@ export function OrderForm({ quantityUnit, onQuantityUnitChange }: OrderFormProps
                 className="deposit-modal__close"
                 type="button"
                 aria-label="닫기"
-                onClick={() => setIsDepositOpen(false)}
+                onClick={() => onDepositOpenChange(false)}
               >
                 ×
               </button>

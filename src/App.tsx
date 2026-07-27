@@ -11,6 +11,7 @@ import { TradeChart } from "./components/trading/TradeChart";
 export function App() {
   const [loading, setLoading] = useState(true);
   const [quantityUnit, setQuantityUnit] = useState<"BTC" | "USD">("BTC");
+  const [isDepositOpen, setIsDepositOpen] = useState(false);
   const [mobileView, setMobileView] = useState<"chart" | "book" | "order">(
     "chart",
   );
@@ -22,14 +23,19 @@ export function App() {
 
   return (
     <div className={`app${loading ? " is-loading" : ""}`} aria-busy={loading}>
-      <TradingHeader />
+      <TradingHeader onDepositClick={() => setIsDepositOpen(true)} />
 
       <main className="trade" data-mobile-view={mobileView}>
         <MarketPanel quantityUnit={quantityUnit} />
         <MobileTradingNav activeView={mobileView} onChange={setMobileView} />
         <TradeChart />
         <OrderBook quantityUnit={quantityUnit} onQuantityUnitChange={setQuantityUnit} />
-        <OrderForm quantityUnit={quantityUnit} onQuantityUnitChange={setQuantityUnit} />
+        <OrderForm
+          quantityUnit={quantityUnit}
+          onQuantityUnitChange={setQuantityUnit}
+          isDepositOpen={isDepositOpen}
+          onDepositOpenChange={setIsDepositOpen}
+        />
         <PositionsPanel />
       </main>
       <StatusBar />
