@@ -1,34 +1,11 @@
-import { useEffect, useState } from "react";
-import type { CSSProperties } from "react";
 import { BitcoinIcon } from "../icons/BitcoinIcon";
-import { ChevronDown, MarketDown } from "../icons/ChevronDown";
+import { MarketDown } from "../icons/ChevronDown";
 
-export function MarketPanel() {
-  const [leverage, setLeverage] = useState(25);
-  const [draftLeverage, setDraftLeverage] = useState(25);
-  const [isLeverageOpen, setIsLeverageOpen] = useState(false);
+type MarketPanelProps = {
+  quantityUnit: "BTC" | "USD";
+};
 
-  useEffect(() => {
-    if (!isLeverageOpen) return;
-
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setIsLeverageOpen(false);
-    };
-
-    window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
-  }, [isLeverageOpen]);
-
-  const openLeverageModal = () => {
-    setDraftLeverage(leverage);
-    setIsLeverageOpen(true);
-  };
-
-  const saveLeverage = () => {
-    setLeverage(draftLeverage);
-    setIsLeverageOpen(false);
-  };
-
+export function MarketPanel({ quantityUnit }: MarketPanelProps) {
   return (
     <section className="panel market" aria-label="마켓 정보">
       <button className="market__select" type="button">
@@ -68,7 +45,7 @@ export function MarketPanel() {
         <div>
           <dt>미결제약정</dt>
           <dd className="stats__unit">
-            308.31 <span>BTC</span>
+            {quantityUnit === "BTC" ? "308.31" : "19,588,069"} <span>{quantityUnit}</span>
           </dd>
         </div>
         <div>
@@ -93,81 +70,9 @@ export function MarketPanel() {
               </span>
             </span>
           </dt>
-          <dd>
-            <button
-              className="stats__leverage-button"
-              type="button"
-              aria-haspopup="dialog"
-              aria-expanded={isLeverageOpen}
-              onClick={openLeverageModal}
-            >
-              50.00×
-              <ChevronDown />
-            </button>
-          </dd>
+          <dd>50.00×</dd>
         </div>
       </dl>
-
-      {isLeverageOpen && (
-        <div
-          className="leverage-modal__backdrop"
-          onMouseDown={(event) => {
-            if (event.currentTarget === event.target) setIsLeverageOpen(false);
-          }}
-        >
-          <div
-            className="leverage-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="leverage-modal-title"
-          >
-            <header className="leverage-modal__header">
-              <h2 id="leverage-modal-title">시장 레버리지 설정</h2>
-              <button
-                className="leverage-modal__close"
-                type="button"
-                aria-label="닫기"
-                onClick={() => setIsLeverageOpen(false)}
-              >
-                ×
-              </button>
-            </header>
-
-            <div className="leverage-modal__market">
-              <span className="leverage-modal__coin">
-                <BitcoinIcon />
-              </span>
-              <strong>BTC-USD</strong>
-              <span className="leverage-modal__max">최대 50×</span>
-            </div>
-
-            <div className="leverage-modal__control">
-              <input
-                type="range"
-                min="1"
-                max="50"
-                step="1"
-                value={draftLeverage}
-                aria-label="시장 레버리지"
-                aria-valuetext={`${draftLeverage}배`}
-                style={{
-                  "--leverage-progress": `${((draftLeverage - 1) / 49) * 100}%`,
-                } as CSSProperties}
-                onChange={(event) => setDraftLeverage(Number(event.target.value))}
-              />
-              <output>{draftLeverage}×</output>
-            </div>
-
-            <button
-              className="leverage-modal__save"
-              type="button"
-              onClick={saveLeverage}
-            >
-              저장
-            </button>
-          </div>
-        </div>
-      )}
     </section>
   );
 }

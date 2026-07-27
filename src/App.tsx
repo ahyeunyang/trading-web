@@ -10,6 +10,7 @@ import { TradeChart } from "./components/trading/TradeChart";
 
 export function App() {
   const [loading, setLoading] = useState(true);
+  const [quantityUnit, setQuantityUnit] = useState<"BTC" | "USD">("BTC");
   const [mobileView, setMobileView] = useState<"chart" | "book" | "order">(
     "chart",
   );
@@ -24,11 +25,11 @@ export function App() {
       <TradingHeader />
 
       <main className="trade" data-mobile-view={mobileView}>
-        <MarketPanel />
+        <MarketPanel quantityUnit={quantityUnit} />
         <MobileTradingNav activeView={mobileView} onChange={setMobileView} />
         <TradeChart />
-        <OrderBook />
-        <OrderForm />
+        <OrderBook quantityUnit={quantityUnit} onQuantityUnitChange={setQuantityUnit} />
+        <OrderForm quantityUnit={quantityUnit} onQuantityUnitChange={setQuantityUnit} />
         <PositionsPanel />
       </main>
       <StatusBar />

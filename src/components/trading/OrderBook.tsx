@@ -1,4 +1,3 @@
-import { useState } from "react";
 import type { CSSProperties } from "react";
 
 type BookRow = {
@@ -37,7 +36,20 @@ function Unit({ children }: { children: string }) {
   return <b className="book__unit">{children}</b>;
 }
 
-function Rows({ data, side }: { data: BookRow[]; side: "ask" | "bid" }) {
+function formatQuantity(value: string, price: string, unit: "BTC" | "USD") {
+  if (unit === "BTC") return value;
+  return Math.round(Number(value) * Number(price.replace(",", ""))).toLocaleString("en-US");
+}
+
+function Rows({
+  data,
+  side,
+  quantityUnit,
+}: {
+  data: BookRow[];
+  side: "ask" | "bid";
+  quantityUnit: "BTC" | "USD";
+}) {
   return (
     <div className={`book__rows book__rows--${side}`}>
       {data.map((row) => (
@@ -47,17 +59,20 @@ function Rows({ data, side }: { data: BookRow[]; side: "ask" | "bid" }) {
           style={{ "--depth": `${row.depth}%` } as CSSProperties}
         >
           <span>{row.price}</span>
-          <span>{row.size}</span>
-          <span>{row.total}</span>
+          <span>{formatQuantity(row.size, row.price, quantityUnit)}</span>
+          <span>{formatQuantity(row.total, row.price, quantityUnit)}</span>
         </div>
       ))}
     </div>
   );
 }
 
-export function OrderBook() {
-  const [quantityUnit, setQuantityUnit] = useState<"BTC" | "USD">("BTC");
+type OrderBookProps = {
+  quantityUnit: "BTC" | "USD";
+  onQuantityUnitChange: (unit: "BTC" | "USD") => void;
+};
 
+export function OrderBook({ quantityUnit, onQuantityUnitChange }: OrderBookProps) {
   return (
     <section className="panel book" aria-labelledby="order-book-title">
       <header className="book__tabs">
@@ -77,7 +92,7 @@ export function OrderBook() {
             className={quantityUnit === "BTC" ? "is-active" : undefined}
             type="button"
             aria-pressed={quantityUnit === "BTC"}
-            onClick={() => setQuantityUnit("BTC")}
+            onClick={() => onQuantityUnitChange("BTC")}
           >
             BTC
           </button>
@@ -86,7 +101,7 @@ export function OrderBook() {
             className={quantityUnit === "USD" ? "is-active" : undefined}
             type="button"
             aria-pressed={quantityUnit === "USD"}
-            onClick={() => setQuantityUnit("USD")}
+            onClick={() => onQuantityUnitChange("USD")}
           >
             USD
           </button>
@@ -100,13 +115,13 @@ export function OrderBook() {
       </div>
 
       <div className="book__content">
-        <Rows data={asks} side="ask" />
+        <Rows data={asks} side="ask" quantityUnit={quantityUnit} />
         <div className="book__spread">
           <span>스프레드</span>
           <strong>1</strong>
           <span>0.00%</span>
         </div>
-        <Rows data={bids} side="bid" />
+        <Rows data={bids} side="bid" quantityUnit={quantityUnit} />
       </div>
     </section>
   );

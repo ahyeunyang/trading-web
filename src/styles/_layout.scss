@@ -131,11 +131,245 @@
     margin-left: auto;
   }
 
-  &__login {
-    min-height: 2.8rem;
-    padding-inline: $space-12;
+  &__account {
+    @include flex(center);
+    height: 3.6rem;
+    gap: $space-8;
+    padding-inline: $space-8;
     border-radius: $radius-sm;
-    font-size: $font-md;
+    color: $color-text-muted;
+    font-size: $font-nav;
+
+    &:hover,
+    &:focus-visible {
+      color: $color-text;
+      background: $color-surface-raised;
+    }
+
+    > svg:last-child {
+      width: .8rem;
+      height: .5rem;
+      color: $color-text-muted;
+    }
+  }
+
+  &__account-wrap {
+    position: relative;
+  }
+
+  &__google {
+    width: 1.6rem;
+    height: 1.6rem;
+    flex: 0 0 auto;
+  }
+}
+
+.account-menu {
+  position: absolute;
+  z-index: 90;
+  top: calc(100% + #{$space-8});
+  right: 0;
+  width: 26.2rem;
+  overflow: hidden;
+  border: 1px solid rgb(73 73 80 / 55%);
+  border-radius: $radius-lg;
+  color: $color-text-muted;
+  background: #252528;
+  box-shadow: 0 $space-12 $space-32 $color-shadow-strong;
+  font-size: $font-md;
+
+  button {
+    color: inherit;
+  }
+
+  &__markets {
+    @include flex(center);
+    gap: $space-8;
+    padding: $space-16 $space-8 $space-12;
+
+    button {
+      @include flex(center);
+      height: 2.8rem;
+      gap: $space-6;
+      padding-inline: $space-8;
+      border: 1px solid $color-border;
+      border-radius: 1.4rem;
+      background: $color-surface-raised;
+    }
+
+    i {
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 50%;
+      background: $color-border;
+    }
+
+    img {
+      width: 1.6rem;
+      height: 1.6rem;
+      object-fit: contain;
+    }
+
+    svg {
+      width: 1.6rem;
+      height: 1.6rem;
+      flex: 0 0 auto;
+    }
+
+    b {
+      color: $color-text-muted;
+      font-size: $font-sm;
+    }
+  }
+
+  &__balances {
+    margin-inline: $space-6;
+    overflow: hidden;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+
+    > div {
+      display: grid;
+      position: relative;
+      min-height: 6.4rem;
+      align-content: center;
+      gap: $space-4;
+      padding: $space-8 4.8rem $space-8 $space-16;
+
+      & + div {
+        border-top: 1px solid $color-border;
+      }
+
+      > span {
+        @include flex(center);
+        gap: $space-4;
+        font-size: $font-md;
+
+        i {
+          width: 1.4rem;
+          height: 1.4rem;
+          border-radius: 50%;
+          background: $color-border;
+        }
+
+        img {
+          width: 1.4rem;
+          height: 1.4rem;
+          object-fit: contain;
+        }
+
+        svg {
+          width: 1.4rem;
+          height: 1.4rem;
+          flex: 0 0 auto;
+        }
+      }
+
+      strong {
+        color: $color-text;
+        font-size: 1.8rem;
+        font-weight: $weight-regular;
+      }
+
+      > button {
+        @include flex-center;
+        position: absolute;
+        top: 50%;
+        right: $space-16;
+        width: 2.8rem;
+        height: 2.8rem;
+        border: 1px solid $color-border;
+        border-radius: $radius-md;
+        background: $color-surface-raised;
+        transform: translateY(-50%);
+
+        i {
+          width: 1.4rem;
+          height: 1.4rem;
+          border: 1px solid $color-text-muted;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+
+  &__links {
+    display: grid;
+    padding-block: $space-8;
+
+    button {
+      @include flex(center);
+      min-height: 3.2rem;
+      gap: $space-8;
+      padding-inline: $space-6;
+      font-size: $font-base;
+      text-align: left;
+
+      &:hover,
+      &:focus-visible {
+        color: $color-text;
+        background: $color-surface-raised;
+      }
+
+      > i {
+        width: 1.4rem;
+        height: 1.4rem;
+        flex: 0 0 auto;
+        border: 1px solid $color-text-muted;
+        border-radius: $radius-xs;
+      }
+
+      b {
+        margin-left: $space-2;
+        padding: .125rem .219rem .125rem .25rem;
+        border-radius: .25rem;
+        color: $color-positive;
+        background: $color-positive-soft;
+        font-size: $font-xs;
+        font-weight: $weight-regular;
+        letter-spacing: .04rem;
+      }
+    }
+
+    button:last-child {
+      &:hover,
+      &:focus-visible {
+        color: $color-negative;
+        background: $color-surface-raised;
+
+        > i {
+          border-color: $color-negative;
+        }
+      }
+    }
+  }
+
+  &__apps {
+    padding: $space-10 $space-6 $space-8;
+    border-top: 1px solid $color-border;
+
+    p {
+      margin-bottom: $space-8;
+    }
+
+    > div {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: $space-6;
+    }
+
+    button {
+      height: 4rem;
+      overflow: hidden;
+      border-radius: $radius-sm;
+
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
   }
 }
 
@@ -502,7 +736,7 @@
     @include flex-between;
 
     h2 {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: $weight-regular;
     }
   }
@@ -523,6 +757,10 @@
     gap: $space-8;
     margin-top: $space-24;
     font-size: $font-base;
+
+    strong {
+      font-size: $font-nav;
+    }
   }
 
   &__coin {
@@ -548,69 +786,75 @@
 
   &__control {
     @include flex(center);
-    gap: $space-8;
+    gap: $space-10;
     margin-top: $space-12;
 
     input {
       width: 100%;
-      height: 2rem;
+      height: 2.2rem;
       margin: 0;
       appearance: none;
       background: transparent;
       cursor: pointer;
 
       &::-webkit-slider-runnable-track {
-        height: .4rem;
-        border-radius: $radius-xs;
+        height: 1rem;
         background:
-          linear-gradient(
+          repeating-linear-gradient(
             to right,
-            $color-primary 0 var(--leverage-progress),
-            #78787f var(--leverage-progress) 100%
+            $color-text-muted 0 .1rem,
+            transparent .1rem .3rem
           );
+        -webkit-mask-image: linear-gradient(to right, rgb(0 0 0 / 25%), #000);
+        mask-image: linear-gradient(to right, rgb(0 0 0 / 25%), #000);
       }
 
       &::-webkit-slider-thumb {
-        width: 2rem;
-        height: 2rem;
-        margin-top: -.8rem;
+        width: 2.2rem;
+        height: 2.2rem;
+        margin-top: -.6rem;
         appearance: none;
-        border: 0;
+        border: .1rem solid $color-text-muted;
         border-radius: 50%;
-        background: #5b5b63;
+        background: $color-border;
+        box-shadow: none;
       }
 
       &::-moz-range-track {
-        height: .4rem;
-        border-radius: $radius-xs;
-        background: #78787f;
+        height: 1rem;
+        background:
+          repeating-linear-gradient(
+            to right,
+            $color-text-muted 0 .1rem,
+            transparent .1rem .3rem
+          );
+        mask-image: linear-gradient(to right, rgb(0 0 0 / 25%), #000);
       }
 
       &::-moz-range-progress {
-        height: .4rem;
-        border-radius: $radius-xs;
-        background: $color-primary;
+        height: 1rem;
+        background: transparent;
       }
 
       &::-moz-range-thumb {
-        width: 2rem;
-        height: 2rem;
-        border: 0;
+        width: 2.2rem;
+        height: 2.2rem;
+        border: .1rem solid $color-text-muted;
         border-radius: 50%;
-        background: #5b5b63;
+        background: $color-border;
       }
     }
 
     output {
       display: grid;
       width: 6.4rem;
-      height: 3.6rem;
+      height: 3.8rem;
       flex: 0 0 auto;
       place-items: center;
       border-radius: $radius-md;
-      background: #353539;
-      font-size: $font-base;
-      font-weight: $weight-medium;
+      color: $color-text;
+      background: $color-surface-raised;
+      font-size: $font-md;
     }
   }
 
@@ -625,6 +869,124 @@
 
     &:hover {
       filter: brightness(1.08);
+    }
+  }
+}
+
+.deposit-modal {
+  width: min(40rem, calc(100vw - 3.2rem));
+  padding: $space-20 $space-24 $space-24;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  background: #29292c;
+  box-shadow: 0 1.6rem 4rem rgb(0 0 0 / 40%);
+
+  &__header {
+    @include flex-between;
+
+    h2 {
+      font-size: 2.2rem;
+      font-weight: $weight-regular;
+    }
+  }
+
+  &__close {
+    color: $color-text-muted;
+    font-size: 3rem;
+    font-weight: $weight-light;
+    line-height: 1;
+
+    &:hover {
+      color: $color-text;
+    }
+  }
+
+  &__description {
+    margin-top: $space-12;
+    color: $color-text-muted;
+    font-size: $font-md;
+    line-height: 1.5;
+  }
+
+  &__field {
+    display: grid;
+    gap: $space-8;
+    margin-top: $space-20;
+    color: $color-text-muted;
+    font-size: $font-md;
+
+    > button,
+    .deposit-modal__amount {
+      @include flex(center);
+      width: 100%;
+      height: 4.8rem;
+      padding-inline: $space-12;
+      border: 1px solid $color-border;
+      border-radius: $radius-md;
+      color: $color-text;
+      background: $color-surface-raised;
+    }
+
+    > button {
+      justify-content: space-between;
+
+      > svg {
+        width: .9rem;
+        height: .6rem;
+        color: $color-text-muted;
+      }
+    }
+  }
+
+  &__asset {
+    @include flex(center);
+    gap: $space-8;
+    font-size: $font-nav;
+    font-weight: $weight-medium;
+
+    svg {
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+  }
+
+  &__amount {
+    input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      color: $color-text;
+      background: transparent;
+      font-size: $font-lg;
+    }
+
+    b {
+      padding: $space-2 $space-4;
+      border-radius: $radius-xs;
+      background: $color-border;
+      font-size: $font-sm;
+    }
+  }
+
+  &__submit {
+    width: 100%;
+    height: 4.4rem;
+    margin-top: $space-24;
+    border-radius: $radius-md;
+    color: $color-text;
+    background: $color-primary;
+    font-size: $font-base;
+    font-weight: $weight-medium;
+
+    &:hover {
+      background: $color-primary-hover;
+    }
+
+    &:disabled {
+      color: $color-text-muted;
+      background: $color-surface-raised;
+      cursor: not-allowed;
     }
   }
 }
@@ -1110,9 +1472,44 @@
     }
   }
 
+  &__account-actions {
+    display: grid;
+    grid-template-columns: 1fr 3.6rem;
+    gap: $space-12;
+    margin-top: $space-16;
+  }
+
+  &__deposit,
+  &__deposit-icon {
+    height: 3.6rem;
+    border-radius: $radius-md;
+  }
+
+  &__deposit {
+    color: $color-text;
+    background: $color-primary;
+    font-size: $font-base;
+    font-weight: $weight-medium;
+
+    &:hover {
+      background: $color-primary-hover;
+    }
+  }
+
+  &__deposit-icon {
+    @include flex-center;
+    color: $color-text-muted;
+    background: $color-surface-raised;
+
+    &:hover {
+      color: $color-text;
+      background: $color-border;
+    }
+  }
+
   &__margin {
     @include flex-between;
-    margin-inline: -$space-16;
+    margin: (-$space-16) (-$space-16) $space-0;
     min-height: 4.2rem;
     padding: $space-0 $space-16;
     border-bottom: 1px solid $color-border;
@@ -1120,26 +1517,30 @@
 
   &__margin-mode {
     @include flex(center);
-    gap: $space-2;
-    padding: $space-3;
-    border-radius: $radius-md;
-    background: $color-surface-raised;
+    gap: $space-8;
   }
 
   &__margin-option {
     position: relative;
 
-    > button {
-      min-height: 2.8rem;
-      padding-inline: $space-10;
-      border-radius: $radius-sm;
+    & + &::before {
+      margin-right: $space-8;
       color: $color-text-muted;
-      font-size: $font-md;
+      content: "/";
+    }
+
+    > button {
+      min-height: 4.2rem;
+      padding: 0;
+      color: $color-text-muted;
+      font-size: $font-nav;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: .4rem;
 
       &:hover,
       &.is-active {
         color: $color-text;
-        background: $color-surface-hover;
       }
     }
 
@@ -1182,6 +1583,17 @@
     }
   }
 
+  &__leverage {
+    min-width: 6.4rem;
+    height: 3rem;
+    justify-content: center;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    color: $color-text;
+    font-size: $font-nav;
+    font-weight: $weight-medium;
+  }
+
   &__types {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1194,6 +1606,7 @@
       gap: $space-6;
       position: relative;
       color: $color-text-muted;
+      font-size: $font-nav;
 
       &.is-active {
         color: $color-text;
@@ -1218,67 +1631,72 @@
 
   &__size {
     @include flex(center);
-    gap: $space-12;
+    gap: $space-10;
 
     input {
       width: 100%;
-      height: 2rem;
+      height: 2.2rem;
       appearance: none;
       background: transparent;
       cursor: pointer;
 
       &::-webkit-slider-runnable-track {
-        height: .4rem;
-        border-radius: $radius-xs;
+        height: 1rem;
         background:
-          linear-gradient(
+          repeating-linear-gradient(
             to right,
-            $color-primary 0 var(--order-progress),
-            $color-border var(--order-progress) 100%
+            $color-text-muted 0 .1rem,
+            transparent .1rem .3rem
           );
+        -webkit-mask-image: linear-gradient(to right, rgb(0 0 0 / 25%), #000);
+        mask-image: linear-gradient(to right, rgb(0 0 0 / 25%), #000);
       }
 
       &::-webkit-slider-thumb {
-        width: 1.8rem;
-        height: 1.8rem;
-        margin-top: -.7rem;
+        width: 2.2rem;
+        height: 2.2rem;
+        margin-top: -.6rem;
         appearance: none;
-        border: .3rem solid $color-surface;
+        border: .1rem solid $color-text-muted;
         border-radius: 50%;
-        background: $color-primary;
-        box-shadow: 0 0 0 .1rem $color-border;
+        background: $color-border;
+        box-shadow: none;
       }
 
       &::-moz-range-track {
-        height: .4rem;
-        border-radius: $radius-xs;
-        background: $color-border;
+        height: 1rem;
+        background:
+          repeating-linear-gradient(
+            to right,
+            $color-text-muted 0 .1rem,
+            transparent .1rem .3rem
+          );
+        mask-image: linear-gradient(to right, rgb(0 0 0 / 25%), #000);
       }
 
       &::-moz-range-progress {
-        height: .4rem;
-        border-radius: $radius-xs;
-        background: $color-primary;
+        height: 1rem;
+        background: transparent;
       }
 
       &::-moz-range-thumb {
-        width: 1.2rem;
-        height: 1.2rem;
-        border: .3rem solid $color-surface;
+        width: 2.2rem;
+        height: 2.2rem;
+        border: .1rem solid $color-text-muted;
         border-radius: 50%;
-        background: $color-primary;
+        background: $color-border;
       }
     }
 
     output {
       display: grid;
-      width: 5.6rem;
-      height: 3.2rem;
+      width: 6.4rem;
+      height: 3.8rem;
       flex: 0 0 auto;
       place-items: center;
-      border: .1rem solid $color-border;
       border-radius: $radius-md;
-      color: $color-text-muted;
+      color: $color-text;
+      background: $color-surface-raised;
       font-size: $font-md;
     }
   }
@@ -1341,6 +1759,29 @@
     align-self: end;
     gap: $space-12;
     margin-top: auto;
+  }
+
+  &__submit {
+    @include flex-center;
+    gap: $space-8;
+    min-height: 4.4rem;
+    font-size: $font-base;
+
+    svg {
+      width: 2rem;
+      height: 1.8rem;
+      flex: 0 0 auto;
+    }
+
+    &:disabled {
+      color: $color-text-muted;
+      background: $color-surface-raised;
+      cursor: not-allowed;
+
+      &:hover {
+        background: $color-surface-raised;
+      }
+    }
   }
 
   &__summary-actions {
@@ -1419,44 +1860,94 @@
     }
   }
 
-  .field__steppers {
-    display: grid;
-    width: 2rem;
-    margin-left: $space-4;
-
-    button {
-      @include flex-center;
-      height: 1.4rem;
-      color: $color-text-muted;
-
-      &:hover {
-        color: $color-text;
-      }
-
-      svg {
-        width: .7rem;
-        height: .5rem;
-      }
-
-      &:first-child svg {
-        transform: rotate(180deg);
-      }
-    }
-  }
-
   .field__label {
     color: $color-text-muted;
     font-size: $font-md;
   }
 
   .field--amount {
+    position: relative;
+
+    .field__control {
+      height: 5rem;
+      padding: $space-7 5.4rem $space-7 $space-10;
+    }
+
+    .field__amount-copy {
+      display: grid;
+      width: 100%;
+      min-width: 0;
+      gap: $space-2;
+    }
+
+    .field__caption {
+      @include flex(center);
+      gap: $space-4;
+      line-height: 1;
+    }
+
+    .field__value {
+      @include flex(center);
+      min-width: 0;
+      color: $color-text;
+      font-size: 1.6rem;
+      line-height: 1.2;
+    }
+
+    .field__currency {
+      flex: 0 0 auto;
+    }
+
+    .hint__pop--amount {
+      top: calc(100% + #{$space-8});
+      left: 0;
+      width: 18rem;
+      transform: translateY(-$space-3);
+    }
+
+    .hint:hover .hint__pop--amount,
+    .hint:focus .hint__pop--amount {
+      transform: translateY(0);
+    }
+
     b {
-      margin-left: $space-8;
-      font-size: $font-md;
+      padding: .2rem .4rem;
+      border-radius: $radius-xs;
+      color: $color-text;
+      background: $color-border;
+      font-size: 1rem;
+      line-height: 1.2;
     }
 
     input {
-      text-align: right;
+      width: 100%;
+      color: $color-text;
+      font-size: 1.6rem;
+      line-height: 1.2;
+      text-align: left;
+    }
+
+    .field__asset-switch {
+      @include flex-center;
+      position: absolute;
+      top: 50%;
+      right: $space-8;
+      width: 3.6rem;
+      height: 3.6rem;
+      border-radius: $radius-md;
+      color: $color-text-muted;
+      background: $color-border;
+      transform: translateY(-50%);
+
+      svg {
+        width: 2.6rem;
+        height: 2.6rem;
+      }
+
+      &:hover {
+        color: $color-text;
+        background: $color-surface-hover;
+      }
     }
   }
 }
@@ -1482,7 +1973,7 @@
 }
 
 .seg--side {
-  margin-inline: -$space-16;
+  margin: (-$space-16) (-$space-16) $space-0;
   padding: $space-0;
   border-radius: 0;
   background: transparent;
@@ -1493,12 +1984,13 @@
     height: 4.2rem;
     border-radius: 0;
     background: transparent;
+    font-size: $font-nav;
 
     &.is-active::after {
       position: absolute;
-      right: $space-16;
+      right: 0;
       bottom: 0;
-      left: $space-16;
+      left: 0;
       height: .2rem;
       background: currentColor;
       content: "";
