@@ -1,0 +1,76 @@
+@use "../color-token" as *;
+@use "../token" as *;
+@use "../mixins" as *;
+@use "../common" as *;
+
+.header {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 100;
+  @include flex-column;
+  width: 6rem;
+  padding: $spacing-10 $spacing-0;
+  background-color: $c-gray-50;
+
+  &__logo {
+    @include flex-center;
+    width: 4.8rem;
+    height: 4.8rem;
+    margin: $spacing-0 auto $spacing-16;
+
+    img {
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+  }
+
+  &__nav {
+    flex: 1;
+  }
+
+  &__group + &__group {
+    margin-top: $spacing-16;
+  }
+
+  &__group-title {
+    margin-bottom: $spacing-4;
+    color: $c-gray-400;
+    font-family: "DM Sans", sans-serif;
+    font-size: .8rem;
+    font-weight: $font-weight-medium;
+    letter-spacing: .04em;
+    text-align: center;
+  }
+
+  &__menu {
+    @include flex-column;
+    gap: $spacing-4;
+  }
+
+  &__link {
+    @include flex-center;
+    width: 3.6rem;
+    height: 3.6rem;
+    border-radius: $radius-sx;
+    margin: auto;
+
+    img {
+      display: block;
+      max-width: 2rem;
+      max-height: 2rem;
+    }
+
+    &:hover,
+    &:focus-visible,
+    &.is-active {
+      background-color: $c-primary-op;
+    }
+  }
+
+  &__utility {
+    @include flex-column;
+    gap: $spacing-4;
+    padding-top: $spacing-16;
+    border-top: 1px solid $c-gray-200;
+  }
+}

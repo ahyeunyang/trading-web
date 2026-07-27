@@ -1,0 +1,341 @@
+@use "tokens" as *;
+@use "color-token" as *;
+@use "mixins" as *;
+
+.panel {
+  overflow: hidden;
+  border: 1px solid $color-border;
+  background: $color-surface;
+
+  &__header {
+    @include flex-between;
+    min-height: 4.8rem;
+    padding: $space-0 $space-16;
+    border-bottom: 1px solid $color-border;
+
+    h2 {
+      font-size: $font-base;
+    }
+  }
+}
+
+.btn {
+  min-height: 3.8rem;
+  padding: $space-0 $space-16;
+  border-radius: $radius-md;
+  font-weight: $weight-regular;
+
+  &--primary {
+    font-weight: $weight-medium;
+    background: $color-primary;
+
+    &:hover {
+      background: $color-primary-hover;
+    }
+  }
+
+  &--full {
+    width: 100%;
+  }
+}
+
+.icon-btn {
+  --icon-size: #{$icon-md};
+
+  display: grid;
+  width: 3.8rem;
+  height: 3.8rem;
+  place-items: center;
+  border-radius: $radius-sm;
+  color: $color-text-muted;
+
+  &:hover,
+  &:focus-visible {
+    color: $color-text;
+    background: $color-surface-raised;
+  }
+}
+
+.icon {
+  width: var(--icon-size, #{$icon-md});
+  height: var(--icon-size, #{$icon-md});
+  min-width: var(--icon-size, #{$icon-md});
+  min-height: var(--icon-size, #{$icon-md});
+}
+
+.tip {
+  position: relative;
+
+  &::after {
+    position: absolute;
+    z-index: $z-tip;
+    top: calc(100% + #{$space-8});
+    left: 50%;
+    padding: $space-6 $space-8;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    color: $color-text;
+    background: $color-surface-raised;
+    box-shadow: 0 $space-8 $space-20 $color-shadow-soft;
+    content: attr(data-tip);
+    font-size: $font-md;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -$space-3);
+    transition: opacity $duration-fast ease, transform $duration-fast ease;
+    white-space: nowrap;
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.hint {
+  position: relative;
+  width: max-content;
+  border-bottom: 1px dotted currentColor;
+  cursor: help;
+  font-weight: $weight-regular;
+
+  &__pop {
+    display: block;
+    position: absolute;
+    z-index: $z-tooltip;
+    top: calc(100% + #{$space-8});
+    left: 50%;
+    width: max-content;
+    padding: $space-8 $space-10;
+    border-radius: $radius-sm;
+    color: $color-text;
+    background: $color-surface-raised;
+    box-shadow: 0 $space-8 $space-20 $color-shadow-soft;
+    font-size: $font-md;
+    font-weight: $weight-regular;
+    line-height: 1.45;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -$space-3);
+    transition: opacity $duration-fast ease, transform $duration-fast ease;
+    white-space: nowrap;
+
+    &--wide {
+      right: 0;
+      left: auto;
+      width: 27rem;
+      transform: translateY(-$space-3);
+      white-space: normal;
+
+      strong,
+      span {
+        display: block;
+        font-weight: $weight-regular;
+      }
+
+      strong {
+        margin-bottom: $space-4;
+        font-size: $font-base;
+      }
+    }
+
+    &--account {
+      right: auto;
+      left: 0;
+      width: 24rem;
+      transform: translateY(-$space-3);
+      white-space: normal;
+    }
+  }
+
+  &:hover &__pop,
+  &:focus-within &__pop {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  &:hover &__pop--wide,
+  &:focus-within &__pop--wide,
+  &:hover &__pop--account,
+  &:focus-within &__pop--account {
+    transform: translateY(0);
+  }
+}
+
+.tabs {
+  @include flex;
+  align-self: stretch;
+  gap: $space-20;
+
+  button {
+    position: relative;
+    color: $color-text-muted;
+    font-weight: $weight-regular;
+
+    &.is-active {
+      color: $color-text;
+
+      &::after {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 2px;
+        background: $color-primary;
+        content: "";
+      }
+    }
+  }
+}
+
+.empty {
+  display: grid;
+  height: 100%;
+  min-height: 24rem;
+  place-content: center;
+  justify-items: center;
+  gap: $space-16;
+  color: $color-text-muted;
+
+  &--small {
+    min-height: 12rem;
+  }
+
+  &__graphic {
+    display: block;
+    width: 16rem;
+    height: 8rem;
+    border-bottom: 1px solid $color-border;
+    background:
+      linear-gradient(145deg, transparent 48%, $color-primary 49% 51%, transparent 52%)
+      center / 100% 100%;
+    opacity: .55;
+  }
+}
+
+.field {
+  display: grid;
+  gap: $space-8;
+
+  > span:first-child {
+    color: $color-text-muted;
+    font-size: $font-md;
+  }
+
+  select,
+  &__control {
+    width: 100%;
+    height: 4.4rem;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    background: $color-surface-raised;
+  }
+
+  select {
+    padding: $space-0 $space-12;
+  }
+
+  &__control {
+    @include flex(center);
+    padding: $space-0 $space-12;
+
+    input {
+      flex: 1;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+    }
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: $space-0;
+  margin: -$space-1;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes shimmer {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+.is-loading {
+  .stats dd,
+  .order__account dd,
+  .order__summary dd,
+  .book__row span,
+  .book__spread > :not(:first-child),
+  .chart__canvas {
+    color: transparent;
+    background: linear-gradient(
+      100deg,
+      $color-skeleton 20%,
+      $color-skeleton-highlight 40%,
+      $color-skeleton 60%
+    );
+    background-size: 200% 100%;
+    animation: shimmer $duration-skeleton linear infinite;
+  }
+
+  .chart__canvas {
+    height: calc(100% - 8.4rem);
+    background-size: 200% 100%;
+  }
+
+  .book__row {
+    &::before {
+      visibility: hidden;
+    }
+
+    span {
+      min-height: 1.4rem;
+      margin-inline: $space-3;
+      border-radius: $radius-xs;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  .book__spread > :not(:first-child) {
+    min-height: 1.4rem;
+    margin-inline: $space-3;
+    border-radius: $radius-xs;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .stats dd,
+  .order__account dd,
+  .order__summary dd {
+    min-width: 6.4rem;
+    min-height: 1.2rem;
+    border-radius: $radius-xs;
+  }
+
+  .chart__legend,
+  .chart__mock,
+  .chart__line,
+  .chart__price {
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-loading {
+    .stats dd,
+    .order__account dd,
+    .order__summary dd,
+    .book__row span,
+    .book__spread > :not(:first-child),
+    .chart__canvas {
+      animation: none;
+    }
+  }
+}

@@ -1,0 +1,66 @@
+// dYdX-style responsive layout breakpoints
+$breakpoint-desktop: 1280px;
+$breakpoint-tablet: 1024px;
+$breakpoint-mobile: 768px;
+
+@mixin flex($align: null, $justify: null, $direction: null, $wrap: null) {
+  display: flex;
+
+  @if $align {
+    align-items: $align;
+  }
+
+  @if $justify {
+    justify-content: $justify;
+  }
+
+  @if $direction {
+    flex-direction: $direction;
+  }
+
+  @if $wrap {
+    flex-wrap: $wrap;
+  }
+}
+
+@mixin inline-flex($align: null, $justify: null) {
+  display: inline-flex;
+
+  @if $align {
+    align-items: $align;
+  }
+
+  @if $justify {
+    justify-content: $justify;
+  }
+}
+
+@mixin flex-center {
+  @include flex(center, center);
+}
+
+@mixin flex-between($align: center) {
+  @include flex($align, space-between);
+}
+
+@mixin flex-column($align: null, $justify: null) {
+  @include flex($align, $justify, column);
+}
+
+@mixin desktop {
+  @media (max-width: $breakpoint-desktop) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: $breakpoint-tablet) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (max-width: $breakpoint-mobile) {
+    @content;
+  }
+}

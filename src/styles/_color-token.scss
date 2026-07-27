@@ -1,0 +1,38 @@
+/* brand */
+$color-primary: #7774ff;
+$color-primary-hover: #8986ff;
+
+/* background */
+$color-bg: #212124;
+$color-surface: #212124;
+$color-surface-raised: #303033;
+$color-surface-hover: rgba(250, 250, 250, .06);
+$color-surface-hover-soft: rgba(250, 250, 250, .05);
+
+/* border */
+$color-border: #494950;
+
+/* text */
+$color-text: #ffffff;
+$color-text-muted: #888891;
+$color-text-inverse: #ffffff;
+
+/* state */
+$color-positive: #00d6a3;
+$color-negative: #ff535b;
+$color-positive-soft: rgba(0, 214, 163, .12);
+$color-negative-soft: rgba(255, 83, 91, .12);
+$color-positive-chart: rgba(0, 214, 163, .8);
+$color-positive-chart-soft: rgba(0, 214, 163, .75);
+$color-negative-chart: rgba(255, 83, 91, .8);
+$color-negative-chart-soft: rgba(255, 83, 91, .7);
+$color-book-ask: rgba(255, 83, 91, .18);
+$color-book-bid: rgba(0, 214, 163, .2);
+
+/* effect */
+$color-shadow: rgba(0, 0, 0, .35);
+$color-shadow-soft: rgba(0, 0, 0, .3);
+$color-shadow-strong: rgba(0, 0, 0, .4);
+$color-grid: rgba(73, 73, 80, .55);
+$color-skeleton: #303033;
+$color-skeleton-highlight: #3b3b40;

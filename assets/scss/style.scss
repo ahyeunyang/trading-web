@@ -1,0 +1,15 @@
+/* 공통 */
+@use "reset" as *;
+@use "font" as *;
+@use "mixins" as *;
+@use "common" as *;
+@use "token" as *;
+@use "color-token" as *;
+
+/* 컴포넌트 */
+@use "components";
+
+/* 레이아웃 */
+@use "./layout/header";
+@use "./layout/footer";
+@use "./layout/main";

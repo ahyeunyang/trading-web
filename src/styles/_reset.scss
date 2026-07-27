@@ -1,0 +1,60 @@
+@use "tokens" as *;
+@use "color-token" as *;
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("../../assets/font/satoshi/Satoshi-Variable.woff2") format("woff2");
+  font-style: normal;
+  font-weight: $weight-light $weight-black;
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
+  margin: $space-0;
+  padding: $space-0;
+}
+
+html {
+  color-scheme: dark;
+  font-family: "Satoshi", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: $font-root;
+  background: $color-bg;
+}
+
+body,
+button,
+input,
+select {
+  font: inherit;
+}
+
+body {
+  min-width: 32rem;
+  min-height: 100vh;
+  color: $color-text;
+  font-size: $font-base;
+  background: $color-bg;
+}
+
+button,
+select,
+input {
+  color: inherit;
+}
+
+button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+strong,
+b {
+  font-weight: $weight-medium;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
