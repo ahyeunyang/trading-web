@@ -12,6 +12,7 @@ export function App() {
   const [loading, setLoading] = useState(true);
   const [quantityUnit, setQuantityUnit] = useState<"BTC" | "USD">("BTC");
   const [isDepositOpen, setIsDepositOpen] = useState(false);
+  const [isPositionsCollapsed, setIsPositionsCollapsed] = useState(false);
   const [mobileView, setMobileView] = useState<"chart" | "book" | "order">(
     "chart",
   );
@@ -25,18 +26,28 @@ export function App() {
     <div className={`app${loading ? " is-loading" : ""}`} aria-busy={loading}>
       <TradingHeader onDepositClick={() => setIsDepositOpen(true)} />
 
-      <main className="trade" data-mobile-view={mobileView}>
+      <main
+        className={`trade${isPositionsCollapsed ? " is-positions-collapsed" : ""}`}
+        data-mobile-view={mobileView}
+      >
         <MarketPanel quantityUnit={quantityUnit} />
         <MobileTradingNav activeView={mobileView} onChange={setMobileView} />
         <TradeChart />
-        <OrderBook quantityUnit={quantityUnit} onQuantityUnitChange={setQuantityUnit} />
+        <OrderBook
+          quantityUnit={quantityUnit}
+          onQuantityUnitChange={setQuantityUnit}
+          isExpanded={isPositionsCollapsed}
+        />
         <OrderForm
           quantityUnit={quantityUnit}
           onQuantityUnitChange={setQuantityUnit}
           isDepositOpen={isDepositOpen}
           onDepositOpenChange={setIsDepositOpen}
         />
-        <PositionsPanel />
+        <PositionsPanel
+          isCollapsed={isPositionsCollapsed}
+          onCollapsedChange={setIsPositionsCollapsed}
+        />
       </main>
       <StatusBar />
     </div>

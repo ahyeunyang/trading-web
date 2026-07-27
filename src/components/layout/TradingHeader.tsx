@@ -20,7 +20,7 @@ import {
   QrIcon,
   SettingsIcon,
 } from "../icons/AccountMenuIcons";
-import dydxCoinImage from "../../assets/images/coins/dydx.png";
+import ayxxCoinImage from "../../assets/images/coins/ayxx.png";
 import usdcCoinImage from "../../assets/images/coins/usdc.png";
 import appStoreBadge from "../../assets/images/stores/app-store-badge.png";
 import googlePlayBadge from "../../assets/images/stores/google-play-badge.png";
@@ -73,7 +73,7 @@ export function TradingHeader({ onDepositClick }: TradingHeaderProps) {
         <a href="#portfolio">{t("portfolio")}</a>
         <a href="#megavault">MegaVault</a>
         <a href="#rewards">{t("rewards")}</a>
-        <a className="topbar__dydx" href="#dydx">DYDX <i /></a>
+        <a className="topbar__ayxx" href="#ayxx">AYXX <i /></a>
         <details className="more">
           <summary>{t("more")}<ChevronDown /></summary>
           <div className="more__menu">
@@ -93,7 +93,7 @@ export function TradingHeader({ onDepositClick }: TradingHeaderProps) {
       <div className="topbar__actions">
         <button className="topbar__deposit" type="button" onClick={onDepositClick}>
           <HeaderDepositIcon />
-          <span>입금</span>
+          <span>{t("deposit")}</span>
         </button>
         <button className="icon-btn tip" type="button" aria-label="모바일 앱" data-tip="모바일 앱">
           <DeviceIcon className="icon" />
@@ -127,24 +127,24 @@ export function TradingHeader({ onDepositClick }: TradingHeaderProps) {
               <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
               <path d="M1 1h22v22H1z" fill="none" />
             </svg>
-            <span>dydx1ygq...c8ah</span>
+            <span>ayxx1ygq...c8ah</span>
             <ChevronDown />
           </button>
 
           {isAccountOpen && (
             <div className="account-menu" role="menu">
               <div className="account-menu__markets">
-                <button type="button"><SolanaIcon /><span>스팟</span><CopyIcon className="account-menu__copy" /></button>
-                <button type="button"><img src={dydxCoinImage} alt="" /><span>무기한</span><CopyIcon className="account-menu__copy" /></button>
+                <button type="button"><SolanaIcon /><span>{t("spot")}</span><CopyIcon className="account-menu__copy" /></button>
+                <button type="button"><img src={ayxxCoinImage} alt="" /><span>{t("perpetual")}</span><CopyIcon className="account-menu__copy" /></button>
               </div>
 
               <div className="account-menu__balances">
                 <div>
-                  <span>DYDX 잔액 <img src={dydxCoinImage} alt="DYDX" /></span>
+                  <span>{t("ayxxBalance")} <img src={ayxxCoinImage} alt="AYXX" /></span>
                   <strong>0.0000</strong>
                 </div>
                 <div>
-                  <span>USDC 잔액 <img src={usdcCoinImage} alt="USDC" /></span>
+                  <span>{t("usdcBalance")} <img src={usdcCoinImage} alt="USDC" /></span>
                   <strong>0.00</strong>
                   <button type="button" aria-label="USDC 전송"><BalanceActionIcon /></button>
                 </div>
@@ -156,17 +156,17 @@ export function TradingHeader({ onDepositClick }: TradingHeaderProps) {
               </div>
 
               <nav className="account-menu__links" aria-label="계정 메뉴">
-                <button type="button"><AccountIcon /><span>계정 관리</span></button>
-                <button type="button"><GiftIcon /><span>친구 초대</span><b>수수료 적립</b></button>
-                <button type="button"><SettingsIcon /><span>환경설정</span></button>
-                <button type="button"><MoonIcon /><span>표시 설정</span></button>
-                <button type="button"><QrIcon /><span>모바일 앱 다운로드</span></button>
-                <button type="button"><QrIcon /><span>모바일로 로그인하세요</span></button>
-                <button type="button"><DisconnectIcon /><span>연결 해제</span></button>
+                <button type="button"><AccountIcon /><span>{t("accountManagement")}</span></button>
+                <button type="button"><GiftIcon /><span>{t("inviteFriends")}</span><b>{t("earnFees")}</b></button>
+                <button type="button"><SettingsIcon /><span>{t("preferences")}</span></button>
+                <button type="button"><MoonIcon /><span>{t("displaySettings")}</span></button>
+                <button type="button"><QrIcon /><span>{t("downloadMobileApp")}</span></button>
+                <button type="button"><QrIcon /><span>{t("loginWithMobile")}</span></button>
+                <button type="button"><DisconnectIcon /><span>{t("disconnect")}</span></button>
               </nav>
 
               <div className="account-menu__apps">
-                <p>휴대폰에서 dYdX 받기</p>
+                <p>{t("getAyxxMobile")}</p>
                 <div>
                   <button type="button" aria-label="Google Play에서 다운로드">
                     <img src={googlePlayBadge} alt="Google Play에서 다운로드" />

@@ -1,4 +1,10 @@
 import { useState } from "react";
+import { useLocale } from "../../i18n/Locale";
+import { MarketDataIcon, WebsiteIcon, WhitepaperIcon } from "../icons/MarketResourceIcons";
+import { DemoCandlestickChart, type DemoCandle } from "./DemoCandlestickChart";
+import { DemoDepthChart } from "./DemoDepthChart";
+import { DemoFundingChart } from "./DemoFundingChart";
+import { MarketDetails } from "./MarketDetails";
 
 type ToggleProps = {
   label: string;
@@ -54,30 +60,39 @@ function CameraIcon() {
 }
 
 export function TradeChart() {
+  const { t } = useLocale();
   const [lines, setLines] = useState(true);
   const [trades, setTrades] = useState(true);
+  const [activeTab, setActiveTab] = useState<"price" | "depth" | "funding" | "details">("price");
+  const [hoveredCandle, setHoveredCandle] = useState<DemoCandle | null>(null);
+  const chartValue = (value: number, fallback: number) => Math.round(hoveredCandle ? value : fallback);
 
   return (
     <section className="panel chart" aria-labelledby="chart-title">
       <div className="chart__tabs">
-        <button className="is-active" type="button">가격</button>
-        <button type="button">깊이</button>
-        <button type="button">펀딩</button>
-        <button type="button">세부 사항</button>
+        <button className={activeTab === "price" ? "is-active" : undefined} type="button" onClick={() => setActiveTab("price")}>{t("price")}</button>
+        <button className={activeTab === "depth" ? "is-active" : undefined} type="button" onClick={() => setActiveTab("depth")}>{t("depth")}</button>
+        <button className={activeTab === "funding" ? "is-active" : undefined} type="button" onClick={() => setActiveTab("funding")}>{t("fundingTab")}</button>
+        <button className={activeTab === "details" ? "is-active" : undefined} type="button" onClick={() => setActiveTab("details")}>{t("details")}</button>
+        <nav className="chart__resources" aria-label={t("marketResources")}>
+          <a className="tip" href="https://coinmarketcap.com/currencies/bitcoin/" target="_blank" rel="noopener noreferrer" aria-label={t("marketData")} data-tip={t("marketData")}><MarketDataIcon /></a>
+          <a className="tip" href="https://bitcoin.org/bitcoin.pdf" target="_blank" rel="noopener noreferrer" aria-label={t("whitepaper")} data-tip={t("whitepaper")}><WhitepaperIcon /></a>
+          <a className="tip" href="https://bitcoin.org/" target="_blank" rel="noopener noreferrer" aria-label={t("officialWebsite")} data-tip={t("officialWebsite")}><WebsiteIcon /></a>
+        </nav>
       </div>
-      <header className="panel__header">
+      {activeTab === "price" && <header className="panel__header">
         <div className="chart-tools" aria-label="차트 도구">
           <div className="chart-tools__group">
-            <button type="button">날</button>
+            <button type="button">{t("day")}</button>
             <button className="chart-tools__item chart-tools__icon" type="button" aria-label="캔들"><CandleIcon /></button>
-            <button className="chart-tools__item" type="button"><IndicatorIcon />지표</button>
+            <button className="chart-tools__item" type="button"><IndicatorIcon />{t("indicators")}</button>
           </div>
           <div className="chart-tools__group">
-            <span>주문 라인</span>
+            <span>{t("orderLines")}</span>
             <Toggle label="주문 라인 표시" checked={lines} onChange={() => setLines(!lines)} />
           </div>
           <div className="chart-tools__group">
-            <span>매수/매도</span>
+            <span>{t("buySell")}</span>
             <Toggle label="매수 및 매도 표시" checked={trades} onChange={() => setTrades(!trades)} />
             <button className="chart-tools__icon" type="button" aria-label="실행 취소"><UndoIcon /></button>
             <button className="chart-tools__icon" type="button" aria-label="다시 실행"><RedoIcon /></button>
@@ -89,18 +104,26 @@ export function TradeChart() {
             <button className="chart-tools__icon" type="button" aria-label="차트 캡처"><CameraIcon /></button>
           </div>
         </div>
-      </header>
+      </header>}
       <h2 className="sr-only" id="chart-title">BTC-USD 가격 차트</h2>
-      <div className="chart__canvas">
+      {activeTab === "details" ? <div className="chart__details"><MarketDetails /></div>
+        : activeTab === "depth" ? <div className="chart__depth"><DemoDepthChart /></div>
+        : activeTab === "funding" ? <div className="chart__funding"><DemoFundingChart /></div>
+        : <div className="chart__canvas">
         <div className="chart__legend">
-          <strong>BTC-USD · 1날 · dYdX</strong>
-          <span>시 <b>66101</b> 고 <b>66273</b> 저 <b>65320</b> 종 <b>65403</b></span>
+          <div>
+            <strong>BTC-USD · 1 {t("day")} · ayxx</strong>
+            <span>
+              시 <b>{chartValue(hoveredCandle?.open ?? 0, 65380)}</b>
+              {" "}고 <b>{chartValue(hoveredCandle?.high ?? 0, 65693)}</b>
+              {" "}저 <b>{chartValue(hoveredCandle?.low ?? 0, 64882)}</b>
+              {" "}총 <b>{chartValue(hoveredCandle?.close ?? 0, 65228)}</b>
+            </span>
+          </div>
+          <span>{t("volume")} <b>1.919M</b></span>
         </div>
-        <div className="chart__mock" aria-label="차트 라이브러리 적용 예정">
-          <span className="chart__line" />
-          <span className="chart__price">$65,403</span>
-        </div>
-      </div>
+        <DemoCandlestickChart showOrderLine={lines} showTrades={trades} onHoverCandle={setHoveredCandle} />
+      </div>}
     </section>
   );
 }

@@ -9,52 +9,134 @@ import {
 
 export type Lang = "ko" | "en" | "ja" | "zh" | "vi" | "fr";
 
-const text = {
-  ko: {
-    trade: "트레이드", spot: "스팟", markets: "시장", portfolio: "포트폴리오",
-    rewards: "추천", more: "더 보기", login: "로그인", apiDocs: "API 문서",
-    apiKeys: "API 거래 키", mintscan: "민트 스캔", funding: "펀딩 비교",
-    community: "커뮤니티", terms: "이용약관", privacy: "개인정보 보호정책",
-    help: "도움말", stats: "통계",
-  },
-  en: {
-    trade: "Trade", spot: "Spot", markets: "Markets", portfolio: "Portfolio",
-    rewards: "Rewards", more: "More", login: "Log in", apiDocs: "API Documentation",
-    apiKeys: "API Trading Keys", mintscan: "Mintscan", funding: "Funding Comparison",
-    community: "Community", terms: "Terms of Use", privacy: "Privacy Policy",
-    help: "Help", stats: "Statistics",
-  },
-  ja: {
-    trade: "トレード", spot: "スポット", markets: "市場", portfolio: "ポートフォリオ",
-    rewards: "報酬", more: "もっと見る", login: "ログイン", apiDocs: "API ドキュメント",
-    apiKeys: "API 取引キー", mintscan: "ミントスキャン", funding: "資金調達比較",
-    community: "コミュニティ", terms: "利用規約", privacy: "プライバシーポリシー",
-    help: "ヘルプ", stats: "統計",
-  },
-  zh: {
-    trade: "交易", spot: "现货", markets: "市场", portfolio: "投资组合",
-    rewards: "奖励", more: "更多", login: "登录", apiDocs: "API 文档",
-    apiKeys: "API 交易密钥", mintscan: "Mintscan", funding: "资金费率比较",
-    community: "社区", terms: "使用条款", privacy: "隐私政策",
-    help: "帮助", stats: "统计",
-  },
-  vi: {
-    trade: "Giao dịch", spot: "Giao ngay", markets: "Thị trường", portfolio: "Danh mục",
-    rewards: "Phần thưởng", more: "Xem thêm", login: "Đăng nhập", apiDocs: "Tài liệu API",
-    apiKeys: "Khóa giao dịch API", mintscan: "Mintscan", funding: "So sánh funding",
-    community: "Cộng đồng", terms: "Điều khoản sử dụng", privacy: "Chính sách riêng tư",
-    help: "Trợ giúp", stats: "Thống kê",
-  },
-  fr: {
-    trade: "Trader", spot: "Spot", markets: "Marchés", portfolio: "Portefeuille",
-    rewards: "Récompenses", more: "Plus", login: "Connexion", apiDocs: "Documentation API",
-    apiKeys: "Clés de trading API", mintscan: "Mintscan", funding: "Comparaison du financement",
-    community: "Communauté", terms: "Conditions d’utilisation", privacy: "Politique de confidentialité",
-    help: "Aide", stats: "Statistiques",
-  },
+const ko = {
+  trade: "트레이드", spot: "스팟", markets: "시장", portfolio: "포트폴리오",
+  rewards: "추천", more: "더 보기", login: "로그인", apiDocs: "API 문서",
+  apiKeys: "API 거래 키", mintscan: "민트 스캔", funding: "펀딩 비교",
+  community: "커뮤니티", terms: "이용약관", privacy: "개인정보 보호정책",
+  help: "도움말", stats: "통계",
+  deposit: "입금", mobileApp: "모바일 앱", notifications: "알림",
+  perpetual: "무기한", ayxxBalance: "AYXX 잔액", usdcBalance: "USDC 잔액",
+  accountManagement: "계정 관리", inviteFriends: "친구 초대", earnFees: "수수료 적립",
+  preferences: "환경설정", displaySettings: "표시 설정", downloadMobileApp: "모바일 앱 다운로드",
+  loginWithMobile: "모바일로 로그인하세요", disconnect: "연결 해제", getAyxxMobile: "휴대폰에서 ayxx 받기",
+  price: "가격", depth: "깊이", fundingTab: "펀딩", details: "세부 사항",
+  day: "날", indicators: "지표", orderLines: "주문 라인", buySell: "매수/매도",
+  orderBook: "호가창", trades: "거래", size: "규모", total: "총", time: "시간", spread: "스프레드",
+  positions: "포지션", openOrders: "오픈 호가", fills: "체결", orderHistory: "주문 내역", fundingPayments: "펀딩 지불",
+  noPositions: "열린 포지션이 없습니다.", noOpenOrders: "오픈 호가가 없습니다.",
+  noFills: "체결 내역이 없습니다.", noOrderHistory: "주문 내역이 없습니다.", noFunding: "펀딩 지불 내역이 없습니다.",
+  all: "전체", showing: "표시 중", view: "보기", type: "유형", cross: "교차", isolated: "격리됨",
+  operational: "운영상", chat: "채팅", helpSupport: "도움말 및 지원",
+  openSourceNotice: "이 사이트는 오픈 소스 소프트웨어를 활용합니다.", learnMore: "자세히 보기",
+  portfolioValue: "포트폴리오 값", availableBalance: "가용 잔액", usedMargin: "사용된 마진",
+  portfolioValueTip: "계정에 보유한 전체 자산의 현재 가치입니다.",
+  availableBalanceTip: "새로운 주문이나 포지션에 사용할 수 있는 잔액입니다.",
+  usedMarginTip: "현재 열린 포지션과 주문에 사용 중인 마진입니다.",
+  marginMode: "마진 모드", crossTip: "계정의 전체 증거금을 사용해 포지션을 유지합니다.",
+  isolatedTip: "이 포지션에 할당한 증거금만 위험에 노출됩니다.",
+  buyLong: "구매 | 롱", sellShort: "판매 | 숏", limit: "한도", market: "시장", advanced: "고급",
+  stopLoss: "손절매", scale: "확장", limitPrice: "지정가", middle: "중간", amount: "금액",
+  amountTip: "주문하려는 BTC 수량을 입력하세요.", orderExecution: "주문 실행(Time In...)",
+  goodUntil: "지정일 전 유효 주문", immediateOrCancel: "즉시 또는 취소",
+  minute: "분", hour: "시간", timeDay: "일", week: "주", reduceOnly: "리듀스 온리", postOnly: "포스트 온리",
+  takeProfitStopLoss: "수익 실현 / 손절매", marginWarning: "이 거래는 내 계정에서 100%를 초과하는 마진을 사용하게 됩니다.",
+  clear: "지우기", receiveAmount: "수령액", expectedPrice: "기대 가격", liquidationPrice: "청산 가격",
+  positionMargin: "포지션 마진", fee: "수수료", enterAmount: "금액을 입력하세요", adjustVolume: "거래량 수정",
+  reduceOnlyTip: "리듀스 온리는 [적용 시간]이 IOC로 설정된 경우에만 사용할 수 있습니다.",
+  postOnlyTip: "포스트 온리를 활성화한 주문은 메이커 주문으로만 실행할 수 있습니다. 주문을 실행할 때 다른 주문과 교차하면 그 주문은 자동으로 취소됩니다.",
+  expectedPriceTip: "현재 시장 상황을 기준으로 주문이 체결될 것으로 예상되는 가격입니다.",
+  liquidationPriceTip: "포지션을 유지할 증거금이 부족해져 강제로 청산될 것으로 예상되는 가격입니다.",
+  positionMarginTip: "이 주문으로 생성되는 포지션을 유지하는 데 필요한 증거금입니다.",
+  feeTip: "주문 체결 시 적용될 것으로 예상되는 거래 수수료입니다.",
+  setMarketLeverage: "시장 레버리지 설정", maximum: "최대", save: "저장", asset: "자산",
+  depositDescription: "거래 계정에 입금할 자산과 금액을 입력하세요.",
+  oraclePrice: "오라클 가격", change24h: "24시간 변화", volume24h: "24시간 거래량",
+  trades24h: "24시간 거래", openInterest: "미결제약정", funding1h: "1시간 펀딩",
+  nextFunding: "다음 펀딩", maxLeverage: "최대 레버리지",
+  maxLeverageTip: "현재 시장에서 사용할 수 있는 최대 레버리지입니다.",
+  fundingAnnualized: "연율로 환산한 펀딩", availableMarkets: "출시 가능한 시장 표시",
+  marketCap: "시가 총액", spotVolume24h: "24시간 현물 거래량", volume: "거래량",
+  noMarkets: "표시할 시장이 없습니다.", previousPage: "이전 페이지", nextPage: "다음 페이지",
+  searchPlaceholder: "예: 'ETH' 또는 '이더리움'", recentlyListed: "최근에 나열됨",
+  newMarkets: "시장 가능 신규", meme: "밈", aiBigData: "AI 및 빅 데이터",
+  layer1: "레이어 1", layer2: "레이어 2", gaming: "게이밍", forex: "외환",
+  marketResources: "시장 외부 링크", marketData: "CoinMarketCap에서 보기", whitepaper: "백서", officialWebsite: "비트코인 공식 웹사이트",
+  website: "웹사이트", coinMarketCap: "CoinMarketCap", bitcoinName: "비트코인",
+  bitcoinDescription1: "비트코인은 중앙은행 및 단일 관리자가 없는 탈중앙화된 디지털 통화로서 중재자가 필요 없는 P2P(개인 대 개인) 비트코인 네트워크에서 사용자 간에 전송할 수 있습니다.",
+  bitcoinDescription2: "트랜잭션은 암호화를 통해 네트워크 노드들에 의해 검증되며, 블록체인이라고 하는 공개형 분산 원장에 기록됩니다. 비트코인은 채굴이라고 알려진 과정에 대한 보상으로 생성됩니다. 비트코인은 다른 통화, 제품 및 서비스와 교환할 수 있습니다.",
+  ticker: "티커", tickSize: "틱 규모", stepSize: "단계 크기", minimumOrderSize: "최소 주문 규모",
+  maintenanceMarginRate: "유지 마진율", initialMarginRate: "초기 마진율",
+  buyOrders: "매수 호가", sellOrders: "매도 호가", totalSize: "총 규모", totalValue: "총 금액", priceImpact: "가격 충격",
+  hourlyRate: "1시간 요율", eightHourRate: "8시간 요율", annualized: "연율로 환산됨",
+  currentHourlyRate: "현재 1시간 요율", currentEightHourRate: "현재 8시간 요율", currentAnnualizedRate: "현재 연간 요율",
+  pastFundingRate: "과거 펀딩 요율", direction: "방향", longToShort: "롱 → 숏", shortToLong: "숏 → 롱",
 } as const;
 
-type Key = keyof typeof text.ko;
+type Key = keyof typeof ko;
+type Dictionary = Record<Key, string>;
+
+const en: Dictionary = {
+  trade:"Trade",spot:"Spot",markets:"Markets",portfolio:"Portfolio",rewards:"Rewards",more:"More",login:"Log in",apiDocs:"API Documentation",apiKeys:"API Trading Keys",mintscan:"Mintscan",funding:"Funding Comparison",community:"Community",terms:"Terms of Use",privacy:"Privacy Policy",help:"Help",stats:"Statistics",
+  deposit:"Deposit",mobileApp:"Mobile app",notifications:"Notifications",perpetual:"Perpetual",ayxxBalance:"AYXX balance",usdcBalance:"USDC balance",accountManagement:"Account management",inviteFriends:"Invite friends",earnFees:"Earn fees",preferences:"Preferences",displaySettings:"Display settings",downloadMobileApp:"Download mobile app",loginWithMobile:"Log in with mobile",disconnect:"Disconnect",getAyxxMobile:"Get ayxx on mobile",
+  price:"Price",depth:"Depth",fundingTab:"Funding",details:"Details",day:"Day",indicators:"Indicators",orderLines:"Order lines",buySell:"Buy/Sell",orderBook:"Order book",trades:"Trades",size:"Size",total:"Total",time:"Time",spread:"Spread",
+  positions:"Positions",openOrders:"Open orders",fills:"Fills",orderHistory:"Order history",fundingPayments:"Funding payments",noPositions:"No open positions.",noOpenOrders:"No open orders.",noFills:"No fills.",noOrderHistory:"No order history.",noFunding:"No funding payments.",all:"All",showing:"Showing",view:"View",type:"Type",cross:"Cross",isolated:"Isolated",
+  operational:"Operational",chat:"Chat",helpSupport:"Help & support",openSourceNotice:"This site uses open-source software.",learnMore:"Learn more",
+  portfolioValue:"Portfolio value",availableBalance:"Available balance",usedMargin:"Used margin",portfolioValueTip:"The current value of all assets held in your account.",availableBalanceTip:"Balance available for new orders or positions.",usedMarginTip:"Margin currently used by open positions and orders.",marginMode:"Margin mode",crossTip:"Uses your account's full collateral to maintain the position.",isolatedTip:"Only collateral allocated to this position is at risk.",
+  buyLong:"Buy | Long",sellShort:"Sell | Short",limit:"Limit",market:"Market",advanced:"Advanced",stopLoss:"Stop loss",scale:"Scale",limitPrice:"Limit price",middle:"Mid",amount:"Amount",amountTip:"Enter the BTC amount you want to order.",orderExecution:"Time in force",goodUntil:"Good until date",immediateOrCancel:"Immediate or cancel",minute:"Minute",hour:"Hour",timeDay:"Day",week:"Week",reduceOnly:"Reduce only",postOnly:"Post only",takeProfitStopLoss:"Take profit / Stop loss",marginWarning:"This trade will use more than 100% of the margin in your account.",clear:"Clear",receiveAmount:"Receive amount",expectedPrice:"Expected price",liquidationPrice:"Liquidation price",positionMargin:"Position margin",fee:"Fee",enterAmount:"Enter an amount",adjustVolume:"Adjust volume",reduceOnlyTip:"Reduce only is available only when time in force is set to IOC.",postOnlyTip:"Post-only orders execute only as maker orders and are canceled if they cross another order.",expectedPriceTip:"The estimated execution price based on current market conditions.",liquidationPriceTip:"The estimated price at which the position will be forcibly liquidated due to insufficient margin.",positionMarginTip:"The margin required to maintain the position created by this order.",feeTip:"The estimated trading fee applied when the order executes.",setMarketLeverage:"Set market leverage",maximum:"Max",save:"Save",asset:"Asset",depositDescription:"Enter the asset and amount to deposit into your trading account.",
+  oraclePrice:"Oracle price",change24h:"24h change",volume24h:"24h volume",trades24h:"24h trades",openInterest:"Open interest",funding1h:"1h funding",nextFunding:"Next funding",maxLeverage:"Max leverage",maxLeverageTip:"The maximum leverage available in the current market.",fundingAnnualized:"Annualized funding",availableMarkets:"Show available markets",marketCap:"Market cap",spotVolume24h:"24h spot volume",volume:"Volume",noMarkets:"No markets to display.",previousPage:"Previous page",nextPage:"Next page",searchPlaceholder:"e.g. 'ETH' or 'Ethereum'",recentlyListed:"Recently listed",newMarkets:"New markets",meme:"Meme",aiBigData:"AI & Big Data",layer1:"Layer 1",layer2:"Layer 2",gaming:"Gaming",forex:"Forex",
+  marketResources:"External market links",marketData:"View on CoinMarketCap",whitepaper:"Whitepaper",officialWebsite:"Official Bitcoin website",
+  website:"Website",coinMarketCap:"CoinMarketCap",bitcoinName:"Bitcoin",
+  bitcoinDescription1:"Bitcoin is a decentralized digital currency without a central bank or single administrator. It can be sent from user to user on the peer-to-peer Bitcoin network without intermediaries.",
+  bitcoinDescription2:"Transactions are verified by network nodes through cryptography and recorded in a public distributed ledger called a blockchain. Bitcoin is created as a reward for a process known as mining and can be exchanged for other currencies, products, and services.",
+  ticker:"Ticker",tickSize:"Tick size",stepSize:"Step size",minimumOrderSize:"Minimum order size",maintenanceMarginRate:"Maintenance margin rate",initialMarginRate:"Initial margin rate",
+  buyOrders:"Buy orders",sellOrders:"Sell orders",totalSize:"Total size",totalValue:"Total value",priceImpact:"Price impact",
+  hourlyRate:"1-hour rate",eightHourRate:"8-hour rate",annualized:"Annualized",currentHourlyRate:"Current 1-hour rate",currentEightHourRate:"Current 8-hour rate",currentAnnualizedRate:"Current annualized rate",pastFundingRate:"Past funding rate",direction:"Direction",longToShort:"Long → Short",shortToLong:"Short → Long",
+};
+
+const overrides: Record<Exclude<Lang, "ko" | "en">, Partial<Dictionary>> = {
+  ja: {
+    hourlyRate:"1時間レート",eightHourRate:"8時間レート",annualized:"年率換算",currentHourlyRate:"現在の1時間レート",currentEightHourRate:"現在の8時間レート",currentAnnualizedRate:"現在の年率",pastFundingRate:"過去の資金調達率",direction:"方向",longToShort:"ロング → ショート",shortToLong:"ショート → ロング",
+    buyOrders:"買い注文",sellOrders:"売り注文",totalSize:"合計数量",totalValue:"合計金額",priceImpact:"価格への影響",
+    marketResources:"市場の外部リンク",marketData:"CoinMarketCapで表示",whitepaper:"ビットコインのホワイトペーパー",officialWebsite:"ビットコイン公式サイト",
+    noPositions:"未決済のポジションはありません。",noOpenOrders:"未約定注文はありません。",noFills:"約定履歴はありません。",noOrderHistory:"注文履歴はありません。",noFunding:"資金調達支払い履歴はありません。",portfolioValue:"ポートフォリオ価値",availableBalance:"利用可能残高",usedMargin:"使用中の証拠金",marginMode:"証拠金モード",stopLoss:"ストップロス",scale:"スケール",limitPrice:"指値価格",middle:"中間値",orderExecution:"注文の有効期限",goodUntil:"指定日時まで有効",immediateOrCancel:"即時またはキャンセル",minute:"分",hour:"時間",timeDay:"日",week:"週",reduceOnly:"リデュースオンリー",postOnly:"ポストオンリー",takeProfitStopLoss:"利確 / 損切り",marginWarning:"この取引では、アカウントの証拠金を100%超使用します。",receiveAmount:"受取額",expectedPrice:"予想価格",liquidationPrice:"清算価格",positionMargin:"ポジション証拠金",fee:"手数料",enterAmount:"金額を入力してください",adjustVolume:"取引量を調整",setMarketLeverage:"市場レバレッジを設定",maximum:"最大",depositDescription:"取引口座に入金する資産と金額を入力してください。",
+    trade:"取引",spot:"現物",markets:"市場",portfolio:"ポートフォリオ",rewards:"報酬",more:"その他",login:"ログイン",deposit:"入金",mobileApp:"モバイルアプリ",notifications:"通知",perpetual:"無期限",accountManagement:"アカウント管理",inviteFriends:"友達を招待",preferences:"設定",displaySettings:"表示設定",disconnect:"接続解除",price:"価格",depth:"深度",details:"詳細",day:"日",indicators:"指標",orderLines:"注文ライン",buySell:"売買",orderBook:"板情報",trades:"取引",size:"数量",total:"合計",time:"時間",spread:"スプレッド",positions:"ポジション",openOrders:"未約定注文",fills:"約定",orderHistory:"注文履歴",fundingPayments:"資金調達支払い",all:"すべて",showing:"表示中",view:"表示",type:"タイプ",cross:"クロス",isolated:"分離",operational:"稼働中",chat:"チャット",helpSupport:"ヘルプとサポート",learnMore:"詳細を見る",buyLong:"買い | ロング",sellShort:"売り | ショート",limit:"指値",market:"成行",advanced:"詳細",amount:"数量",clear:"クリア",save:"保存",asset:"資産",oraclePrice:"オラクル価格",change24h:"24時間変動",volume24h:"24時間出来高",trades24h:"24時間取引",openInterest:"未決済建玉",nextFunding:"次回資金調達",maxLeverage:"最大レバレッジ",volume:"出来高",marketCap:"時価総額",previousPage:"前のページ",nextPage:"次のページ",
+    spotVolume24h:"24時間現物出来高",portfolioValueTip:"アカウントに保有しているすべての資産の現在価値です。",availableBalanceTip:"新しい注文またはポジションに使用できる残高です。",usedMarginTip:"現在の未決済ポジションと注文に使用されている証拠金です。",crossTip:"アカウントの証拠金全体を使用してポジションを維持します。",isolatedTip:"このポジションに割り当てた証拠金のみがリスクにさらされます。",amountTip:"注文するBTCの数量を入力してください。",reduceOnlyTip:"リデュースオンリーは、有効期限がIOCに設定されている場合のみ使用できます。",postOnlyTip:"ポストオンリー注文はメイカー注文としてのみ約定し、他の注文と交差する場合は自動的にキャンセルされます。",expectedPriceTip:"現在の市場状況に基づく注文の予想約定価格です。",liquidationPriceTip:"証拠金不足によりポジションが強制決済されると予想される価格です。",positionMarginTip:"この注文で作成されるポジションを維持するために必要な証拠金です。",feeTip:"注文の約定時に適用される予想取引手数料です。",maxLeverageTip:"現在の市場で利用できる最大レバレッジです。",fundingAnnualized:"年率換算した資金調達率",
+  },
+  zh: {
+    hourlyRate:"1小时费率",eightHourRate:"8小时费率",annualized:"年化",currentHourlyRate:"当前1小时费率",currentEightHourRate:"当前8小时费率",currentAnnualizedRate:"当前年化费率",pastFundingRate:"历史资金费率",direction:"方向",longToShort:"多头 → 空头",shortToLong:"空头 → 多头",
+    buyOrders:"买单",sellOrders:"卖单",totalSize:"总数量",totalValue:"总金额",priceImpact:"价格影响",
+    marketResources:"市场外部链接",marketData:"在CoinMarketCap上查看",whitepaper:"比特币白皮书",officialWebsite:"比特币官方网站",
+    noPositions:"没有未平仓仓位。",noOpenOrders:"没有未成交订单。",noFills:"没有成交记录。",noOrderHistory:"没有订单历史。",noFunding:"没有资金费支付记录。",portfolioValue:"投资组合价值",availableBalance:"可用余额",usedMargin:"已用保证金",marginMode:"保证金模式",stopLoss:"止损",scale:"分批",limitPrice:"限价价格",middle:"中间价",orderExecution:"订单有效期",goodUntil:"指定日期前有效",immediateOrCancel:"立即成交或取消",minute:"分钟",hour:"小时",timeDay:"天",week:"周",reduceOnly:"只减仓",postOnly:"只挂单",takeProfitStopLoss:"止盈 / 止损",marginWarning:"此交易将使用超过账户100%的保证金。",receiveAmount:"预计收到",expectedPrice:"预期价格",liquidationPrice:"强平价格",positionMargin:"仓位保证金",fee:"手续费",enterAmount:"请输入金额",adjustVolume:"调整交易量",setMarketLeverage:"设置市场杠杆",maximum:"最大",depositDescription:"请输入要充值到交易账户的资产和金额。",
+    trade:"交易",spot:"现货",markets:"市场",portfolio:"投资组合",rewards:"奖励",more:"更多",login:"登录",deposit:"充值",mobileApp:"移动应用",notifications:"通知",perpetual:"永续",accountManagement:"账户管理",inviteFriends:"邀请好友",preferences:"偏好设置",displaySettings:"显示设置",disconnect:"断开连接",price:"价格",depth:"深度",details:"详情",day:"日",indicators:"指标",orderLines:"订单线",buySell:"买入/卖出",orderBook:"订单簿",trades:"交易",size:"数量",total:"总计",time:"时间",spread:"价差",positions:"仓位",openOrders:"未成交订单",fills:"成交",orderHistory:"订单历史",fundingPayments:"资金费支付",all:"全部",showing:"显示中",view:"查看",type:"类型",cross:"全仓",isolated:"逐仓",operational:"运行正常",chat:"聊天",helpSupport:"帮助与支持",learnMore:"了解更多",buyLong:"买入 | 做多",sellShort:"卖出 | 做空",limit:"限价",market:"市价",advanced:"高级",amount:"金额",clear:"清除",save:"保存",asset:"资产",oraclePrice:"预言机价格",change24h:"24小时变化",volume24h:"24小时交易量",trades24h:"24小时交易",openInterest:"未平仓合约",nextFunding:"下次资金费",maxLeverage:"最大杠杆",volume:"交易量",marketCap:"市值",previousPage:"上一页",nextPage:"下一页",
+    spotVolume24h:"24小时现货交易量",portfolioValueTip:"账户中所有资产的当前总价值。",availableBalanceTip:"可用于新订单或仓位的余额。",usedMarginTip:"当前未平仓仓位和订单占用的保证金。",crossTip:"使用账户的全部保证金来维持仓位。",isolatedTip:"只有分配给此仓位的保证金会承担风险。",amountTip:"请输入要下单的BTC数量。",reduceOnlyTip:"仅当生效时间设置为IOC时才能使用只减仓。",postOnlyTip:"只做挂单的订单仅以做市单成交；如果与其他订单交叉，订单将自动取消。",expectedPriceTip:"根据当前市场状况预计的订单成交价格。",liquidationPriceTip:"因维持仓位的保证金不足而预计被强制平仓的价格。",positionMarginTip:"维持此订单所创建仓位所需的保证金。",feeTip:"订单成交时预计收取的交易费用。",maxLeverageTip:"当前市场可使用的最大杠杆。",fundingAnnualized:"年化资金费率",
+  },
+  vi: {
+    hourlyRate:"Lãi suất 1 giờ",eightHourRate:"Lãi suất 8 giờ",annualized:"Quy đổi năm",currentHourlyRate:"Lãi suất 1 giờ hiện tại",currentEightHourRate:"Lãi suất 8 giờ hiện tại",currentAnnualizedRate:"Lãi suất năm hiện tại",pastFundingRate:"Lãi suất funding trước đây",direction:"Hướng",longToShort:"Long → Short",shortToLong:"Short → Long",
+    buyOrders:"Lệnh mua",sellOrders:"Lệnh bán",totalSize:"Tổng khối lượng",totalValue:"Tổng giá trị",priceImpact:"Tác động giá",
+    marketResources:"Liên kết thị trường bên ngoài",marketData:"Xem trên CoinMarketCap",whitepaper:"Sách trắng Bitcoin",officialWebsite:"Trang web chính thức của Bitcoin",
+    noPositions:"Không có vị thế đang mở.",noOpenOrders:"Không có lệnh đang mở.",noFills:"Không có lịch sử khớp lệnh.",noOrderHistory:"Không có lịch sử lệnh.",noFunding:"Không có lịch sử thanh toán funding.",portfolioValue:"Giá trị danh mục",availableBalance:"Số dư khả dụng",usedMargin:"Ký quỹ đã dùng",marginMode:"Chế độ ký quỹ",stopLoss:"Cắt lỗ",scale:"Chia lệnh",limitPrice:"Giá giới hạn",middle:"Giá giữa",orderExecution:"Thời hạn lệnh",goodUntil:"Có hiệu lực đến ngày",immediateOrCancel:"Khớp ngay hoặc hủy",minute:"Phút",hour:"Giờ",timeDay:"Ngày",week:"Tuần",reduceOnly:"Chỉ giảm",postOnly:"Chỉ đăng",takeProfitStopLoss:"Chốt lời / Cắt lỗ",marginWarning:"Giao dịch này sẽ sử dụng hơn 100% ký quỹ trong tài khoản.",receiveAmount:"Số tiền nhận",expectedPrice:"Giá dự kiến",liquidationPrice:"Giá thanh lý",positionMargin:"Ký quỹ vị thế",fee:"Phí",enterAmount:"Nhập số tiền",adjustVolume:"Điều chỉnh khối lượng",setMarketLeverage:"Đặt đòn bẩy thị trường",maximum:"Tối đa",depositDescription:"Nhập tài sản và số tiền muốn nạp vào tài khoản giao dịch.",
+    trade:"Giao dịch",spot:"Giao ngay",markets:"Thị trường",portfolio:"Danh mục",rewards:"Phần thưởng",more:"Thêm",login:"Đăng nhập",deposit:"Nạp tiền",mobileApp:"Ứng dụng di động",notifications:"Thông báo",perpetual:"Vĩnh viễn",accountManagement:"Quản lý tài khoản",inviteFriends:"Mời bạn bè",preferences:"Tùy chọn",displaySettings:"Cài đặt hiển thị",disconnect:"Ngắt kết nối",price:"Giá",depth:"Độ sâu",details:"Chi tiết",day:"Ngày",indicators:"Chỉ báo",orderLines:"Đường lệnh",buySell:"Mua/Bán",orderBook:"Sổ lệnh",trades:"Giao dịch",size:"Khối lượng",total:"Tổng",time:"Thời gian",spread:"Chênh lệch",positions:"Vị thế",openOrders:"Lệnh mở",fills:"Khớp lệnh",orderHistory:"Lịch sử lệnh",fundingPayments:"Thanh toán funding",all:"Tất cả",showing:"Đang hiển thị",view:"Xem",type:"Loại",cross:"Cross",isolated:"Isolated",operational:"Hoạt động",chat:"Trò chuyện",helpSupport:"Trợ giúp & hỗ trợ",learnMore:"Xem thêm",buyLong:"Mua | Long",sellShort:"Bán | Short",limit:"Giới hạn",market:"Thị trường",advanced:"Nâng cao",amount:"Số lượng",clear:"Xóa",save:"Lưu",asset:"Tài sản",oraclePrice:"Giá oracle",change24h:"Thay đổi 24h",volume24h:"Khối lượng 24h",trades24h:"Giao dịch 24h",openInterest:"Hợp đồng mở",nextFunding:"Funding tiếp theo",maxLeverage:"Đòn bẩy tối đa",volume:"Khối lượng",marketCap:"Vốn hóa",previousPage:"Trang trước",nextPage:"Trang sau",
+    spotVolume24h:"Khối lượng giao ngay 24h",portfolioValueTip:"Giá trị hiện tại của toàn bộ tài sản trong tài khoản.",availableBalanceTip:"Số dư có thể dùng cho lệnh hoặc vị thế mới.",usedMarginTip:"Ký quỹ đang được sử dụng cho các vị thế và lệnh đang mở.",crossTip:"Sử dụng toàn bộ tài sản thế chấp của tài khoản để duy trì vị thế.",isolatedTip:"Chỉ phần ký quỹ được phân bổ cho vị thế này chịu rủi ro.",amountTip:"Nhập số lượng BTC bạn muốn đặt lệnh.",reduceOnlyTip:"Chỉ có thể dùng Reduce Only khi thời gian hiệu lực được đặt thành IOC.",postOnlyTip:"Lệnh Post Only chỉ được khớp dưới dạng lệnh maker và sẽ tự động bị hủy nếu giao cắt với lệnh khác.",expectedPriceTip:"Giá khớp lệnh dự kiến dựa trên điều kiện thị trường hiện tại.",liquidationPriceTip:"Giá dự kiến vị thế bị thanh lý bắt buộc do không đủ ký quỹ.",positionMarginTip:"Mức ký quỹ cần thiết để duy trì vị thế được tạo bởi lệnh này.",feeTip:"Phí giao dịch dự kiến được áp dụng khi lệnh khớp.",maxLeverageTip:"Đòn bẩy tối đa có thể sử dụng trong thị trường hiện tại.",fundingAnnualized:"Funding quy đổi theo năm",
+  },
+  fr: {
+    hourlyRate:"Taux 1 heure",eightHourRate:"Taux 8 heures",annualized:"Annualisé",currentHourlyRate:"Taux actuel sur 1 heure",currentEightHourRate:"Taux actuel sur 8 heures",currentAnnualizedRate:"Taux annualisé actuel",pastFundingRate:"Taux de financement passé",direction:"Direction",longToShort:"Long → Short",shortToLong:"Short → Long",
+    buyOrders:"Ordres d’achat",sellOrders:"Ordres de vente",totalSize:"Taille totale",totalValue:"Valeur totale",priceImpact:"Impact sur le prix",
+    marketResources:"Liens externes du marché",marketData:"Voir sur CoinMarketCap",whitepaper:"Livre blanc Bitcoin",officialWebsite:"Site officiel de Bitcoin",
+    noPositions:"Aucune position ouverte.",noOpenOrders:"Aucun ordre ouvert.",noFills:"Aucune exécution.",noOrderHistory:"Aucun historique d’ordres.",noFunding:"Aucun paiement de financement.",portfolioValue:"Valeur du portefeuille",availableBalance:"Solde disponible",usedMargin:"Marge utilisée",marginMode:"Mode de marge",stopLoss:"Stop loss",scale:"Échelonné",limitPrice:"Prix limite",middle:"Prix médian",orderExecution:"Durée de validité",goodUntil:"Valable jusqu’à la date",immediateOrCancel:"Immédiat ou annuler",minute:"Minute",hour:"Heure",timeDay:"Jour",week:"Semaine",reduceOnly:"Réduction seule",postOnly:"Post seulement",takeProfitStopLoss:"Prise de profit / Stop loss",marginWarning:"Cette transaction utilisera plus de 100 % de la marge du compte.",receiveAmount:"Montant reçu",expectedPrice:"Prix attendu",liquidationPrice:"Prix de liquidation",positionMargin:"Marge de position",fee:"Frais",enterAmount:"Saisissez un montant",adjustVolume:"Ajuster le volume",setMarketLeverage:"Définir l’effet de levier",maximum:"Maximum",depositDescription:"Saisissez l’actif et le montant à déposer sur le compte de trading.",
+    trade:"Trader",spot:"Spot",markets:"Marchés",portfolio:"Portefeuille",rewards:"Récompenses",more:"Plus",login:"Connexion",deposit:"Dépôt",mobileApp:"Application mobile",notifications:"Notifications",perpetual:"Perpétuel",accountManagement:"Gestion du compte",inviteFriends:"Inviter des amis",preferences:"Préférences",displaySettings:"Affichage",disconnect:"Déconnecter",price:"Prix",depth:"Profondeur",details:"Détails",day:"Jour",indicators:"Indicateurs",orderLines:"Lignes d’ordre",buySell:"Achat/Vente",orderBook:"Carnet d’ordres",trades:"Transactions",size:"Taille",total:"Total",time:"Heure",spread:"Écart",positions:"Positions",openOrders:"Ordres ouverts",fills:"Exécutions",orderHistory:"Historique",fundingPayments:"Paiements de financement",all:"Tous",showing:"Affichage",view:"Voir",type:"Type",cross:"Croisée",isolated:"Isolée",operational:"Opérationnel",chat:"Chat",helpSupport:"Aide et assistance",learnMore:"En savoir plus",buyLong:"Acheter | Long",sellShort:"Vendre | Short",limit:"Limite",market:"Marché",advanced:"Avancé",amount:"Montant",clear:"Effacer",save:"Enregistrer",asset:"Actif",oraclePrice:"Prix oracle",change24h:"Variation 24 h",volume24h:"Volume 24 h",trades24h:"Transactions 24 h",openInterest:"Intérêt ouvert",nextFunding:"Prochain financement",maxLeverage:"Effet de levier max.",volume:"Volume",marketCap:"Capitalisation",previousPage:"Page précédente",nextPage:"Page suivante",
+    spotVolume24h:"Volume spot sur 24 h",portfolioValueTip:"Valeur actuelle de tous les actifs détenus sur votre compte.",availableBalanceTip:"Solde disponible pour de nouveaux ordres ou de nouvelles positions.",usedMarginTip:"Marge actuellement utilisée par les positions et ordres ouverts.",crossTip:"Utilise l’ensemble de la garantie du compte pour maintenir la position.",isolatedTip:"Seule la marge affectée à cette position est exposée au risque.",amountTip:"Saisissez la quantité de BTC à commander.",reduceOnlyTip:"L’option Réduction seule est disponible uniquement lorsque la durée de validité est définie sur IOC.",postOnlyTip:"Les ordres Post Only sont exécutés uniquement comme ordres maker et sont automatiquement annulés s’ils croisent un autre ordre.",expectedPriceTip:"Prix d’exécution estimé selon les conditions actuelles du marché.",liquidationPriceTip:"Prix estimé auquel la position sera liquidée de force en raison d’une marge insuffisante.",positionMarginTip:"Marge nécessaire pour maintenir la position créée par cet ordre.",feeTip:"Frais de transaction estimés appliqués lors de l’exécution de l’ordre.",maxLeverageTip:"Effet de levier maximal disponible sur le marché actuel.",fundingAnnualized:"Taux de financement annualisé",
+  },
+};
+
+const text: Record<Lang, Dictionary> = {
+  ko,
+  en,
+  ja: { ...en, ...overrides.ja },
+  zh: { ...en, ...overrides.zh },
+  vi: { ...en, ...overrides.vi },
+  fr: { ...en, ...overrides.fr },
+};
 
 type LocaleValue = {
   lang: Lang;
@@ -76,9 +158,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     [lang],
   );
 
-  return (
-    <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
-  );
+  return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
 }
 
 export function useLocale() {

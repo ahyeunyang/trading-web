@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
 import { BitcoinIcon } from "../icons/BitcoinIcon";
 import { ChevronDown } from "../icons/ChevronDown";
+import { WarningIcon } from "../icons/WarningIcon";
+import { CheckboxField } from "../ui/CheckboxField";
+import { SelectMenu } from "../ui/SelectMenu";
+import { Tooltip } from "../ui/Tooltip";
+import { useLocale } from "../../i18n/Locale";
 
 type MarginMode = "cross" | "isolated";
 type OrderSide = "buy" | "sell";
+type OrderType = "limit" | "market";
+type TimeInForce = "good-until" | "immediate-or-cancel";
+type TimeUnit = "minute" | "hour" | "day" | "week";
 
 type OrderFormProps = {
   quantityUnit: "BTC" | "USD";
@@ -20,11 +28,20 @@ export function OrderForm({
   isDepositOpen,
   onDepositOpenChange,
 }: OrderFormProps) {
+  const { t } = useLocale();
   const [marginMode, setMarginMode] = useState<MarginMode>("cross");
   const [orderSide, setOrderSide] = useState<OrderSide>("buy");
+  const [orderType, setOrderType] = useState<OrderType>("market");
   const [amount, setAmount] = useState("");
+  const [limitPrice, setLimitPrice] = useState("65497");
   const [percentage, setPercentage] = useState(0);
   const [hasTriggers, setHasTriggers] = useState(false);
+  const [isAdvancedOpen, setIsAdvancedOpen] = useState(true);
+  const [reduceOnly, setReduceOnly] = useState(false);
+  const [postOnly, setPostOnly] = useState(false);
+  const [timeInForce, setTimeInForce] = useState<TimeInForce>("good-until");
+  const [timeValue, setTimeValue] = useState("28");
+  const [timeUnit, setTimeUnit] = useState<TimeUnit>("day");
   const [isSummaryOpen, setIsSummaryOpen] = useState(true);
   const [leverage, setLeverage] = useState(50);
   const [draftLeverage, setDraftLeverage] = useState(50);
@@ -93,6 +110,14 @@ export function OrderForm({
   const numericAmount = Number(amount);
   const hasValidAmount =
     amount.trim() !== "" && Number.isFinite(numericAmount) && numericAmount > 0;
+  const amountInUsd = quantityUnit === "USD"
+    ? numericAmount
+    : numericAmount * BTC_USD_PRICE;
+  const amountInBtc = quantityUnit === "BTC"
+    ? numericAmount
+    : numericAmount / BTC_USD_PRICE;
+  const positionMargin = amountInUsd / leverage;
+  const estimatedFee = amountInUsd * 0.0005;
   const numericDepositAmount = Number(depositAmount);
   const hasValidDepositAmount =
     depositAmount.trim() !== "" &&
@@ -104,30 +129,15 @@ export function OrderForm({
       <div className="order__account">
         <dl>
           <div>
-            <dt className="hint" tabIndex={0}>
-              포트폴리오 값
-              <span className="hint__pop hint__pop--account" role="tooltip">
-                계정에 보유한 전체 자산의 현재 가치입니다.
-              </span>
-            </dt>
+            <dt><Tooltip content={t("portfolioValueTip")} tooltipClassName="hint__pop--account">{t("portfolioValue")}</Tooltip></dt>
             <dd>—</dd>
           </div>
           <div>
-            <dt className="hint" tabIndex={0}>
-              가용 잔액
-              <span className="hint__pop hint__pop--account" role="tooltip">
-                새로운 주문이나 포지션에 사용할 수 있는 잔액입니다.
-              </span>
-            </dt>
+            <dt><Tooltip content={t("availableBalanceTip")} tooltipClassName="hint__pop--account">{t("availableBalance")}</Tooltip></dt>
             <dd>—</dd>
           </div>
           <div>
-            <dt className="hint" tabIndex={0}>
-              사용된 마진
-              <span className="hint__pop hint__pop--account" role="tooltip">
-                현재 열린 포지션과 주문에 사용 중인 마진입니다.
-              </span>
-            </dt>
+            <dt><Tooltip content={t("usedMarginTip")} tooltipClassName="hint__pop--account">{t("usedMargin")}</Tooltip></dt>
             <dd>—</dd>
           </div>
         </dl>
@@ -137,7 +147,7 @@ export function OrderForm({
             type="button"
             onClick={() => onDepositOpenChange(true)}
           >
-            입금
+            {t("deposit")}
           </button>
           <button
             className="order__deposit-icon"
@@ -180,10 +190,10 @@ export function OrderForm({
               aria-pressed={marginMode === "cross"}
               onClick={() => setMarginMode("cross")}
             >
-              교차
+              {t("cross")}
             </button>
             <span className="order__margin-tip" role="tooltip">
-              계정의 전체 증거금을 사용해 포지션을 유지합니다.
+              {t("crossTip")}
             </span>
           </span>
           <span className="order__margin-option">
@@ -193,10 +203,10 @@ export function OrderForm({
               aria-pressed={marginMode === "isolated"}
               onClick={() => setMarginMode("isolated")}
             >
-              격리됨
+              {t("isolated")}
             </button>
             <span className="order__margin-tip" role="tooltip">
-              이 포지션에 할당한 증거금만 위험에 노출됩니다.
+              {t("isolatedTip")}
             </span>
           </span>
         </div>
@@ -219,7 +229,7 @@ export function OrderForm({
           aria-pressed={orderSide === "buy"}
           onClick={() => setOrderSide("buy")}
         >
-          구매 | 롱
+          {t("buyLong")}
         </button>
         <button
           className={orderSide === "sell" ? "is-active" : undefined}
@@ -227,29 +237,40 @@ export function OrderForm({
           aria-pressed={orderSide === "sell"}
           onClick={() => setOrderSide("sell")}
         >
-          판매 | 숏
+          {t("sellShort")}
         </button>
       </div>
 
       <div className="order__types">
-        <button type="button">한도</button>
-        <button className="is-active" type="button">시장</button>
-        <button className="order__advanced" type="button">
-          고급
-          <ChevronDown />
-        </button>
+        <button className={orderType === "limit" ? "is-active" : undefined} type="button" onClick={() => setOrderType("limit")}>{t("limit")}</button>
+        <button className={orderType === "market" ? "is-active" : undefined} type="button" onClick={() => setOrderType("market")}>{t("market")}</button>
+        <details className="order__advanced-select">
+          <summary>{t("advanced")}<ChevronDown /></summary>
+          <div>
+            {[t("stopLoss"), t("stopLoss"), t("scale")].map((option, index) => (
+              <button type="button" key={`${option}-${index}`} onClick={(event) => event.currentTarget.closest("details")?.removeAttribute("open")}>{option}</button>
+            ))}
+          </div>
+        </details>
       </div>
+
+      <div className="order__scroll">
+      {orderType === "limit" && (
+        <label className="field field--limit" htmlFor="order-limit-price">
+          <span className="field__caption"><span>{t("limitPrice")}</span><b>USD</b></span>
+          <span className="field__limit-value">
+            <span>$</span>
+            <input id="order-limit-price" inputMode="decimal" value={limitPrice} onChange={(event) => setLimitPrice(event.target.value)} />
+          </span>
+          <button type="button" onClick={() => setLimitPrice("65497")}>{t("middle")}</button>
+        </label>
+      )}
 
       <div className="field field--amount">
         <label className="field__control" htmlFor="order-amount">
           <span className="field__amount-copy">
             <span className="field__caption">
-              <span className="field__label hint" tabIndex={0}>
-                금액
-                <span className="hint__pop hint__pop--amount" role="tooltip">
-                  주문하려는 BTC 수량을 입력하세요.
-                </span>
-              </span>
+              <Tooltip className="field__label" content={t("amountTip")} tooltipClassName="hint__pop--amount">{t("amount")}</Tooltip>
               <b>{quantityUnit}</b>
             </span>
             <span className="field__value">
@@ -263,6 +284,14 @@ export function OrderForm({
           />
             </span>
           </span>
+          {hasValidAmount && (
+            <span className="field__conversion">
+              ≈ {quantityUnit === "USD"
+                ? amountInBtc.toFixed(3)
+                : amountInUsd.toLocaleString("en-US", { maximumFractionDigits: 2 })}
+              <b>{quantityUnit === "USD" ? "BTC" : "USD"}</b>
+            </span>
+          )}
         </label>
         <button
           className="field__asset-switch"
@@ -299,97 +328,120 @@ export function OrderForm({
         <output>{percentage}%</output>
       </div>
 
-      <label className="order__check">
-        <input
-          type="checkbox"
-          checked={hasTriggers}
-          onChange={(event) => setHasTriggers(event.target.checked)}
-        />
-        <span className="order__checkbox" aria-hidden="true" />
-        <span>수익 실현 / 손절매</span>
-      </label>
+      {orderType === "limit" ? (
+        <div className="order__limit-advanced">
+          <button className="order__limit-advanced-title" type="button" aria-expanded={isAdvancedOpen} onClick={() => setIsAdvancedOpen((value) => !value)}>
+            <span>{t("advanced")}</span><i /><ChevronDown />
+          </button>
+          {isAdvancedOpen && (
+            <div className="order__limit-advanced-content">
+              <div className="order__limit-settings">
+                <div className="order__limit-setting">
+                  <span>{t("orderExecution")}</span>
+                  <SelectMenu
+                    ariaLabel="주문 실행 방식"
+                    value={timeInForce}
+                    onChange={setTimeInForce}
+                    options={[
+                      { value: "good-until", label: t("goodUntil") },
+                      { value: "immediate-or-cancel", label: t("immediateOrCancel") },
+                    ]}
+                  />
+                </div>
+                <div className="order__limit-setting">
+                  <span>{t("time")}</span>
+                  <div className="order__time-control">
+                    <input aria-label="주문 유효 시간" inputMode="numeric" type="text" value={timeValue} onChange={(event) => setTimeValue(event.target.value)} />
+                    <SelectMenu
+                      className="select-menu--compact"
+                      ariaLabel="시간 단위"
+                      value={timeUnit}
+                      onChange={setTimeUnit}
+                      options={[
+                        { value: "minute", label: t("minute") },
+                        { value: "hour", label: t("hour") },
+                        { value: "day", label: t("timeDay") },
+                        { value: "week", label: t("week") },
+                      ]}
+                    />
+                  </div>
+                </div>
+              </div>
+              <CheckboxField
+                checked={reduceOnly}
+                label={t("reduceOnly")}
+                onChange={setReduceOnly}
+                tooltip={t("reduceOnlyTip")}
+              />
+              <CheckboxField
+                checked={postOnly}
+                label={t("postOnly")}
+                onChange={setPostOnly}
+                tooltip={t("postOnlyTip")}
+              />
+            </div>
+          )}
+        </div>
+      ) : orderType === "market" ? (
+        <CheckboxField checked={hasTriggers} label={t("takeProfitStopLoss")} onChange={setHasTriggers} />
+      ) : null}
+
+      {hasValidAmount && orderType === "market" && (
+        <div className="order__margin-warning" role="alert">
+          {t("marginWarning")}
+        </div>
+      )}
+      </div>
 
       <div className="order__footer">
         <div className="order__summary-actions">
-          <button type="button" onClick={clearOrder}>지우기</button>
+          {hasValidAmount && <button className="order__clear" type="button" onClick={clearOrder}>{t("clear")}</button>}
           <button
             className="order__summary-toggle"
             type="button"
             aria-expanded={isSummaryOpen}
             onClick={() => setIsSummaryOpen((isOpen) => !isOpen)}
           >
-            수령액
+            {t("receiveAmount")}
             <ChevronDown />
           </button>
         </div>
 
-        {isSummaryOpen && (
-          <dl className="order__summary">
+        {isSummaryOpen && <dl className="order__summary">
             <div>
-              <dt className="hint" tabIndex={0}>
-                기대 가격
-                <span className="hint__pop hint__pop--account" role="tooltip">
-                  현재 시장 상황을 기준으로 주문이 체결될 것으로 예상되는 가격입니다.
-                </span>
-              </dt>
-              <dd>—</dd>
+              <dt><Tooltip content={t("expectedPriceTip")} tooltipClassName="hint__pop--account">{t("expectedPrice")}</Tooltip></dt>
+              <dd>{hasValidAmount ? (orderType === "limit" ? `$${Number(limitPrice || 0).toLocaleString("en-US")}` : "$65,633") : "—"}</dd>
             </div>
             <div>
-              <dt className="hint" tabIndex={0}>
-                청산 가격
-                <span className="hint__pop hint__pop--account" role="tooltip">
-                  포지션을 유지할 증거금이 부족해져 강제로 청산될 것으로 예상되는 가격입니다.
-                </span>
-              </dt>
-              <dd>—</dd>
+              <dt><Tooltip content={t("liquidationPriceTip")} tooltipClassName="hint__pop--account">{t("liquidationPrice")}</Tooltip></dt>
+              <dd>{hasValidAmount ? "— → $66,387" : "—"}</dd>
             </div>
             <div>
-              <dt className="hint" tabIndex={0}>
-                포지션 마진
-                <span className="hint__pop hint__pop--account" role="tooltip">
-                  이 주문으로 생성되는 포지션을 유지하는 데 필요한 증거금입니다.
-                </span>
-              </dt>
-              <dd>—</dd>
+              <dt><Tooltip content={t("positionMarginTip")} tooltipClassName="hint__pop--account">{t("positionMargin")}</Tooltip></dt>
+              <dd>{hasValidAmount ? `— → $${positionMargin.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : "—"}</dd>
             </div>
             <div>
-              <dt className="hint" tabIndex={0}>
-                수수료
-                <span className="hint__pop hint__pop--account" role="tooltip">
-                  주문 체결 시 적용될 것으로 예상되는 거래 수수료입니다.
-                </span>
-              </dt>
-              <dd>—</dd>
+              <dt><Tooltip content={t("feeTip")} tooltipClassName="hint__pop--account">{t("fee")}</Tooltip></dt>
+              <dd>{hasValidAmount ? `$${estimatedFee.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : "—"}</dd>
             </div>
-          </dl>
-        )}
+        </dl>}
 
         <button
-          className="btn btn--primary btn--full order__submit"
+          className={`btn btn--primary btn--full order__submit${hasValidAmount ? " is-margin-error" : ""}`}
           type="button"
-          disabled={!hasValidAmount}
+          disabled
+          aria-live="polite"
         >
           {!hasValidAmount ? (
             <>
-              <svg
-                width="20"
-                height="18"
-                viewBox="0 0 20 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M8.67165 1.31998L0.445121 14.835C-0.366144 16.1678 0.593236 17.8749 2.15352 17.8749H17.921C19.4476 17.8749 20.4114 16.2335 19.6675 14.9004L12.1266 1.38536C11.3801 0.047507 9.46822 0.0113231 8.67165 1.31998ZM1.29932 15.3549L9.52585 1.83992C9.92413 1.1856 10.8801 1.20369 11.2533 1.87262L18.7943 15.3876C19.1662 16.0542 18.6843 16.8749 17.921 16.8749H2.15352C1.37338 16.8749 0.893687 16.0213 1.29932 15.3549ZM11.3741 13.9315C11.3741 14.5116 10.923 14.9628 10.3429 14.9628C9.76281 14.9628 9.31163 14.5116 9.31163 13.9315C9.31163 13.3514 9.76281 12.9003 10.3429 12.9003C10.923 12.9003 11.3741 13.3514 11.3741 13.9315ZM10.3429 11.9335C9.94705 11.9335 9.62202 11.6206 9.607 11.225L9.44054 6.84168V6.77722C9.44054 6.27887 9.84453 5.87488 10.3429 5.87488C10.8412 5.87488 11.2452 6.27887 11.2452 6.77722V6.84168L11.0788 11.225C11.0638 11.6206 10.7387 11.9335 10.3429 11.9335Z"
-                  fill="currentColor"
-                />
-              </svg>
-              <span>금액을 입력하세요</span>
+              <WarningIcon />
+              <span>{t("enterAmount")}</span>
             </>
           ) : (
-            <span>주문 검토</span>
+            <>
+              <WarningIcon />
+              <span>{t("adjustVolume")}</span>
+            </>
           )}
         </button>
       </div>
@@ -408,7 +460,7 @@ export function OrderForm({
             aria-labelledby="leverage-modal-title"
           >
             <header className="leverage-modal__header">
-              <h2 id="leverage-modal-title">시장 레버리지 설정</h2>
+              <h2 id="leverage-modal-title">{t("setMarketLeverage")}</h2>
               <button
                 className="leverage-modal__close"
                 type="button"
@@ -424,7 +476,7 @@ export function OrderForm({
                 <BitcoinIcon />
               </span>
               <strong>BTC-USD</strong>
-              <span className="leverage-modal__max">최대 50×</span>
+              <span className="leverage-modal__max">{t("maximum")} 50×</span>
             </div>
 
             <div className="leverage-modal__control">
@@ -446,7 +498,7 @@ export function OrderForm({
               type="button"
               onClick={saveLeverage}
             >
-              저장
+              {t("save")}
             </button>
           </div>
         </div>
@@ -466,7 +518,7 @@ export function OrderForm({
             aria-labelledby="deposit-modal-title"
           >
             <header className="deposit-modal__header">
-              <h2 id="deposit-modal-title">입금</h2>
+              <h2 id="deposit-modal-title">{t("deposit")}</h2>
               <button
                 className="deposit-modal__close"
                 type="button"
@@ -478,11 +530,11 @@ export function OrderForm({
             </header>
 
             <p className="deposit-modal__description">
-              거래 계정에 입금할 자산과 금액을 입력하세요.
+              {t("depositDescription")}
             </p>
 
             <label className="deposit-modal__field">
-              <span>자산</span>
+              <span>{t("asset")}</span>
               <button type="button">
                 <span className="deposit-modal__asset">
                   <BitcoinIcon />
@@ -493,7 +545,7 @@ export function OrderForm({
             </label>
 
             <label className="deposit-modal__field">
-              <span>금액</span>
+              <span>{t("amount")}</span>
               <span className="deposit-modal__amount">
                 <input
                   inputMode="decimal"
@@ -510,7 +562,7 @@ export function OrderForm({
               type="button"
               disabled={!hasValidDepositAmount}
             >
-              입금
+              {t("deposit")}
             </button>
           </div>
         </div>
