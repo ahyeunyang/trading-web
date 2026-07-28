@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { BitcoinIcon } from "../icons/BitcoinIcon";
 import { ChevronDown } from "../icons/ChevronDown";
 import { WarningIcon } from "../icons/WarningIcon";
+import { CloseIcon } from "../icons/CloseIcon";
 import { CheckboxField } from "../ui/CheckboxField";
 import { SelectMenu } from "../ui/SelectMenu";
 import { Tooltip } from "../ui/Tooltip";
@@ -446,7 +448,7 @@ export function OrderForm({
         </button>
       </div>
 
-      {isLeverageOpen && (
+      {isLeverageOpen && createPortal(
         <div
           className="leverage-modal__backdrop"
           onMouseDown={(event) => {
@@ -467,7 +469,7 @@ export function OrderForm({
                 aria-label="닫기"
                 onClick={() => setIsLeverageOpen(false)}
               >
-                ×
+                <CloseIcon />
               </button>
             </header>
 
@@ -501,10 +503,11 @@ export function OrderForm({
               {t("save")}
             </button>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
 
-      {isDepositOpen && (
+      {isDepositOpen && createPortal(
         <div
           className="leverage-modal__backdrop"
           onMouseDown={(event) => {
@@ -525,7 +528,7 @@ export function OrderForm({
                 aria-label="닫기"
                 onClick={() => onDepositOpenChange(false)}
               >
-                ×
+                <CloseIcon />
               </button>
             </header>
 
@@ -565,7 +568,8 @@ export function OrderForm({
               {t("deposit")}
             </button>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </aside>
   );

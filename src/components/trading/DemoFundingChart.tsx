@@ -123,12 +123,15 @@ export function DemoFundingChart() {
         <>
           <span className={`funding-chart__value${hover.raw < 0 ? " is-negative" : ""}`} style={{ top: `${hover.y / 4}%` }}>{percentage(hover.raw * scale)}</span>
           <span className="funding-chart__date" style={{ left: `${hover.x / 10}%` }}>{axisTime(hover.time)}</span>
-          <div className={`funding-chart__tooltip${hover.raw < 0 ? " is-negative" : ""}`} style={{ left: `${hover.x / 10}%`, top: `${Math.max(14, Math.min(72, hover.y / 4))}%` }}>
+          <div
+            className={`funding-chart__tooltip${hover.raw < 0 ? " is-negative" : ""}${hover.x > WIDTH * .76 ? " is-left" : ""}`}
+            style={{ left: `${hover.x / 10}%`, top: `${Math.max(14, Math.min(72, hover.y / 4))}%` }}
+          >
             <strong>{t("pastFundingRate")}</strong>
             <dl>
               <div><dt>{t("direction")}</dt><dd>{hover.raw >= 0 ? t("longToShort") : t("shortToLong")}</dd></div>
               <div><dt>{mode === "hourly" ? t("hourlyRate") : mode === "eightHour" ? t("eightHourRate") : t("annualized")}</dt><dd>{percentage(hover.raw * scale)}</dd></div>
-              <div><dt>{t("time")}</dt><dd>{new Date(hover.time).toLocaleString()}</dd></div>
+              <div><dt>{t("time")}</dt><dd>{new Date(hover.time).toLocaleString(locale)}</dd></div>
             </dl>
           </div>
         </>
