@@ -1,0 +1,25 @@
+@use "../color-token" as *;
+@use "../token" as *;
+@use "../mixins" as *;
+@use "../common" as *;
+
+/***********************************
+ main
+ ***********************************/
+.main {
+  min-height: 100vh;
+  padding: $spacing-0 $spacing-16 $spacing-0 6rem;
+  background-color: $c-gray-50;
+
+  &__toolbar {
+    @include flex-align;
+    gap: $spacing-4;
+    padding: 1.6rem 0 .8rem;
+  }
+
+  &__content {
+    min-height: calc(100vh - 8rem);
+    border-radius: 1.2rem;
+    background-color: $c-white;
+  }
+}
