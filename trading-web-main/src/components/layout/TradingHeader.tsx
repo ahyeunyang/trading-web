@@ -27,7 +27,6 @@ import {
   QrIcon,
   SettingsIcon,
 } from "../icons/AccountMenuIcons";
-import HelpModal from "./HelpModal";
 import ayxxCoinImage from "../../assets/images/coins/ayxx.png";
 import usdcCoinImage from "../../assets/images/coins/usdc.png";
 import appStoreBadge from "../../assets/images/stores/app-store-badge.png";
@@ -40,7 +39,6 @@ type TradingHeaderProps = {
 export function TradingHeader({ onDepositClick }: TradingHeaderProps) {
   const { t } = useLocale();
   const [isAccountOpen, setIsAccountOpen] = useState(false);
-  const [isHelpOpen, setIsHelpOpen] = useState(false);
   const accountMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -158,7 +156,6 @@ export function TradingHeader({ onDepositClick }: TradingHeaderProps) {
           type="button"
           aria-label="도움말"
           data-tip={t("help")}
-          onClick={() => setIsHelpOpen(true)}
         >
           <HelpIcon className="icon" />
         </button>
@@ -298,7 +295,6 @@ export function TradingHeader({ onDepositClick }: TradingHeaderProps) {
           )}
         </div>
       </div>
-      <HelpModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
     </header>
   );
 }
