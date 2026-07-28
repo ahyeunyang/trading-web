@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { TradingHeader } from "./components/layout/TradingHeader";
 import { MobileTradingNav } from "./components/layout/MobileTradingNav";
 import { StatusBar } from "./components/layout/StatusBar";
-import { MarketPanel } from "./components/trading/MarketPanel";
+import { MarketPanel, markets } from "./components/trading/MarketPanel";
 import { OrderBook } from "./components/trading/OrderBook";
 import { OrderForm } from "./components/trading/OrderForm";
 import { PositionsPanel } from "./components/trading/PositionsPanel";
@@ -13,6 +13,7 @@ export function App() {
   const [quantityUnit, setQuantityUnit] = useState<"BTC" | "USD">("BTC");
   const [isDepositOpen, setIsDepositOpen] = useState(false);
   const [isPositionsCollapsed, setIsPositionsCollapsed] = useState(false);
+  const [selectedMarket, setSelectedMarket] = useState(markets[0]);
   const [mobileView, setMobileView] = useState<"chart" | "book" | "order">(
     "chart",
   );
@@ -30,9 +31,9 @@ export function App() {
         className={`trade${isPositionsCollapsed ? " is-positions-collapsed" : ""}`}
         data-mobile-view={mobileView}
       >
-        <MarketPanel quantityUnit={quantityUnit} />
+        <MarketPanel quantityUnit={quantityUnit} selected={selectedMarket} onSelect={setSelectedMarket} />
         <MobileTradingNav activeView={mobileView} onChange={setMobileView} />
-        <TradeChart />
+        <TradeChart market={selectedMarket} />
         <OrderBook
           quantityUnit={quantityUnit}
           onQuantityUnitChange={setQuantityUnit}

@@ -25,9 +25,11 @@ import zecImage from "../../assets/images/coins/zec.png";
 
 type MarketPanelProps = {
   quantityUnit: "BTC" | "USD";
+  selected: Market;
+  onSelect: (market: Market) => void;
 };
 
-type Market = {
+export type Market = {
   symbol: string;
   name: string;
   leverage: string;
@@ -41,7 +43,7 @@ type Market = {
   image: string;
 };
 
-const markets: Market[] = [
+export const markets: Market[] = [
   { symbol: "BTC", name: "BTC-USD", leverage: "50×", price: "$65,247", change: 1.19, volume: "US$486만", spotVolume: "US$162억", marketCap: "US$1.31조", color: "#f7931a", category: "전체", image: btcImage },
   { symbol: "ETH", name: "ETH-USD", leverage: "50×", price: "$1,951.7", change: 3.58, volume: "US$246만", spotVolume: "US$80.5억", marketCap: "US$2360억", color: "#8d95a5", category: "레이어 1", image: ethImage },
   { symbol: "XRP", name: "XRP-USD", leverage: "10×", price: "$1.1056", change: .43, volume: "US$40.9만", spotVolume: "US$6.85억", marketCap: "US$692억", color: "#26333a", category: "레이어 1", image: xrpImage },
@@ -78,7 +80,7 @@ function StarIcon({ active }: { active: boolean }) {
   );
 }
 
-export function MarketPanel({ quantityUnit }: MarketPanelProps) {
+export function MarketPanel({ quantityUnit, selected, onSelect }: MarketPanelProps) {
   const { lang, t } = useLocale();
   const marketValue = (value: string) => {
     if (lang === "ko") return value;
@@ -108,7 +110,6 @@ export function MarketPanel({ quantityUnit }: MarketPanelProps) {
   };
   const rootRef = useRef<HTMLElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState(markets[0]);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [favoritesOnly, setFavoritesOnly] = useState(false);
   const [query, setQuery] = useState("");
@@ -220,7 +221,7 @@ export function MarketPanel({ quantityUnit }: MarketPanelProps) {
               {visibleMarkets.map((market) => (
                 <div className={`market-picker__row${selected.symbol === market.symbol ? " is-selected" : ""}`} key={market.symbol}>
                   <button className={`market-picker__star${favorites.has(market.symbol) ? " is-favorite" : ""}`} type="button" aria-label={`${market.name} 즐겨찾기`} onClick={() => toggleFavorite(market.symbol)}><StarIcon active={favorites.has(market.symbol)} /></button>
-                  <button className="market-picker__market" type="button" onClick={() => { setSelected(market); setIsOpen(false); }}>
+                  <button className="market-picker__market" type="button" onClick={() => { onSelect(market); setIsOpen(false); }}>
                     <span className="market-picker__coin"><CoinMark market={market} /></span>
                     <strong>{market.name}</strong><small>{market.leverage}</small>
                   </button>

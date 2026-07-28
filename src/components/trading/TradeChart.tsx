@@ -5,6 +5,7 @@ import { DemoCandlestickChart, type DemoCandle } from "./DemoCandlestickChart";
 import { DemoDepthChart } from "./DemoDepthChart";
 import { DemoFundingChart } from "./DemoFundingChart";
 import { MarketDetails } from "./MarketDetails";
+import type { Market } from "./MarketPanel";
 
 type ToggleProps = {
   label: string;
@@ -59,7 +60,7 @@ function CameraIcon() {
   return <svg viewBox="0 0 28 28" aria-hidden="true"><path fill="currentColor" fillRule="evenodd" clipRule="evenodd" d="M11.118 6a.5.5 0 0 0-.447.276L9.809 8H5.5A1.5 1.5 0 0 0 4 9.5v10A1.5 1.5 0 0 0 5.5 21h16a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 21.5 8h-4.309l-.862-1.724A.5.5 0 0 0 15.882 6h-4.764zm-1.342-.17A1.5 1.5 0 0 1 11.118 5h4.764a1.5 1.5 0 0 1 1.342.83L17.809 7H21.5A2.5 2.5 0 0 1 24 9.5v10a2.5 2.5 0 0 1-2.5 2.5h-16A2.5 2.5 0 0 1 3 19.5v-10A2.5 2.5 0 0 1 5.5 7h3.691l.585-1.17zM13.5 18a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zm0 1a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9z" /></svg>;
 }
 
-export function TradeChart() {
+export function TradeChart({ market }: { market: Market }) {
   const { t } = useLocale();
   const [lines, setLines] = useState(true);
   const [trades, setTrades] = useState(true);
@@ -105,14 +106,14 @@ export function TradeChart() {
           </div>
         </div>
       </header>}
-      <h2 className="sr-only" id="chart-title">BTC-USD 가격 차트</h2>
-      {activeTab === "details" ? <div className="chart__details"><MarketDetails /></div>
+      <h2 className="sr-only" id="chart-title">{market.name} 가격 차트</h2>
+      {activeTab === "details" ? <div className="chart__details"><MarketDetails market={market} /></div>
         : activeTab === "depth" ? <div className="chart__depth"><DemoDepthChart /></div>
         : activeTab === "funding" ? <div className="chart__funding"><DemoFundingChart /></div>
         : <div className="chart__canvas">
         <div className="chart__legend">
           <div>
-            <strong>BTC-USD · 1 {t("day")} · ayxx</strong>
+            <strong>{market.name} · 1 {t("day")} · ayxx</strong>
             <span>
               시 <b>{chartValue(hoveredCandle?.open ?? 0, 65380)}</b>
               {" "}고 <b>{chartValue(hoveredCandle?.high ?? 0, 65693)}</b>
