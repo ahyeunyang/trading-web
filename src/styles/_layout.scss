@@ -14,7 +14,7 @@
   z-index: $z-tooltip + 4;
   height: $header-height;
   padding: $space-0 $space-12 $space-0 $space-16;
-  border-bottom: .1rem solid $color-border;
+  border-bottom: 0.1rem solid $color-border;
   background: $color-surface;
 
   &__brand {
@@ -28,7 +28,7 @@
       position: absolute;
       top: 50%;
       right: 0;
-      width: .1rem;
+      width: 0.1rem;
       height: 2.4rem;
       background: $color-border;
       content: "";
@@ -38,7 +38,7 @@
     &:hover,
     &:focus-visible {
       .topbar__logo {
-        opacity: .75;
+        opacity: 0.75;
       }
     }
   }
@@ -72,10 +72,13 @@
       pointer-events: none;
     }
 
-    a {
+    a,
+    button {
       @include flex(center);
       position: relative;
+      border: 0;
       color: $color-text-muted;
+      background: transparent;
       font-size: inherit;
       font-weight: $weight-regular;
 
@@ -92,7 +95,7 @@
           right: 0;
           bottom: 0;
           left: 0;
-          height: .2rem;
+          height: 0.2rem;
           background: $color-primary;
           content: "";
         }
@@ -100,6 +103,7 @@
     }
 
     > a,
+    > button,
     > details {
       flex: 0 0 auto;
     }
@@ -119,7 +123,7 @@
       position: absolute;
       top: 50%;
       right: 0;
-      width: .1rem;
+      width: 0.1rem;
       height: 2.4rem;
       background: $color-border;
       content: "";
@@ -144,8 +148,8 @@
     gap: $space-7;
 
     i {
-      width: .7rem;
-      height: .7rem;
+      width: 0.7rem;
+      height: 0.7rem;
       border-radius: 50%;
       background: $color-primary;
     }
@@ -196,8 +200,8 @@
     }
 
     > svg:last-child {
-      width: .8rem;
-      height: .5rem;
+      width: 0.8rem;
+      height: 0.5rem;
       color: $color-text-muted;
     }
   }
@@ -220,7 +224,7 @@
   right: 0;
   width: 26.2rem;
   overflow: hidden;
-  border: .1rem solid rgb(73 73 80 / 55%);
+  border: 0.1rem solid rgb(73 73 80 / 55%);
   border-radius: $radius-lg;
   color: $color-text-muted;
   background: #252528;
@@ -241,7 +245,7 @@
       height: 2.8rem;
       gap: $space-6;
       padding-inline: $space-8;
-      border: .1rem solid $color-border;
+      border: 0.1rem solid $color-border;
       border-radius: 1.4rem;
       background: $color-surface-raised;
     }
@@ -275,7 +279,7 @@
   &__balances {
     margin-inline: $space-6;
     overflow: hidden;
-    border: .1rem solid $color-border;
+    border: 0.1rem solid $color-border;
     border-radius: $radius-md;
 
     > div {
@@ -287,7 +291,7 @@
       padding: $space-8 $space-48 $space-8 $space-16;
 
       & + div {
-        border-top: .1rem solid $color-border;
+        border-top: 0.1rem solid $color-border;
       }
 
       > span {
@@ -328,7 +332,7 @@
         right: $space-16;
         width: 2.8rem;
         height: 2.8rem;
-        border: .1rem solid $color-border;
+        border: 0.1rem solid $color-border;
         border-radius: $radius-md;
         background: $color-surface-raised;
         transform: translateY(-50%);
@@ -336,7 +340,7 @@
         i {
           width: 1.4rem;
           height: 1.4rem;
-          border: .1rem solid $color-text-muted;
+          border: 0.1rem solid $color-text-muted;
           border-radius: 50%;
         }
 
@@ -370,7 +374,7 @@
         width: 1.4rem;
         height: 1.4rem;
         flex: 0 0 auto;
-        border: .1rem solid $color-text-muted;
+        border: 0.1rem solid $color-text-muted;
         border-radius: $radius-xs;
       }
 
@@ -383,12 +387,12 @@
       b {
         margin-left: $space-2;
         padding: $space-1-25 $space-2-19 $space-1-25 $space-2-5;
-        border-radius: .25rem;
+        border-radius: 0.25rem;
         color: $color-positive;
         background: $color-positive-soft;
         font-size: $font-xs;
         font-weight: $weight-regular;
-        letter-spacing: .04rem;
+        letter-spacing: 0.04rem;
       }
     }
 
@@ -407,7 +411,7 @@
 
   &__apps {
     padding: $space-10 $space-6 $space-8;
-    border-top: .1rem solid $color-border;
+    border-top: 0.1rem solid $color-border;
 
     p {
       margin-bottom: $space-8;
@@ -445,7 +449,7 @@
     position: absolute;
     top: 50%;
     right: 0;
-    width: .1rem;
+    width: 0.1rem;
     height: 2.4rem;
     background: $color-border;
     content: "";
@@ -466,7 +470,7 @@
     }
 
     .lang__arrow {
-      width: .8rem;
+      width: 0.8rem;
       height: auto;
       transition: transform $duration-base ease;
     }
@@ -497,11 +501,11 @@
     display: grid;
     position: absolute;
     z-index: $z-tooltip + 1;
-    top: calc(100% + .6rem);
-    left: .6rem;
+    top: calc(100% + 0.6rem);
+    left: 0.6rem;
     width: 14.4rem;
     padding: $space-6;
-    border: .1rem solid $color-border;
+    border: 0.1rem solid $color-border;
     border-radius: $radius-md;
     background: $color-surface-raised;
     box-shadow: 0 $space-12 $footer-height $color-shadow-strong;
@@ -545,7 +549,7 @@
     }
 
     svg {
-      width: .9rem;
+      width: 0.9rem;
       height: auto;
       margin-left: $space-7;
       transition: transform $duration-base ease;
@@ -564,11 +568,11 @@
     display: grid;
     position: absolute;
     z-index: $z-popover;
-    top: calc(100% + .6rem);
+    top: calc(100% + 0.6rem);
     left: 50%;
     width: 24rem;
     padding: $space-8;
-    border: .1rem solid $color-border;
+    border: 0.1rem solid $color-border;
     border-radius: $radius-md;
     background: $color-surface-raised;
     box-shadow: 0 $space-12 $footer-height $color-shadow;
@@ -644,7 +648,7 @@
       position: absolute;
       top: 50%;
       right: 0;
-      width: .1rem;
+      width: 0.1rem;
       height: 2.8rem;
       background: $color-border;
       content: "";
@@ -686,8 +690,8 @@
   }
 
   &__arrow {
-    width: .4em;
-    height: .4em;
+    width: 0.4em;
+    height: 0.4em;
     margin-left: auto;
     color: $color-text-muted;
   }
@@ -828,7 +832,10 @@
   &__head,
   &__row {
     display: grid;
-    grid-template-columns: minmax(22rem, 1.55fr) repeat(2, minmax(10rem, .9fr)) repeat(3, minmax(12rem, 1fr));
+    grid-template-columns: minmax(22rem, 1.55fr) repeat(
+        2,
+        minmax(10rem, 0.9fr)
+      ) repeat(3, minmax(12rem, 1fr));
     align-items: center;
   }
 
@@ -865,8 +872,8 @@
 
       svg {
         position: absolute;
-        width: .6rem;
-        height: .9rem;
+        width: 0.6rem;
+        height: 0.9rem;
         color: rgb(255 255 255 / 22%);
 
         &:first-child {
@@ -1029,7 +1036,7 @@
       }
 
       &:disabled {
-        opacity: .35;
+        opacity: 0.35;
         cursor: default;
       }
     }
@@ -1065,11 +1072,10 @@
       }
 
       svg {
-        width: .8rem;
+        width: 0.8rem;
         height: auto;
         transition: transform $duration-fast ease;
       }
-
     }
 
     > details[open] > summary {
@@ -1151,7 +1157,7 @@
       position: absolute;
       top: 50%;
       right: 0;
-      width: .1rem;
+      width: 0.1rem;
       height: 2.8rem;
       background: $color-border;
       content: "";
@@ -1183,8 +1189,8 @@
   }
 
   &__change-icon {
-    width: .4rem;
-    height: .4rem;
+    width: 0.4rem;
+    height: 0.4rem;
     flex: 0 0 auto;
   }
 
@@ -1195,8 +1201,8 @@
     font-size: inherit;
 
     svg {
-      width: .9rem;
-      height: .6rem;
+      width: 0.9rem;
+      height: 0.6rem;
       color: $color-text-muted;
     }
   }
@@ -1228,7 +1234,7 @@
 .leverage-modal {
   width: min(40rem, calc(100vw - 3.2rem));
   padding: $space-20 $space-24 $space-24;
-  border: .1rem solid $color-border;
+  border: 0.1rem solid $color-border;
   border-radius: $radius-lg;
   background: #29292c;
   box-shadow: 0 1.6rem 4rem rgb(0 0 0 / 40%);
@@ -1314,8 +1320,8 @@
         background:
           repeating-linear-gradient(
             to right,
-            transparent 0 .1rem,
-            #29292c .1rem .3rem
+            transparent 0 0.1rem,
+            #29292c 0.1rem 0.3rem
           ),
           linear-gradient(to right, rgb(136 136 145 / 25%), $color-text-muted);
       }
@@ -1325,10 +1331,10 @@
         height: 2.2rem;
         margin-top: -$space-6;
         appearance: none;
-        border: .1rem solid $color-text-muted;
+        border: 0.1rem solid $color-text-muted;
         border-radius: 50%;
         background: $color-border;
-        box-shadow: 0 0 0 .2rem #29292c;
+        box-shadow: 0 0 0 0.2rem #29292c;
       }
 
       &::-moz-range-track {
@@ -1336,8 +1342,8 @@
         background:
           repeating-linear-gradient(
             to right,
-            transparent 0 .1rem,
-            #29292c .1rem .3rem
+            transparent 0 0.1rem,
+            #29292c 0.1rem 0.3rem
           ),
           linear-gradient(to right, rgb(136 136 145 / 25%), $color-text-muted);
       }
@@ -1350,10 +1356,10 @@
       &::-moz-range-thumb {
         width: 2.2rem;
         height: 2.2rem;
-        border: .1rem solid $color-text-muted;
+        border: 0.1rem solid $color-text-muted;
         border-radius: 50%;
         background: $color-border;
-        box-shadow: 0 0 0 .2rem #29292c;
+        box-shadow: 0 0 0 0.2rem #29292c;
       }
     }
 
@@ -1388,7 +1394,7 @@
 .deposit-modal {
   width: min(40rem, calc(100vw - 3.2rem));
   padding: $space-20 $space-24 $space-24;
-  border: .1rem solid $color-border;
+  border: 0.1rem solid $color-border;
   border-radius: $radius-lg;
   background: #29292c;
   box-shadow: 0 1.6rem 4rem rgb(0 0 0 / 40%);
@@ -1435,7 +1441,7 @@
       width: 100%;
       height: 4.8rem;
       padding-inline: $space-12;
-      border: .1rem solid $color-border;
+      border: 0.1rem solid $color-border;
       border-radius: $radius-md;
       color: $color-text;
       background: $color-surface-raised;
@@ -1445,8 +1451,8 @@
       justify-content: space-between;
 
       > svg {
-        width: .9rem;
-        height: .6rem;
+        width: 0.9rem;
+        height: 0.6rem;
         color: $color-text-muted;
       }
     }
@@ -1519,7 +1525,7 @@
     height: 4.4rem;
     gap: $space-38;
     padding: $space-0 $space-22;
-    border-bottom: .1rem solid $color-border;
+    border-bottom: 0.1rem solid $color-border;
     font-size: $font-nav;
 
     button {
@@ -1536,7 +1542,7 @@
           right: -$space-8;
           bottom: 0;
           left: -$space-8;
-          height: .2rem;
+          height: 0.2rem;
           background: $color-primary;
           content: "";
         }
@@ -1624,9 +1630,23 @@
     inset: 5rem 0 0;
     overflow: hidden;
     background:
-      linear-gradient(165deg, transparent 0 18%, $color-negative-chart 18.3% 18.8%, transparent 19.1% 38%, $color-positive-chart 38.3% 38.8%, transparent 39.1% 60%, $color-negative-chart-soft 60.3% 60.8%, transparent 61.1%),
-      linear-gradient(8deg, transparent 0 45%, $color-positive-chart-soft 45.3% 45.8%, transparent 46.1%);
-    opacity: .75;
+      linear-gradient(
+        165deg,
+        transparent 0 18%,
+        $color-negative-chart 18.3% 18.8%,
+        transparent 19.1% 38%,
+        $color-positive-chart 38.3% 38.8%,
+        transparent 39.1% 60%,
+        $color-negative-chart-soft 60.3% 60.8%,
+        transparent 61.1%
+      ),
+      linear-gradient(
+        8deg,
+        transparent 0 45%,
+        $color-positive-chart-soft 45.3% 45.8%,
+        transparent 46.1%
+      );
+    opacity: 0.75;
   }
 
   &__line {
@@ -1634,7 +1654,7 @@
     top: 52%;
     right: 0;
     left: 0;
-    border-top: .1rem dashed $color-negative;
+    border-top: 0.1rem dashed $color-negative;
   }
 
   &__price {
@@ -1650,7 +1670,7 @@
 
 .market-details {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(28rem, .8fr);
+  grid-template-columns: minmax(0, 1fr) minmax(28rem, 0.8fr);
   width: min(100%, 74rem);
   min-height: 100%;
   margin: $space-0 auto;
@@ -1698,7 +1718,7 @@
       min-height: $space-38;
       padding: $space-0 $space-12;
       gap: $space-6;
-      border: .1rem solid $color-border;
+      border: 0.1rem solid $color-border;
       border-radius: $space-20;
       color: $color-text-button;
       background: $color-surface-button;
@@ -1721,7 +1741,7 @@
 
     > div {
       @include flex(center, space-between);
-      border-bottom: .1rem solid $color-border;
+      border-bottom: 0.1rem solid $color-border;
       gap: $space-20;
       padding: $space-8 $space-0;
       font-size: $font-md;
@@ -1753,7 +1773,7 @@
   }
 
   &__label-tip {
-    border-bottom: .1rem dashed $color-text-muted;
+    border-bottom: 0.1rem dashed $color-text-muted;
     color: inherit;
     cursor: help;
   }
@@ -1788,7 +1808,7 @@
     button {
       min-height: 2.8rem;
       padding-inline: $space-12;
-      border: .1rem solid $color-border;
+      border: 0.1rem solid $color-border;
       border-radius: $radius-lg;
       color: $color-text-muted;
       font-size: $font-md;
@@ -1809,7 +1829,9 @@
     font-size: $font-md;
     text-align: center;
     transform: translateX(-50%);
-    transition: opacity $duration-base ease, transform $duration-base ease;
+    transition:
+      opacity $duration-base ease,
+      transform $duration-base ease;
 
     &.is-hidden {
       opacity: 0;
@@ -1831,24 +1853,24 @@
   }
 
   &__grid {
-    stroke: rgba($color-text-muted, .08);
-    stroke-width: .1rem;
+    stroke: rgba($color-text-muted, 0.08);
+    stroke-width: 0.1rem;
     vector-effect: non-scaling-stroke;
   }
 
   &__zero {
-    stroke: rgba($color-text-muted, .55);
-    stroke-dasharray: .4rem .4rem;
-    stroke-width: .1rem;
+    stroke: rgba($color-text-muted, 0.55);
+    stroke-dasharray: 0.4rem 0.4rem;
+    stroke-width: 0.1rem;
     vector-effect: non-scaling-stroke;
   }
 
   &__line {
     fill: none;
-    stroke: rgba($color-text, .75);
+    stroke: rgba($color-text, 0.75);
     stroke-linecap: round;
     stroke-linejoin: round;
-    stroke-width: .16rem;
+    stroke-width: 0.16rem;
     vector-effect: non-scaling-stroke;
   }
 
@@ -1856,16 +1878,16 @@
     pointer-events: none;
 
     line {
-      stroke: rgba($color-text, .48);
-      stroke-dasharray: .4rem .4rem;
-      stroke-width: .1rem;
+      stroke: rgba($color-text, 0.48);
+      stroke-dasharray: 0.4rem 0.4rem;
+      stroke-width: 0.1rem;
       vector-effect: non-scaling-stroke;
     }
 
     circle {
       fill: $color-text-muted;
       stroke: $color-surface;
-      stroke-width: .1rem;
+      stroke-width: 0.1rem;
       vector-effect: non-scaling-stroke;
     }
   }
@@ -1891,7 +1913,7 @@
     bottom: $space-0;
     left: 6.6rem;
     height: 3rem;
-    border-top: .1rem solid $color-border;
+    border-top: 0.1rem solid $color-border;
     color: $color-text-muted;
     font-size: $font-md;
     pointer-events: none;
@@ -1931,7 +1953,7 @@
     z-index: $z-popover;
     width: 22rem;
     padding: $space-12;
-    border-left: .2rem solid $color-book-bid;
+    border-left: 0.2rem solid $color-book-bid;
     border-radius: $radius-md;
     color: $color-text-muted;
     background: $color-surface-raised;
@@ -1989,24 +2011,24 @@
   }
 
   &__grid {
-    stroke: rgba($color-text-muted, .22);
-    stroke-width: .1rem;
+    stroke: rgba($color-text-muted, 0.22);
+    stroke-width: 0.1rem;
     vector-effect: non-scaling-stroke;
   }
 
   &__area {
     &--bid {
-      fill: rgba($color-book-bid, .17);
+      fill: rgba($color-book-bid, 0.17);
     }
 
     &--ask {
-      fill: rgba($color-book-ask, .17);
+      fill: rgba($color-book-ask, 0.17);
     }
   }
 
   &__line {
     fill: none;
-    stroke-width: .15rem;
+    stroke-width: 0.15rem;
     vector-effect: non-scaling-stroke;
 
     &--bid {
@@ -2025,7 +2047,7 @@
     bottom: $space-0;
     left: $space-0;
     height: 2.8rem;
-    border-top: .1rem solid $color-border;
+    border-top: 0.1rem solid $color-border;
     color: $color-text;
     font-size: $font-md;
     font-variant-numeric: tabular-nums;
@@ -2035,9 +2057,9 @@
     pointer-events: none;
 
     line {
-      stroke: rgba($color-text, .62);
-      stroke-dasharray: .4rem .4rem;
-      stroke-width: .1rem;
+      stroke: rgba($color-text, 0.62);
+      stroke-dasharray: 0.4rem 0.4rem;
+      stroke-width: 0.1rem;
       vector-effect: non-scaling-stroke;
     }
 
@@ -2093,12 +2115,12 @@
 
     &--bid {
       transform: translate($space-10, -50%);
-      border-left: .2rem solid $color-book-bid;
+      border-left: 0.2rem solid $color-book-bid;
     }
 
     &--ask {
       transform: translate(calc(-100% - #{$space-10}), -50%);
-      border-left: .2rem solid $color-book-ask;
+      border-left: 0.2rem solid $color-book-ask;
     }
 
     strong {
@@ -2136,14 +2158,14 @@
   }
 
   &__grid {
-    stroke: rgba($color-text-muted, .14);
-    stroke-width: .1rem;
+    stroke: rgba($color-text-muted, 0.14);
+    stroke-width: 0.1rem;
     vector-effect: non-scaling-stroke;
   }
 
   &__axis-line {
-    stroke: rgba($color-text-muted, .24);
-    stroke-width: .1rem;
+    stroke: rgba($color-text-muted, 0.24);
+    stroke-width: 0.1rem;
     vector-effect: non-scaling-stroke;
   }
 
@@ -2159,13 +2181,13 @@
     }
 
     line {
-      stroke-width: .1rem;
+      stroke-width: 0.1rem;
       vector-effect: non-scaling-stroke;
     }
   }
 
   &__volume {
-    opacity: .22;
+    opacity: 0.22;
 
     .is-up {
       fill: $color-book-bid;
@@ -2190,15 +2212,15 @@
       stroke: $color-book-ask;
     }
 
-    stroke-dasharray: .3rem .3rem;
-    stroke-width: .1rem;
+    stroke-dasharray: 0.3rem 0.3rem;
+    stroke-width: 0.1rem;
     vector-effect: non-scaling-stroke;
   }
 
   &__order-line {
     stroke: $color-primary;
-    stroke-dasharray: .5rem .3rem;
-    stroke-width: .1rem;
+    stroke-dasharray: 0.5rem 0.3rem;
+    stroke-width: 0.1rem;
     vector-effect: non-scaling-stroke;
   }
 
@@ -2232,16 +2254,16 @@
     pointer-events: none;
 
     > line {
-      stroke: rgba($color-text, .5);
-      stroke-dasharray: .2rem .2rem;
-      stroke-width: .1rem;
+      stroke: rgba($color-text, 0.5);
+      stroke-dasharray: 0.2rem 0.2rem;
+      stroke-width: 0.1rem;
       vector-effect: non-scaling-stroke;
     }
 
     rect {
       fill: $color-surface-raised;
       stroke: $color-border;
-      stroke-width: .1rem;
+      stroke-width: 0.1rem;
       vector-effect: non-scaling-stroke;
     }
 
@@ -2260,7 +2282,7 @@
   height: $footer-height;
   gap: $space-16;
   padding-inline: $space-16;
-  border-top: .1rem solid $color-border;
+  border-top: 0.1rem solid $color-border;
   color: $color-text-muted;
   background: $color-surface;
   font-size: $font-md;
@@ -2273,7 +2295,7 @@
       position: absolute;
       top: 50%;
       left: -$space-8;
-      width: .1rem;
+      width: 0.1rem;
       height: 1.6rem;
       background: $color-border;
       content: "";
@@ -2302,8 +2324,8 @@
     }
 
     i {
-      width: .8rem;
-      height: .8rem;
+      width: 0.8rem;
+      height: 0.8rem;
       border-radius: 50%;
       background: $color-positive;
     }
@@ -2350,9 +2372,12 @@
   bottom: $footer-height;
   left: $space-6;
   width: 38.5rem;
-  height: min(57rem, calc(100vh - #{$header-height} - #{$footer-height} - #{$space-20}));
+  height: min(
+    57rem,
+    calc(100vh - #{$header-height} - #{$footer-height} - #{$space-20})
+  );
   grid-template-rows: 4.4rem minmax(0, 1fr) auto;
-  border: .1rem solid $color-border;
+  border: 0.1rem solid $color-border;
   border-bottom: 0;
   border-radius: $radius-md $radius-md $space-0 $space-0;
   color: $color-text-button;
@@ -2364,7 +2389,7 @@
   &__header {
     @include flex-between;
     padding-inline: $space-16 $space-10;
-    border-bottom: .1rem solid $color-border;
+    border-bottom: 0.1rem solid $color-border;
     background: $color-surface-button;
     transition: background $duration-fast ease;
 
@@ -2437,10 +2462,18 @@
       margin-right: $space-4;
       font-weight: $weight-medium;
 
-      &.is-green { color: #75e878; }
-      &.is-red { color: $color-negative; }
-      &.is-cyan { color: #4ddfc3; }
-      &.is-violet { color: #c66cff; }
+      &.is-green {
+        color: #75e878;
+      }
+      &.is-red {
+        color: $color-negative;
+      }
+      &.is-cyan {
+        color: #4ddfc3;
+      }
+      &.is-violet {
+        color: #c66cff;
+      }
     }
   }
 
@@ -2511,7 +2544,7 @@
   width: 38.5rem;
   height: 4.4rem;
   padding-inline: $space-16 $space-10;
-  border: .1rem solid $color-border;
+  border: 0.1rem solid $color-border;
   border-bottom: 0;
   border-radius: $radius-md $radius-md $space-0 $space-0;
   color: $color-text-muted;
@@ -2579,7 +2612,10 @@
   bottom: $footer-height;
   right: $space-0;
   width: min(40rem, calc(100vw - #{$space-12}));
-  height: min(70rem, calc(100vh - #{$header-height} - #{$footer-height} - #{$space-12}));
+  height: min(
+    70rem,
+    calc(100vh - #{$header-height} - #{$footer-height} - #{$space-12})
+  );
   grid-template-rows: minmax(0, 1fr) 8rem;
   border-radius: 2.4rem;
   background: #f7f7f8;
@@ -2593,7 +2629,10 @@
 
   &.is-expanded {
     width: min(62rem, calc(100vw - #{$space-24}));
-    height: min(82rem, calc(100vh - #{$header-height} - #{$footer-height} - #{$space-12}));
+    height: min(
+      82rem,
+      calc(100vh - #{$header-height} - #{$footer-height} - #{$space-12})
+    );
   }
 
   &__close {
@@ -2658,7 +2697,11 @@
     padding: $space-28 $space-40;
     color: #f7f7fb;
     background:
-      radial-gradient(circle at 76% 18%, rgb(118 110 255 / 18%), transparent 30%),
+      radial-gradient(
+        circle at 76% 18%,
+        rgb(118 110 255 / 18%),
+        transparent 30%
+      ),
       linear-gradient(180deg, #18182b 0%, #18182b 72%, #242437 100%);
   }
 
@@ -2670,14 +2713,13 @@
       margin-right: auto;
       font-size: 2.4rem;
       font-weight: $weight-black;
-      letter-spacing: -.08rem;
+      letter-spacing: -0.08rem;
 
       span {
         color: #a8a6ff;
         font-weight: $weight-regular;
       }
     }
-
   }
 
   &__avatars {
@@ -2689,7 +2731,7 @@
       width: 4rem;
       height: 4rem;
       margin-left: -$space-8;
-      border: .2rem solid #18182b;
+      border: 0.2rem solid #18182b;
       border-radius: 50%;
       object-fit: cover;
     }
@@ -2709,14 +2751,13 @@
     align-content: start;
     gap: $space-10;
     padding: $space-0 $space-20 $space-16;
-    background:
-      linear-gradient(
-        180deg,
-        #242437 $space-0,
-        #858590 7rem,
-        #dedee2 12rem,
-        #f7f7f8 17rem
-      );
+    background: linear-gradient(
+      180deg,
+      #242437 $space-0,
+      #858590 7rem,
+      #dedee2 12rem,
+      #f7f7f8 17rem
+    );
 
     &::before {
       position: absolute;
@@ -2728,13 +2769,12 @@
       content: "";
       pointer-events: none;
     }
-
   }
 
   &__conversation,
   &__card {
     width: 100%;
-    border: .1rem solid #e5e5e9;
+    border: 0.1rem solid #e5e5e9;
     border-radius: $radius-lg;
     color: #25252c;
     background: #fff;
@@ -3083,8 +3123,8 @@
   &__collection-count {
     display: block;
     padding: $space-16 $space-20;
-    border-top: .1rem solid #e5e5e9;
-    border-bottom: .1rem solid #e5e5e9;
+    border-top: 0.1rem solid #e5e5e9;
+    border-bottom: 0.1rem solid #e5e5e9;
     font-size: $font-lg;
     font-weight: $weight-medium;
   }
@@ -3098,7 +3138,7 @@
       min-height: 10.2rem;
       gap: $space-12;
       padding: $space-16 $space-4;
-      border-bottom: .1rem solid #e5e5e9;
+      border-bottom: 0.1rem solid #e5e5e9;
       color: #17171d;
       text-align: left;
 
@@ -3165,7 +3205,6 @@
         display: none;
       }
     }
-
   }
 
   &__messages-page {
@@ -3199,7 +3238,7 @@
     align-items: center;
     grid-template-columns: 4rem minmax(0, 1fr) auto;
     gap: $space-10;
-    border-bottom: .1rem solid #e5e5e9;
+    border-bottom: 0.1rem solid #e5e5e9;
     color: #17171d;
     text-align: left;
 
@@ -3260,7 +3299,7 @@
       @include flex(center);
       gap: $space-10;
       padding-inline: $space-20;
-      border-bottom: .1rem solid #e5e5e9;
+      border-bottom: 0.1rem solid #e5e5e9;
       color: #17171d;
 
       > button {
@@ -3280,7 +3319,7 @@
         &:nth-last-child(2) {
           margin-left: auto;
           font-size: $font-base;
-          letter-spacing: .1rem;
+          letter-spacing: 0.1rem;
         }
 
         svg {
@@ -3339,7 +3378,7 @@
       color: #55555e;
       background: transparent;
       font-size: $font-lg;
-      letter-spacing: .1rem;
+      letter-spacing: 0.1rem;
 
       &:hover {
         background: $color-surface-light-hover;
@@ -3354,10 +3393,10 @@
       right: $space-0;
       width: 18.8rem;
       padding: $space-8;
-      border: .1rem solid #e5e5e9;
+      border: 0.1rem solid #e5e5e9;
       border-radius: $radius-lg;
       background: #fff;
-      box-shadow: $space-0 $space-8 $space-20 rgba(0, 0, 0, .1);
+      box-shadow: $space-0 $space-8 $space-20 rgba(0, 0, 0, 0.1);
 
       button {
         @include flex(center, flex-start);
@@ -3431,7 +3470,7 @@
 
     button {
       padding: $space-6 $space-10;
-      border: .1rem solid #e5e5e9;
+      border: 0.1rem solid #e5e5e9;
       border-radius: 2rem;
       color: #888891;
       background: #fff;
@@ -3477,7 +3516,7 @@
       margin-left: $space-16;
       padding: $space-20;
       gap: $space-6;
-      border: .1rem solid #e5e5e9;
+      border: 0.1rem solid #e5e5e9;
       border-radius: $radius-lg;
       background: #fff;
       box-shadow: $space-0 $space-4 $space-12 rgb(0 0 0 / 10%);
@@ -3515,7 +3554,7 @@
 
     &::before,
     &::after {
-      height: .1rem;
+      height: 0.1rem;
       flex: 1 1 auto;
       background: $color-negative;
       content: "";
@@ -3551,7 +3590,7 @@
     padding: $space-12 $space-16;
     grid-template-columns: 1fr auto;
     gap: $space-8;
-    border: .1rem solid #e5e5e9;
+    border: 0.1rem solid #e5e5e9;
     border-radius: $radius-lg;
     background: #fff;
 
@@ -3574,7 +3613,6 @@
         color: #888891;
       }
     }
-
   }
 
   &__composer-tools {
@@ -3615,7 +3653,10 @@
     border-radius: 50%;
     color: #fff;
     background: #6f5cff;
-    transition: color .15s ease, background .15s ease, opacity .15s ease;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease,
+      opacity 0.15s ease;
 
     svg {
       width: $icon-md;
@@ -3636,7 +3677,7 @@
   &__nav {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    border-top: .1rem solid #e5e5e9;
+    border-top: 0.1rem solid #e5e5e9;
     background: #fff;
 
     button {
@@ -3694,7 +3735,7 @@
       position: absolute;
       top: 50%;
       left: 0;
-      width: .1rem;
+      width: 0.1rem;
       height: 2rem;
       background: $color-border;
       content: "";
@@ -3711,7 +3752,7 @@
           position: absolute;
           top: 50%;
           left: -$space-5;
-          width: .1rem;
+          width: 0.1rem;
           height: 2rem;
           background: $color-border;
           content: "";
@@ -3822,7 +3863,7 @@
   &__tabs {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    border-bottom: .1rem solid $color-border;
+    border-bottom: 0.1rem solid $color-border;
 
     button {
       position: relative;
@@ -3836,9 +3877,9 @@
         &::after {
           position: absolute;
           right: $space-0;
-          bottom: -.1rem;
+          bottom: -0.1rem;
           left: $space-0;
-          height: .2rem;
+          height: 0.2rem;
           background: $color-primary;
           content: "";
         }
@@ -3849,7 +3890,7 @@
   &__tools {
     @include flex-between;
     padding-inline: $space-12;
-    border-bottom: .1rem solid $color-border;
+    border-bottom: 0.1rem solid $color-border;
     color: $color-text-muted;
     font-size: $font-base;
 
@@ -3875,7 +3916,7 @@
     }
 
     i {
-      width: .1rem;
+      width: 0.1rem;
       height: 2rem;
       background: $color-border;
     }
@@ -3893,7 +3934,7 @@
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
     padding-inline: $space-8;
-    border-bottom: .1rem solid $color-border;
+    border-bottom: 0.1rem solid $color-border;
     color: $color-text-muted;
     font-size: $font-md;
     text-align: right;
@@ -3940,7 +3981,9 @@
       width: var(--depth);
       content: "";
       pointer-events: none;
-      transition: width $duration-slow ease, background $duration-slow ease;
+      transition:
+        width $duration-slow ease,
+        background $duration-slow ease;
     }
 
     span {
@@ -3951,7 +3994,11 @@
   }
 
   &__rows--ask &__row::before {
-    background: linear-gradient(to right, rgba($color-book-ask, .22), rgba($color-book-ask, .02));
+    background: linear-gradient(
+      to right,
+      rgba($color-book-ask, 0.22),
+      rgba($color-book-ask, 0.02)
+    );
   }
 
   &__rows--ask &__row.is-hot span:nth-child(2) {
@@ -3959,7 +4006,11 @@
   }
 
   &__rows--bid &__row::before {
-    background: linear-gradient(to right, rgba($color-book-bid, .22), rgba($color-book-bid, .02));
+    background: linear-gradient(
+      to right,
+      rgba($color-book-bid, 0.22),
+      rgba($color-book-bid, 0.02)
+    );
   }
 
   &__rows--bid &__row.is-hot span:nth-child(2) {
@@ -3971,7 +4022,7 @@
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
     padding: $space-4 $space-8;
-    border-block: .1rem solid $color-border;
+    border-block: 0.1rem solid $color-border;
     color: $color-text-muted;
     font-size: $font-md;
     text-align: right;
@@ -3997,7 +4048,7 @@
   }
 
   &__trade-head {
-    border-bottom: .1rem solid $color-border;
+    border-bottom: 0.1rem solid $color-border;
     color: $color-text-muted;
     font-size: $font-md;
 
@@ -4032,7 +4083,11 @@
       right: $space-0;
       bottom: $space-1;
       width: var(--trade-depth);
-      background: linear-gradient(to right, rgba($color-book-bid, .22), rgba($color-book-bid, .02));
+      background: linear-gradient(
+        to right,
+        rgba($color-book-bid, 0.22),
+        rgba($color-book-bid, 0.02)
+      );
       content: "";
       pointer-events: none;
     }
@@ -4062,7 +4117,11 @@
     }
 
     &.is-sell::before {
-      background: linear-gradient(to right, rgba($color-book-ask, .22), rgba($color-book-ask, .02));
+      background: linear-gradient(
+        to right,
+        rgba($color-book-ask, 0.22),
+        rgba($color-book-ask, 0.02)
+      );
     }
   }
 }
@@ -4097,7 +4156,7 @@
   &__account {
     margin-inline: -$space-16;
     padding: $space-16;
-    border-bottom: .1rem solid $color-border;
+    border-bottom: 0.1rem solid $color-border;
     font-size: $font-md;
 
     dl,
@@ -4163,7 +4222,7 @@
     margin: (-$space-16) (-$space-16) $space-0;
     min-height: 4.2rem;
     padding: $space-0 $space-16;
-    border-bottom: .1rem solid $color-border;
+    border-bottom: 0.1rem solid $color-border;
   }
 
   &__margin-mode {
@@ -4176,7 +4235,7 @@
 
     & + &::before {
       display: inline-block;
-      width: .1rem;
+      width: 0.1rem;
       height: 1.4rem;
       margin-right: $space-8;
       background: $color-border;
@@ -4191,8 +4250,8 @@
       font-size: $font-nav;
       text-decoration-line: underline;
       text-decoration-style: dashed;
-      text-decoration-thickness: .1rem;
-      text-underline-offset: .4rem;
+      text-decoration-thickness: 0.1rem;
+      text-underline-offset: 0.4rem;
 
       &:hover,
       &.is-active {
@@ -4223,7 +4282,9 @@
     opacity: 0;
     pointer-events: none;
     transform: translate(-50%, -$space-3);
-    transition: opacity $duration-fast ease, transform $duration-fast ease;
+    transition:
+      opacity $duration-fast ease,
+      transform $duration-fast ease;
   }
 
   &__leverage,
@@ -4232,8 +4293,8 @@
     gap: $space-6;
 
     svg {
-      width: .9rem;
-      height: .6rem;
+      width: 0.9rem;
+      height: 0.6rem;
       color: $color-text-muted;
     }
   }
@@ -4242,7 +4303,7 @@
     min-width: 6.4rem;
     height: 3rem;
     justify-content: center;
-    border: .1rem solid $color-border;
+    border: 0.1rem solid $color-border;
     border-radius: $radius-md;
     color: $color-text;
     font-size: $font-nav;
@@ -4254,7 +4315,7 @@
     grid-template-columns: repeat(3, 1fr);
     height: 4.2rem;
     margin: (-$space-16) (-$space-16) $space-0;
-    border-bottom: .1rem solid $color-border;
+    border-bottom: 0.1rem solid $color-border;
 
     > button {
       @include flex-center;
@@ -4271,15 +4332,15 @@
           right: 1rem;
           bottom: 0;
           left: 1rem;
-          height: .2rem;
+          height: 0.2rem;
           background: $color-primary;
           content: "";
         }
       }
 
       svg {
-        width: .9rem;
-        height: .6rem;
+        width: 0.9rem;
+        height: 0.6rem;
       }
     }
   }
@@ -4303,8 +4364,8 @@
       }
 
       svg {
-        width: .9rem;
-        height: .6rem;
+        width: 0.9rem;
+        height: 0.6rem;
         transition: transform $duration-fast ease;
       }
     }
@@ -4325,7 +4386,7 @@
       right: $space-8;
       min-width: 7.6rem;
       padding: $space-6;
-      border: .1rem solid $color-border;
+      border: 0.1rem solid $color-border;
       border-radius: $radius-md;
       background: $color-surface-raised;
 
@@ -4413,14 +4474,14 @@
     font-size: $font-md;
 
     i {
-      height: .1rem;
+      height: 0.1rem;
       flex: 1;
       background: $color-border;
     }
 
     svg {
-      width: .9rem;
-      height: .6rem;
+      width: 0.9rem;
+      height: 0.6rem;
       transition: transform $duration-base ease;
     }
 
@@ -4499,8 +4560,8 @@
         background:
           repeating-linear-gradient(
             to right,
-            transparent 0 .1rem,
-            $color-surface .1rem .3rem
+            transparent 0 0.1rem,
+            $color-surface 0.1rem 0.3rem
           ),
           linear-gradient(to right, rgb(136 136 145 / 25%), $color-text-muted);
       }
@@ -4510,10 +4571,10 @@
         height: 2.2rem;
         margin-top: -$space-6;
         appearance: none;
-        border: .1rem solid $color-text-muted;
+        border: 0.1rem solid $color-text-muted;
         border-radius: 50%;
         background: $color-border;
-        box-shadow: 0 0 0 .2rem $color-surface;
+        box-shadow: 0 0 0 0.2rem $color-surface;
       }
 
       &::-moz-range-track {
@@ -4521,8 +4582,8 @@
         background:
           repeating-linear-gradient(
             to right,
-            transparent 0 .1rem,
-            $color-surface .1rem .3rem
+            transparent 0 0.1rem,
+            $color-surface 0.1rem 0.3rem
           ),
           linear-gradient(to right, rgb(136 136 145 / 25%), $color-text-muted);
       }
@@ -4535,10 +4596,10 @@
       &::-moz-range-thumb {
         width: 2.2rem;
         height: 2.2rem;
-        border: .1rem solid $color-text-muted;
+        border: 0.1rem solid $color-text-muted;
         border-radius: 50%;
         background: $color-border;
-        box-shadow: 0 0 0 .2rem $color-surface;
+        box-shadow: 0 0 0 0.2rem $color-surface;
       }
     }
 
@@ -4565,8 +4626,8 @@
 
     input {
       position: absolute;
-      width: .1rem;
-      height: .1rem;
+      width: 0.1rem;
+      height: 0.1rem;
       opacity: 0;
     }
 
@@ -4580,8 +4641,8 @@
     }
 
     input:focus-visible + .order__checkbox {
-      outline: .2rem solid $color-primary;
-      outline-offset: .2rem;
+      outline: 0.2rem solid $color-primary;
+      outline-offset: 0.2rem;
     }
   }
 
@@ -4590,18 +4651,18 @@
     width: 1.6rem;
     height: 1.6rem;
     flex: 0 0 auto;
-    border: .1rem solid $color-border;
+    border: 0.1rem solid $color-border;
     border-radius: $radius-xs;
     background: $color-surface-raised;
 
     &::after {
       position: absolute;
-      top: .2rem;
-      left: .5rem;
-      width: .4rem;
-      height: .8rem;
+      top: 0.2rem;
+      left: 0.5rem;
+      width: 0.4rem;
+      height: 0.8rem;
       border: solid $color-text;
-      border-width: 0 .2rem .2rem 0;
+      border-width: 0 0.2rem 0.2rem 0;
       content: "";
       opacity: 0;
       transform: rotate(45deg);
@@ -4611,7 +4672,7 @@
   &__margin-warning {
     height: fit-content;
     padding: $space-10 $space-12;
-    border-left: .3rem solid $color-negative;
+    border-left: 0.3rem solid $color-negative;
     border-radius: $radius-xs;
     color: $color-text;
     background: $color-negative-soft;
@@ -4640,7 +4701,7 @@
     }
 
     &:disabled {
-      border: .1rem solid $color-border;
+      border: 0.1rem solid $color-border;
       color: $color-text-muted;
       background: transparent;
       cursor: not-allowed;
@@ -4652,7 +4713,7 @@
     }
 
     &.is-margin-error {
-      border: .1rem solid $color-border;
+      border: 0.1rem solid $color-border;
       color: $color-text-muted;
       background: transparent;
 
@@ -4671,7 +4732,7 @@
       position: relative;
       min-height: 2.8rem;
       padding-inline: $space-10;
-      border: .1rem solid $color-border;
+      border: 0.1rem solid $color-border;
       border-radius: 1.4rem;
       color: $color-text-muted;
       font-size: $font-md;
@@ -4684,7 +4745,7 @@
 
     .order__clear {
       color: $color-negative;
-      border-color: rgba(255, 83, 91, .35);
+      border-color: rgba(255, 83, 91, 0.35);
 
       &:hover {
         color: $color-negative;
@@ -4696,7 +4757,7 @@
       position: absolute;
       top: 50%;
       left: -$space-10;
-      width: .1rem;
+      width: 0.1rem;
       height: 1.6rem;
       background: $color-border;
       content: "";
@@ -4722,7 +4783,7 @@
     display: grid;
     gap: $space-10;
     padding: $space-12;
-    border: .1rem solid rgba(73, 73, 80, .28);
+    border: 0.1rem solid rgba(73, 73, 80, 0.28);
     border-radius: $radius-md;
     background: #1b1b1e;
 
@@ -4878,7 +4939,7 @@
   padding: $space-0;
   border-radius: 0;
   background: transparent;
-  border-bottom: .1rem solid $color-border;
+  border-bottom: 0.1rem solid $color-border;
 
   button {
     position: relative;
@@ -4892,7 +4953,7 @@
       right: 0;
       bottom: 0;
       left: 0;
-      height: .2rem;
+      height: 0.2rem;
       background: currentColor;
       content: "";
     }
@@ -5014,7 +5075,7 @@
     min-width: 19.2rem;
     gap: $space-10;
     padding: $space-12;
-    border: .1rem solid rgb(73 73 80 / 55%);
+    border: 0.1rem solid rgb(73 73 80 / 55%);
     border-radius: $radius-md;
     background: #252528;
     box-shadow: 0 $space-8 $space-20 $color-shadow-strong;
@@ -5059,7 +5120,7 @@
           position: absolute;
           top: 50%;
           left: $space-0;
-          width: .1rem;
+          width: 0.1rem;
           height: 1.4rem;
           background: $color-border;
           content: "";
@@ -5080,8 +5141,8 @@
     }
 
     svg {
-      width: .9rem;
-      height: .6rem;
+      width: 0.9rem;
+      height: 0.6rem;
       transition: transform $duration-base ease;
     }
   }
@@ -5132,7 +5193,6 @@
   .market {
     grid-column: 1;
   }
-
 }
 
 @include mobile {
@@ -5173,7 +5233,7 @@
     height: 3.4rem;
     align-self: center;
     margin-left: auto;
-    border: .1rem solid $color-border;
+    border: 0.1rem solid $color-border;
     border-radius: $radius-sm;
 
     summary {
@@ -5244,7 +5304,7 @@
           right: 1.6rem;
           bottom: 0;
           left: 1.6rem;
-          height: .2rem;
+          height: 0.2rem;
           background: $color-primary;
           content: "";
         }

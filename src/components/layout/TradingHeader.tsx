@@ -34,9 +34,15 @@ import googlePlayBadge from "../../assets/images/stores/google-play-badge.png";
 
 type TradingHeaderProps = {
   onDepositClick: () => void;
+  activePage: "trade" | "markets";
+  onPageChange: (page: "trade" | "markets") => void;
 };
 
-export function TradingHeader({ onDepositClick }: TradingHeaderProps) {
+export function TradingHeader({
+  onDepositClick,
+  activePage,
+  onPageChange,
+}: TradingHeaderProps) {
   const { t } = useLocale();
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const accountMenuRef = useRef<HTMLDivElement>(null);
@@ -74,11 +80,21 @@ export function TradingHeader({ onDepositClick }: TradingHeaderProps) {
       </button>
 
       <nav className="topbar__nav" aria-label="주요 메뉴">
-        <a className="is-active" href="#trade">
+        <button
+          className={activePage === "trade" ? "is-active" : undefined}
+          type="button"
+          onClick={() => onPageChange("trade")}
+        >
           {t("trade")}
-        </a>
+        </button>
         <a href="#spot">{t("spot")}</a>
-        <a href="#markets">{t("markets")}</a>
+        <button
+          className={activePage === "markets" ? "is-active" : undefined}
+          type="button"
+          onClick={() => onPageChange("markets")}
+        >
+          {t("markets")}
+        </button>
         <a href="#portfolio">{t("portfolio")}</a>
         <a href="#megavault">MegaVault</a>
         <a href="#rewards">{t("rewards")}</a>
