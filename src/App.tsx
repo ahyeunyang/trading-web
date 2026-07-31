@@ -15,6 +15,7 @@ export function App() {
   const [isDepositOpen, setIsDepositOpen] = useState(false);
   const [isPositionsCollapsed, setIsPositionsCollapsed] = useState(false);
   const [selectedMarket, setSelectedMarket] = useState(markets[0]);
+  const [favoriteMarkets, setFavoriteMarkets] = useState<Set<string>>(new Set());
   const [mobileView, setMobileView] = useState<"chart" | "book" | "order">(
     "chart",
   );
@@ -24,6 +25,15 @@ export function App() {
     const timer = window.setTimeout(() => setLoading(false), 900);
     return () => window.clearTimeout(timer);
   }, []);
+
+  const toggleFavoriteMarket = (symbol: string) => {
+    setFavoriteMarkets((current) => {
+      const next = new Set(current);
+      if (next.has(symbol)) next.delete(symbol);
+      else next.add(symbol);
+      return next;
+    });
+  };
 
   return (
     <div className={`app${loading ? " is-loading" : ""}`} aria-busy={loading}>
@@ -37,6 +47,8 @@ export function App() {
         <MarketsPage
           selectedMarket={selectedMarket}
           onSelectMarket={setSelectedMarket}
+          favorites={favoriteMarkets}
+          onToggleFavorite={toggleFavoriteMarket}
         />
       ) : (
         <main
@@ -47,6 +59,8 @@ export function App() {
             quantityUnit={quantityUnit}
             selected={selectedMarket}
             onSelect={setSelectedMarket}
+            favorites={favoriteMarkets}
+            onToggleFavorite={toggleFavoriteMarket}
           />
           <MobileTradingNav activeView={mobileView} onChange={setMobileView} />
           <TradeChart market={selectedMarket} />

@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronDown, MarketDown } from "../icons/ChevronDown";
 import { Tooltip } from "../ui/Tooltip";
+import { FavoriteStar } from "../ui/FavoriteStar";
+import { MarketCategoryTabs } from "../ui/MarketCategoryTabs";
+import { VolumeSortButton } from "../ui/VolumeSortButton";
 import { useLocale } from "../../i18n/Locale";
 import avaxImage from "../../assets/images/coins/avax.png";
 import algoImage from "../../assets/images/coins/algo.png";
@@ -27,6 +30,8 @@ type MarketPanelProps = {
   quantityUnit: "BTC" | "USD";
   selected: Market;
   onSelect: (market: Market) => void;
+  favorites: Set<string>;
+  onToggleFavorite: (symbol: string) => void;
 };
 
 export type Market = {
@@ -43,7 +48,11 @@ export type Market = {
   image: string;
 };
 
-export const markets: Market[] = [
+const coinCapIcon = (symbol: string) => `https://assets.coincap.io/assets/icons/${symbol.toLowerCase()}@2x.png`;
+const inlineMarketIcon = (background: string, foreground: string, content: string) =>
+  `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><rect width="128" height="128" rx="64" fill="${background}"/><text x="64" y="72" text-anchor="middle" fill="${foreground}" font-family="Arial,sans-serif" font-size="32" font-weight="700">${content}</text></svg>`)}`;
+
+const marketCatalog: Market[] = [
   { symbol: "BTC", name: "BTC-USD", leverage: "50×", price: "$65,247", change: 1.19, volume: "US$486만", spotVolume: "US$162억", marketCap: "US$1.31조", color: "#f7931a", category: "전체", image: btcImage },
   { symbol: "ETH", name: "ETH-USD", leverage: "50×", price: "$1,951.7", change: 3.58, volume: "US$246만", spotVolume: "US$80.5억", marketCap: "US$2360억", color: "#8d95a5", category: "레이어 1", image: ethImage },
   { symbol: "XRP", name: "XRP-USD", leverage: "10×", price: "$1.1056", change: .43, volume: "US$40.9만", spotVolume: "US$6.85억", marketCap: "US$692억", color: "#26333a", category: "레이어 1", image: xrpImage },
@@ -64,23 +73,91 @@ export const markets: Market[] = [
   { symbol: "NEAR", name: "NEAR-USD", leverage: "10×", price: "$1.23", change: -.18, volume: "US$9820", spotVolume: "US$7460만", marketCap: "US$15.8억", color: "#00ec97", category: "AI 및 빅 데이터", image: nearImage },
   { symbol: "UNI", name: "UNI-USD", leverage: "10×", price: "$5.37", change: 1.34, volume: "US$8740", spotVolume: "US$1.28억", marketCap: "US$32.1억", color: "#ff4dba", category: "DeFi", image: uniImage },
   { symbol: "AYXX", name: "AYXX-USD", leverage: "5×", price: "$0.63", change: .44, volume: "US$7610", spotVolume: "US$4380만", marketCap: "US$4.8억", color: "#6966ff", category: "DeFi", image: ayxxImage },
+  { symbol: "TIA", name: "TIA-USD", leverage: "10×", price: "$0.412", change: 2.34, volume: "US$7480", spotVolume: "US$6230만", marketCap: "US$3.2억", color: "#7b2bf9", category: "레이어 1", image: coinCapIcon("TIA") },
+  { symbol: "SPX500", name: "SPX500-USD", leverage: "10×", price: "$6,376.4", change: .41, volume: "US$7240", spotVolume: "—", marketCap: "—", color: "#d8ae2f", category: "RWA", image: inlineMarketIcon("#d7ae34", "#111111", "S&P") },
+  { symbol: "VVV", name: "VVV-USD", leverage: "5×", price: "$2.18", change: -1.24, volume: "US$6980", spotVolume: "US$890만", marketCap: "US$7880만", color: "#e44b16", category: "AI 및 빅 데이터", image: coinCapIcon("VVV") },
+  { symbol: "OPEN", name: "OPEN-USD", leverage: "5×", price: "$0.214", change: 1.82, volume: "US$6740", spotVolume: "US$1240만", marketCap: "US$1.9억", color: "#e3c2ff", category: "DeFi", image: coinCapIcon("OPEN") },
+  { symbol: "EUR", name: "EUR-USD", leverage: "20×", price: "$1.1412", change: .12, volume: "US$6510", spotVolume: "—", marketCap: "—", color: "#3d62f4", category: "외환", image: inlineMarketIcon("#3b61f4", "#ffffff", "€") },
+  { symbol: "ASTER", name: "ASTER-USD", leverage: "10×", price: "$0.974", change: 3.76, volume: "US$6380", spotVolume: "US$4380만", marketCap: "US$16.4억", color: "#c7ff3d", category: "DeFi", image: coinCapIcon("ASTER") },
+  { symbol: "FARTCOIN", name: "FARTCOIN-USD", leverage: "10×", price: "$0.352", change: -2.83, volume: "US$6140", spotVolume: "US$5740만", marketCap: "US$3.5억", color: "#b8b8b8", category: "밈", image: coinCapIcon("FARTCOIN") },
+  { symbol: "RENDER", name: "RENDER-USD", leverage: "10×", price: "$1.63", change: 1.59, volume: "US$5960", spotVolume: "US$7620만", marketCap: "US$8.4억", color: "#ed1016", category: "AI 및 빅 데이터", image: coinCapIcon("RENDER") },
+  { symbol: "LIT", name: "LIT-USD", leverage: "5×", price: "$1.22", change: .88, volume: "US$5720", spotVolume: "US$1840만", marketCap: "US$1.2억", color: "#f4f4f4", category: "레이어 2", image: coinCapIcon("LIT") },
+  { symbol: "MOG", name: "MOG-USD", leverage: "5×", price: "$0.₆384", change: -1.17, volume: "US$5480", spotVolume: "US$2210만", marketCap: "US$1.5억", color: "#ead9d6", category: "밈", image: coinCapIcon("MOG") },
+  { symbol: "BONK", name: "BONK-USD", leverage: "10×", price: "$0.₅741", change: 2.92, volume: "US$5260", spotVolume: "US$6720만", marketCap: "US$5.9억", color: "#f9a715", category: "밈", image: coinCapIcon("BONK") },
+  { symbol: "CRV", name: "CRV-USD", leverage: "10×", price: "$0.371", change: .64, volume: "US$5030", spotVolume: "US$4860만", marketCap: "US$5.2억", color: "#f06b2b", category: "DeFi", image: coinCapIcon("CRV") },
+  { symbol: "XPL", name: "XPL-USD", leverage: "10×", price: "$0.084", change: 1.21, volume: "US$4870", spotVolume: "US$3920만", marketCap: "US$8.4억", color: "#183a35", category: "레이어 1", image: coinCapIcon("XPL") },
+  { symbol: "ZRO", name: "ZRO-USD", leverage: "10×", price: "$1.74", change: -0.71, volume: "US$4620", spotVolume: "US$4260만", marketCap: "US$2.9억", color: "#101010", category: "레이어 2", image: coinCapIcon("ZRO") },
+  { symbol: "XLM", name: "XLM-USD", leverage: "10×", price: "$0.217", change: .57, volume: "US$4390", spotVolume: "US$9840만", marketCap: "US$69.2억", color: "#090909", category: "레이어 1", image: coinCapIcon("XLM") },
+  { symbol: "WTI", name: "WTI-USD", leverage: "10×", price: "$69.31", change: -.38, volume: "US$4160", spotVolume: "—", marketCap: "—", color: "#15191d", category: "RWA", image: inlineMarketIcon("#15191d", "#ffffff", "WTI") },
+  { symbol: "LINEA", name: "LINEA-USD", leverage: "5×", price: "$0.0128", change: 2.08, volume: "US$3940", spotVolume: "US$1180만", marketCap: "US$2.0억", color: "#2b197b", category: "레이어 2", image: coinCapIcon("LINEA") },
+  { symbol: "WIF", name: "WIF-USD", leverage: "10×", price: "$0.417", change: -1.06, volume: "US$3710", spotVolume: "US$5560만", marketCap: "US$4.2억", color: "#b29077", category: "밈", image: coinCapIcon("WIF") },
+  { symbol: "SOMI", name: "SOMI-USD", leverage: "5×", price: "$0.283", change: 1.46, volume: "US$3490", spotVolume: "US$1760만", marketCap: "US$9110만", color: "#e7d7ce", category: "레이어 1", image: coinCapIcon("SOMI") },
+  { symbol: "BLUE", name: "BLUE-USD", leverage: "5×", price: "$0.036", change: 2.61, volume: "US$3260", spotVolume: "US$940만", marketCap: "US$4720만", color: "#4564eb", category: "DeFi", image: coinCapIcon("BLUE") },
+  { symbol: "AVNT", name: "AVNT-USD", leverage: "5×", price: "$0.068", change: 1.72, volume: "US$3110", spotVolume: "US$870만", marketCap: "US$6240만", color: "#7640f5", category: "DeFi", image: coinCapIcon("AVNT") },
+  { symbol: "ADI", name: "ADI-USD", leverage: "5×", price: "$0.194", change: 2.17, volume: "US$2970", spotVolume: "US$1280만", marketCap: "US$1.1억", color: "#f27622", category: "레이어 2", image: coinCapIcon("ADI") },
+  { symbol: "TSLA", name: "TSLA-USD", leverage: "10×", price: "$308.27", change: -.84, volume: "US$2820", spotVolume: "—", marketCap: "US$9910억", color: "#f40032", category: "RWA", image: inlineMarketIcon("#f40032", "#ffffff", "T") },
+  { symbol: "BERA", name: "BERA-USD", leverage: "5×", price: "$0.742", change: .36, volume: "US$2680", spotVolume: "US$3180만", marketCap: "US$1.6억", color: "#8b4927", category: "레이어 1", image: coinCapIcon("BERA") },
+  { symbol: "BRL", name: "BRL-USD", leverage: "10×", price: "$0.1817", change: -.21, volume: "US$2540", spotVolume: "—", marketCap: "—", color: "#009c3b", category: "외환", image: inlineMarketIcon("#009c3b", "#ffdf00", "BRL") },
+  { symbol: "PUMP", name: "PUMP-USD", leverage: "10×", price: "$0.00314", change: 2.43, volume: "US$2480", spotVolume: "US$9280만", marketCap: "US$11.1억", color: "#4dd698", category: "밈", image: coinCapIcon("PUMP") },
+  { symbol: "XMR", name: "XMR-USD", leverage: "10×", price: "$319.48", change: .82, volume: "US$2410", spotVolume: "US$9820만", marketCap: "US$58.9억", color: "#ff6600", category: "레이어 1", image: coinCapIcon("XMR") },
+  { symbol: "ETC", name: "ETC-USD", leverage: "10×", price: "$13.84", change: -.37, volume: "US$2350", spotVolume: "US$6740만", marketCap: "US$21.4억", color: "#328332", category: "레이어 1", image: coinCapIcon("ETC") },
+  { symbol: "BCH", name: "BCH-USD", leverage: "10×", price: "$521.73", change: 1.08, volume: "US$2280", spotVolume: "US$2.41억", marketCap: "US$103.8억", color: "#8dc351", category: "레이어 1", image: coinCapIcon("BCH") },
+  { symbol: "TRX", name: "TRX-USD", leverage: "10×", price: "$0.3142", change: .28, volume: "US$2210", spotVolume: "US$4.82억", marketCap: "US$297.6억", color: "#ef0027", category: "레이어 1", image: coinCapIcon("TRX") },
+  { symbol: "ADA", name: "ADA-USD", leverage: "10×", price: "$0.3721", change: 1.31, volume: "US$2140", spotVolume: "US$2.26억", marketCap: "US$133.1억", color: "#3154a5", category: "레이어 1", image: coinCapIcon("ADA") },
+  { symbol: "FIL", name: "FIL-USD", leverage: "10×", price: "$1.58", change: -.64, volume: "US$2070", spotVolume: "US$8840만", marketCap: "US$11.0억", color: "#0090ff", category: "DePIN", image: coinCapIcon("FIL") },
+  { symbol: "CRO", name: "CRO-USD", leverage: "10×", price: "$0.0914", change: .46, volume: "US$1990", spotVolume: "US$3420만", marketCap: "US$28.9억", color: "#27345c", category: "레이어 1", image: coinCapIcon("CRO") },
+  { symbol: "ATOM", name: "ATOM-USD", leverage: "10×", price: "$3.27", change: 1.14, volume: "US$1920", spotVolume: "US$7480만", marketCap: "US$15.3억", color: "#2e3148", category: "레이어 1", image: coinCapIcon("ATOM") },
+  { symbol: "RUNE", name: "RUNE-USD", leverage: "10×", price: "$1.14", change: 2.08, volume: "US$1850", spotVolume: "US$5830만", marketCap: "US$4.0억", color: "#00d9c0", category: "DeFi", image: coinCapIcon("RUNE") },
+  { symbol: "ONDO", name: "ONDO-USD", leverage: "10×", price: "$0.712", change: .91, volume: "US$1790", spotVolume: "US$1.08억", marketCap: "US$22.5억", color: "#dfd21d", category: "RWA", image: coinCapIcon("ONDO") },
+  { symbol: "DOT", name: "DOT-USD", leverage: "10×", price: "$2.08", change: -.29, volume: "US$1720", spotVolume: "US$9360만", marketCap: "US$33.4억", color: "#e6007a", category: "레이어 1", image: coinCapIcon("DOT") },
+  { symbol: "GRT", name: "GRT-USD", leverage: "10×", price: "$0.0418", change: 1.64, volume: "US$1660", spotVolume: "US$3860만", marketCap: "US$4.2억", color: "#6555c5", category: "AI 및 빅 데이터", image: coinCapIcon("GRT") },
+  { symbol: "INJ", name: "INJ-USD", leverage: "10×", price: "$6.84", change: 2.37, volume: "US$1590", spotVolume: "US$7120만", marketCap: "US$6.8억", color: "#4e45f6", category: "DeFi", image: coinCapIcon("INJ") },
+  { symbol: "AAVE", name: "AAVE-USD", leverage: "10×", price: "$182.41", change: .74, volume: "US$1530", spotVolume: "US$1.44억", marketCap: "US$27.7억", color: "#8f8cf2", category: "DeFi", image: coinCapIcon("AAVE") },
+  { symbol: "1INCH", name: "1INCH-USD", leverage: "10×", price: "$0.186", change: -1.08, volume: "US$1470", spotVolume: "US$2840만", marketCap: "US$2.6억", color: "#1b314f", category: "DeFi", image: coinCapIcon("1INCH") },
+  { symbol: "ICP", name: "ICP-USD", leverage: "10×", price: "$3.08", change: 1.52, volume: "US$1410", spotVolume: "US$7240만", marketCap: "US$16.4억", color: "#f15a24", category: "레이어 1", image: coinCapIcon("ICP") },
+  { symbol: "ARB", name: "ARB-USD", leverage: "10×", price: "$0.314", change: .67, volume: "US$1350", spotVolume: "US$1.02억", marketCap: "US$16.2억", color: "#28a0f0", category: "레이어 2", image: coinCapIcon("ARB") },
+  { symbol: "APT", name: "APT-USD", leverage: "10×", price: "$3.12", change: -.41, volume: "US$1290", spotVolume: "US$1.18억", marketCap: "US$21.0억", color: "#ffffff", category: "레이어 1", image: coinCapIcon("APT") },
+  { symbol: "WLD", name: "WLD-USD", leverage: "10×", price: "$0.924", change: 1.83, volume: "US$1230", spotVolume: "US$1.36억", marketCap: "US$18.7억", color: "#ffffff", category: "AI 및 빅 데이터", image: coinCapIcon("WLD") },
+  { symbol: "ZK", name: "ZK-USD", leverage: "10×", price: "$0.0514", change: .92, volume: "US$1170", spotVolume: "US$2840만", marketCap: "US$3.6억", color: "#111111", category: "레이어 2", image: coinCapIcon("ZK") },
+  { symbol: "SEI", name: "SEI-USD", leverage: "10×", price: "$0.184", change: 2.16, volume: "US$1110", spotVolume: "US$8420만", marketCap: "US$10.4억", color: "#b93e4c", category: "레이어 1", image: coinCapIcon("SEI") },
+  { symbol: "EIGEN", name: "EIGEN-USD", leverage: "10×", price: "$0.742", change: -.57, volume: "US$1050", spotVolume: "US$4320만", marketCap: "US$2.4억", color: "#b3a1da", category: "DeFi", image: coinCapIcon("EIGEN") },
+  { symbol: "POL", name: "POL-USD", leverage: "10×", price: "$0.211", change: 1.09, volume: "US$990", spotVolume: "US$5620만", marketCap: "US$22.1억", color: "#8247e5", category: "레이어 2", image: coinCapIcon("POL") },
+  { symbol: "ENA", name: "ENA-USD", leverage: "10×", price: "$0.312", change: 1.47, volume: "US$940", spotVolume: "US$1.18억", marketCap: "US$22.9억", color: "#f4f4f4", category: "DeFi", image: coinCapIcon("ENA") },
+  { symbol: "PENGU", name: "PENGU-USD", leverage: "10×", price: "$0.0112", change: -1.31, volume: "US$890", spotVolume: "US$6380만", marketCap: "US$7.1억", color: "#83a8f6", category: "밈", image: coinCapIcon("PENGU") },
+  { symbol: "TRUMP", name: "TRUMP-USD", leverage: "10×", price: "$8.42", change: 2.04, volume: "US$840", spotVolume: "US$2.11억", marketCap: "US$16.8억", color: "#c89a47", category: "밈", image: coinCapIcon("TRUMP") },
 ];
 
-const categories = ["전체", "최근에 나열됨", "시장 가능 신규", "밈", "AI 및 빅 데이터", "DeFi", "DePIN", "레이어 1", "레이어 2", "RWA", "게이밍", "외환"];
+const BROKEN_COIN_IMAGE_SYMBOLS = new Set([
+  "OPEN",
+  "ASTER",
+  "FARTCOIN",
+  "XPL",
+  "ZRO",
+  "LINEA",
+  "SOMI",
+  "BLUE",
+  "AVNT",
+]);
+
+const hasVerifiedCoinImage = (market: Market) =>
+  !market.image.startsWith("data:") &&
+  !BROKEN_COIN_IMAGE_SYMBOLS.has(market.symbol);
+
+// 두 화면 모두 실제로 로딩되는 이미지가 있는 종목만 공유하며, 같은 심볼은 한 번만 노출한다.
+export const markets: Market[] = Array.from(
+  new Map(
+    marketCatalog
+      .filter(hasVerifiedCoinImage)
+      .map((market) => [market.symbol, market]),
+  ).values(),
+);
 
 function CoinMark({ market }: { market: Market }) {
-  return <img src={market.image} alt={`${market.symbol} 로고`} />;
+  const { t } = useLocale();
+  return <img src={market.image} alt={`${market.symbol} ${t("coinLogo")}`} />;
 }
 
-function StarIcon({ active }: { active: boolean }) {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="m12 2.9 2.78 5.63 6.22.91-4.5 4.38 1.06 6.19L12 17.08 6.44 20l1.06-6.18L3 9.44l6.22-.91L12 2.9Z" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-export function MarketPanel({ quantityUnit, selected, onSelect }: MarketPanelProps) {
+export function MarketPanel({ quantityUnit, selected, onSelect, favorites, onToggleFavorite }: MarketPanelProps) {
   const { lang, t } = useLocale();
   const marketValue = (value: string) => {
     if (lang === "ko") return value;
@@ -96,22 +173,8 @@ export function MarketPanel({ quantityUnit, selected, onSelect }: MarketPanelPro
     const [divisor, suffix] = formats[lang].find(([threshold]) => amount >= threshold) ?? [1, ""];
     return `US$${Number((amount / divisor).toPrecision(3))}${suffix}`;
   };
-  const categoryLabel = (item: string) => {
-    if (item === "전체") return t("all");
-    if (item === "최근에 나열됨") return t("recentlyListed");
-    if (item === "시장 가능 신규") return t("newMarkets");
-    if (item === "밈") return t("meme");
-    if (item === "AI 및 빅 데이터") return t("aiBigData");
-    if (item === "레이어 1") return t("layer1");
-    if (item === "레이어 2") return t("layer2");
-    if (item === "게이밍") return t("gaming");
-    if (item === "외환") return t("forex");
-    return item;
-  };
   const rootRef = useRef<HTMLElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [favorites, setFavorites] = useState<Set<string>>(new Set());
-  const [favoritesOnly, setFavoritesOnly] = useState(false);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("전체");
   const [page, setPage] = useState(1);
@@ -129,9 +192,11 @@ export function MarketPanel({ quantityUnit, selected, onSelect }: MarketPanelPro
   const filteredMarkets = useMemo(() => markets.filter((market) => {
     const matchesQuery = `${market.symbol} ${market.name}`.toLowerCase().includes(query.trim().toLowerCase());
     const matchesCategory = category === "전체" || category === "최근에 나열됨" || category === "시장 가능 신규" || market.category === category;
-    return matchesQuery && matchesCategory && (!favoritesOnly || favorites.has(market.symbol));
-  }), [category, favorites, favoritesOnly, query]);
+    return matchesQuery && matchesCategory;
+  }), [category, query]);
   const sortedMarkets = useMemo(() => [...filteredMarkets].sort((a, b) => {
+    const favoriteDifference = Number(favorites.has(b.symbol)) - Number(favorites.has(a.symbol));
+    if (favoriteDifference) return favoriteDifference;
     const volumeValue = (value: string) => {
       const amount = Number(value.replace(/[^\d.]/g, ""));
       if (value.includes("조")) return amount * 1_000_000_000_000;
@@ -142,25 +207,16 @@ export function MarketPanel({ quantityUnit, selected, onSelect }: MarketPanelPro
     return volumeSort === "asc"
       ? volumeValue(a.volume) - volumeValue(b.volume)
       : volumeValue(b.volume) - volumeValue(a.volume);
-  }), [filteredMarkets, volumeSort]);
+  }), [favorites, filteredMarkets, volumeSort]);
   const pageCount = Math.max(1, Math.ceil(sortedMarkets.length / pageSize));
   const visibleMarkets = sortedMarkets.slice((page - 1) * pageSize, page * pageSize);
 
   useEffect(() => {
     setPage(1);
-  }, [category, favorites, favoritesOnly, pageSize, query]);
-
-  const toggleFavorite = (symbol: string) => {
-    setFavorites((current) => {
-      const next = new Set(current);
-      if (next.has(symbol)) next.delete(symbol);
-      else next.add(symbol);
-      return next;
-    });
-  };
+  }, [category, favorites, pageSize, query]);
 
   return (
-    <section ref={rootRef} className="panel market" aria-label="마켓 정보">
+    <section ref={rootRef} className="panel market" aria-label={t("market")}>
       <button className="market__select" type="button" aria-expanded={isOpen} onClick={() => setIsOpen((value) => !value)}>
         <span className="market__coin"><CoinMark market={selected} /></span>
         <span><strong>{selected.name}</strong></span>
@@ -168,7 +224,7 @@ export function MarketPanel({ quantityUnit, selected, onSelect }: MarketPanelPro
       </button>
 
       <dl className="stats">
-        <div className="stats__price"><dt className="sr-only">현재 가격</dt><dd>{selected.price}</dd></div>
+        <div className="stats__price"><dt className="sr-only">{t("price")}</dt><dd>{selected.price}</dd></div>
         <div><dt>{t("oraclePrice")}</dt><dd>{selected.price}</dd></div>
         <div><dt>{t("change24h")}</dt><dd className={selected.change < 0 ? "is-negative stats__change" : "is-positive stats__change"}>{selected.change.toFixed(2)}%</dd></div>
         <div><dt>{t("volume24h")}</dt><dd>{selected.volume}</dd></div>
@@ -199,31 +255,31 @@ export function MarketPanel({ quantityUnit, selected, onSelect }: MarketPanelPro
             <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t("searchPlaceholder")} autoFocus />
           </label>
 
-          <div className="market-picker__filters">
-            <span>{t("availableMarkets")}</span>
-            <button className={`market-picker__toggle${favoritesOnly ? " is-on" : ""}`} type="button" role="switch" aria-checked={favoritesOnly} onClick={() => setFavoritesOnly((value) => !value)}><i /></button>
-            {categories.map((item) => <button className={category === item ? "is-active" : undefined} type="button" key={item} onClick={() => setCategory(item)}>{categoryLabel(item)}</button>)}
-          </div>
+          <MarketCategoryTabs
+            activeCategory={category}
+            onCategoryChange={(nextCategory) => {
+              setCategory(nextCategory);
+              setPage(1);
+            }}
+          />
 
           <div className="market-picker__table">
             <div className="market-picker__head">
               <span>{t("market")}</span><span>{t("price")}</span><span>{t("change24h")}</span>
-              <button className="market-picker__sort" type="button" onClick={() => setVolumeSort((value) => value === "desc" ? "asc" : "desc")}>
-                <span>{t("volume")}</span>
-                <i aria-hidden="true">
-                  <svg className={volumeSort === "asc" ? "is-active" : undefined} width="6" height="9" viewBox="0 0 6 9" fill="none"><path fill="currentColor" fillRule="evenodd" clipRule="evenodd" d="M.22 3.53A.75.75 0 0 1 .22 2.47L2.47.22a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1-1.06 1.06l-.97-.97v5.69a.75.75 0 0 1-1.5 0V2.56l-.97.97a.75.75 0 0 1-1.06 0Z" /></svg>
-                  <svg className={volumeSort === "desc" ? "is-active" : undefined} width="6" height="9" viewBox="0 0 6 9" fill="none"><path fill="currentColor" fillRule="evenodd" clipRule="evenodd" d="M.22 3.53A.75.75 0 0 1 .22 2.47L2.47.22a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1-1.06 1.06l-.97-.97v5.69a.75.75 0 0 1-1.5 0V2.56l-.97.97a.75.75 0 0 1-1.06 0Z" /></svg>
-                </i>
-              </button>
+              <VolumeSortButton
+                label={t("volume")}
+                direction={volumeSort}
+                onToggle={() => setVolumeSort((value) => value === "desc" ? "asc" : "desc")}
+              />
               <span>{t("spotVolume24h")}</span><span>{t("marketCap")}</span>
             </div>
             <div className="market-picker__body">
               {visibleMarkets.map((market) => (
                 <div className={`market-picker__row${selected.symbol === market.symbol ? " is-selected" : ""}`} key={market.symbol}>
-                  <button className={`market-picker__star${favorites.has(market.symbol) ? " is-favorite" : ""}`} type="button" aria-label={`${market.name} 즐겨찾기`} onClick={() => toggleFavorite(market.symbol)}><StarIcon active={favorites.has(market.symbol)} /></button>
+                  <button className={`market-picker__star${favorites.has(market.symbol) ? " is-favorite" : ""}`} type="button" aria-label={`${market.name} ${t("favoriteMarket")}`} onClick={() => { onToggleFavorite(market.symbol); setPage(1); }}><FavoriteStar active={favorites.has(market.symbol)} /></button>
                   <button className="market-picker__market" type="button" onClick={() => { onSelect(market); setIsOpen(false); }}>
                     <span className="market-picker__coin"><CoinMark market={market} /></span>
-                    <strong>{market.name}</strong><small>{market.leverage}</small>
+                    <strong>{market.name.replace(/-USD$/, "")}</strong><small>{market.leverage}</small>
                   </button>
                   <strong>{market.price}</strong>
                   <strong className={market.change < 0 ? "is-negative" : "is-positive"}>{market.change.toFixed(2)}%</strong>
@@ -237,7 +293,7 @@ export function MarketPanel({ quantityUnit, selected, onSelect }: MarketPanelPro
             <span className="market-picker__count">
               {filteredMarkets.length} / {visibleMarkets.length} {t("showing")}
             </span>
-            <nav className="market-picker__pagination" aria-label="시장 목록 페이지">
+            <nav className="market-picker__pagination" aria-label={t("marketListPages")}>
               <button type="button" aria-label={t("previousPage")} disabled={page === 1} onClick={() => setPage((value) => Math.max(1, value - 1))}>‹</button>
               {Array.from({ length: pageCount }, (_, index) => index + 1).slice(0, 4).map((number) => (
                 <button className={page === number ? "is-active" : undefined} type="button" key={number} onClick={() => setPage(number)}>{number}</button>

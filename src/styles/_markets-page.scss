@@ -5,19 +5,23 @@
 .markets-page {
   display: flex;
   flex-direction: column;
+  height: calc(100vh - #{$header-height} - #{$footer-height});
   min-height: calc(100vh - #{$header-height} - #{$footer-height});
   background: $color-surface;
+  overflow: hidden;
 
   &__container {
+    width: 100%;
     flex: 1;
-    overflow-y: auto;
-    padding-bottom: 6.4rem;
+    overflow: auto;
   }
 
   &__content {
     display: grid;
-    gap: $space-16;
-    padding: $space-16 $space-20;
+    gap: $space-12;
+    width: min(100%, 130.2rem);
+    margin-inline: auto;
+    padding: $space-24 0 0;
   }
 
   &__controls {
@@ -30,16 +34,18 @@
     @include flex(center);
     flex: 1;
     min-width: 20rem;
-    gap: $space-10;
-    padding: $space-10 $space-12;
+    gap: $space-6;
+    height: 4rem;
+    margin-left: $space-6;
+    padding-inline: $space-12;
     border: 0.1rem solid $color-border;
     border-radius: 999rem;
-    background: $color-surface-raised;
+    background: #3b3b3f;
     color: $color-text-muted;
 
     svg {
-      width: 1.2rem;
-      height: 1.5rem;
+      width: 1.6rem;
+      height: 1.8rem;
       flex: 0 0 auto;
     }
 
@@ -49,7 +55,8 @@
       outline: 0;
       color: $color-text;
       background: transparent;
-      font-size: $font-lg;
+      font-size: 1.5rem;
+      font-weight: 450;
 
       &::placeholder {
         color: $color-text-muted;
@@ -57,29 +64,95 @@
     }
   }
 
-  &__sort {
-    min-width: 14rem;
-  }
-
   &__filters {
     @include flex(center);
-    flex-wrap: wrap;
-    gap: $space-8;
+    min-height: 2.8rem;
+    margin-left: $space-6;
+    flex-wrap: nowrap;
+    gap: 0.528rem;
+    overflow-x: auto;
+    color: #888891;
+    font-family: "Satoshi", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1.3;
+    scrollbar-width: none;
 
-    button {
-      padding: $space-6 $space-12;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    > button {
+      @include flex(center);
+      justify-content: center;
+      height: 2.8rem;
+      gap: 0.416rem;
+      padding-inline: $space-10;
       border: 0.1rem solid transparent;
       border-radius: 999rem;
-      color: $color-text-muted;
+      color: inherit;
       background: transparent;
-      font-size: $font-md;
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+      white-space: nowrap;
       transition: all $duration-fast ease;
 
-      &:hover,
       &.is-active {
-        color: $color-text;
-        border-color: $color-border;
-        background: $color-surface-raised;
+        color: #fafafa;
+        border-color: #494950;
+        background: #1b1b1d;
+      }
+
+      small {
+        padding: $space-2 $space-4;
+        border-radius: $radius-xs;
+        color: #8b88ff;
+        background: #303052;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.4;
+      }
+    }
+  }
+
+  &__launchable {
+    @include flex(center);
+    gap: $space-8;
+    flex: 0 0 auto;
+    color: #cacace;
+    font-size: inherit;
+    font-weight: inherit;
+    white-space: nowrap;
+  }
+
+  &__toggle {
+    position: relative;
+    width: 3.2rem;
+    height: 1.8rem;
+    flex: 0 0 auto;
+    padding: 0;
+    border: 0;
+    border-radius: 999rem;
+    background: #494950;
+    transition: background $duration-fast ease;
+
+    i {
+      position: absolute;
+      top: 0.2rem;
+      left: 0.2rem;
+      width: 1.4rem;
+      height: 1.4rem;
+      border-radius: 50%;
+      background: #f4f3f8;
+      transition: transform $duration-fast ease;
+    }
+
+    &.is-on {
+      background: #6966ff;
+
+      i {
+        transform: translateX(1.4rem);
       }
     }
   }
@@ -87,62 +160,100 @@
   &__table {
     display: flex;
     flex-direction: column;
-    border: 0.1rem solid $color-border;
-    border-radius: $radius-lg;
-    background: $color-surface;
-    overflow: hidden;
+    overflow: visible;
+  }
+
+  &__head,
+  &__row {
+    display: grid;
+    min-width: 130.2rem;
+    grid-template-columns: minmax(28rem, 1fr) 9.817rem 8.8rem 9.138rem 15rem 13.827rem 9.528rem 5.294rem 9.127rem 12.709rem;
+    gap: 0;
+    align-items: center;
+    padding: 0;
   }
 
   &__head {
-    display: grid;
-    grid-template-columns: 4rem 1fr 12rem 12rem 12rem 12rem 12rem;
-    gap: $space-12;
-    padding: $space-16;
+    position: sticky;
+    z-index: $z-market;
+    top: 0;
+    min-height: 4.6rem;
     border-bottom: 0.1rem solid $color-border;
-    background: $color-surface-raised;
-    font-size: $font-md;
-    font-weight: $weight-semibold;
-    color: $color-text-muted;
+    color: #8b8a9b;
+    background: #212124;
+    font-size: 1.2rem;
+    font-weight: 450;
 
     > div {
-      overflow: hidden;
-      text-overflow: ellipsis;
+      padding: $space-10 $space-20;
       white-space: nowrap;
+      text-align: center;
+    }
+
+    > div:first-child {
+      text-align: left;
+    }
+
+    > div:last-child {
+      padding-right: $space-16;
+      text-align: right;
     }
   }
 
   &__body {
     display: flex;
     flex-direction: column;
-    max-height: 50rem;
-    overflow-y: auto;
   }
 
   &__row {
-    display: grid;
-    grid-template-columns: 4rem 1fr 12rem 12rem 12rem 12rem 12rem;
-    gap: $space-12;
-    align-items: center;
-    padding: $space-12 $space-16;
+    min-height: 6.4rem;
     border-bottom: 0.1rem solid $color-border;
-    transition: background $duration-fast ease;
 
     &:last-child {
       border-bottom: 0;
     }
 
-    &:hover,
     &.is-selected {
-      background: rgba(119, 116, 255, 0.08);
+      background: transparent;
     }
 
     > div {
-      overflow: hidden;
-      text-overflow: ellipsis;
       white-space: nowrap;
-      font-size: $font-base;
-      color: $color-text;
+      padding: $space-16 0;
+      color: #cacace;
+      font-size: 1.35008rem;
+      font-weight: 450;
+      text-align: center;
     }
+
+    > div:first-child {
+      text-align: left;
+    }
+
+    > div:last-child {
+      padding-right: $space-16;
+      text-align: right;
+    }
+  }
+
+  &__sort {
+    justify-content: center;
+    padding: $space-10 $space-20;
+    font: inherit;
+    white-space: nowrap;
+
+    > span {
+      color: inherit;
+      font: inherit;
+    }
+  }
+
+  &__identity {
+    @include flex(center);
+    min-width: 0;
+    gap: $space-8;
+    padding: $space-8 $space-4 $space-8 $space-16 !important;
+    text-align: left !important;
   }
 
   &__star {
@@ -155,22 +266,21 @@
     background: transparent;
     color: $color-text-muted;
     cursor: pointer;
-    transition: color $duration-fast ease;
 
     svg {
-      width: 1.6rem;
-      height: 1.6rem;
+      width: 2rem;
+      height: 2rem;
     }
 
-    &:hover,
     &.is-favorite {
-      color: $color-primary;
+      color: #f7c843;
     }
   }
 
   &__market {
     @include flex(center);
-    gap: $space-10;
+    min-width: 0;
+    gap: $space-8;
     padding: 0;
     border: 0;
     background: transparent;
@@ -179,37 +289,69 @@
     color: inherit;
 
     img {
-      width: 2.4rem;
-      height: 2.4rem;
+      width: 3.2rem;
+      height: 3.2rem;
       border-radius: 50%;
       object-fit: contain;
       flex: 0 0 auto;
     }
 
     strong {
-      font-size: $font-base;
-      font-weight: $weight-semibold;
+      color: #cacace;
+      font-size: 1.8rem;
+      font-weight: 500;
       min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
       white-space: nowrap;
     }
 
     span {
-      color: $color-text-muted;
-      font-size: $font-md;
+      padding: $space-2 $space-4;
+      border-radius: $radius-xs;
+      color: #fafafa;
+      background: #494950;
+      font-size: 1rem;
+      font-weight: 450;
       flex: 0 0 auto;
     }
   }
 
   &__price {
-    font-weight: $weight-semibold;
-    text-align: right;
+    font-weight: 450;
+    text-align: left;
+  }
+
+  &__sparkline {
+    @include flex(center, center);
+
+    svg {
+      width: 6.4rem;
+      height: 3.2rem;
+
+      polyline {
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        vector-effect: non-scaling-stroke;
+      }
+
+      circle {
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: market-sparkline-tick 1.4s ease-out infinite;
+      }
+
+      &.is-positive {
+        color: $color-positive;
+      }
+
+      &.is-negative {
+        color: $color-negative;
+      }
+    }
   }
 
   &__change {
-    font-weight: $weight-semibold;
-    text-align: right;
+    font-weight: 450;
+    text-align: left;
 
     &.is-positive {
       color: $color-positive;
@@ -220,6 +362,10 @@
     }
   }
 
+  &__funding {
+    color: $color-positive !important;
+  }
+
   &__empty {
     padding: $space-24;
     color: $color-text-muted;
@@ -228,40 +374,49 @@
   }
 
   &__pagination {
-    position: fixed;
-    bottom: $footer-height;
-    left: 0;
-    right: 0;
-    @include flex(center, center);
-    gap: $space-8;
-    height: 6.4rem;
-    padding: $space-12 $space-16;
-    border-top: 0.1rem solid $color-border;
-    background: $color-surface;
-    z-index: 10;
+    display: grid;
+    position: sticky;
+    z-index: $z-market;
+    bottom: 0;
+    height: 4.8rem;
+    width: 100%;
+    margin-top: -$space-12;
+    flex: 0 0 auto;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding-inline: $space-20;
+    background: #212124;
+    color: #888891;
+    font-size: 1.2rem;
+    font-weight: 450;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 100%;
+      height: 0.1rem;
+      background: #44444a;
+      transform: translateX(-50%);
+    }
 
     button {
-      min-width: 4rem;
-      height: 4rem;
-      padding: $space-8 $space-12;
-      border: 0.1rem solid $color-border;
-      border-radius: $radius-md;
-      background: $color-surface;
-      color: $color-text-muted;
-      font-size: $font-md;
+      width: 2.8rem;
+      height: 2.8rem;
+      padding: 0;
+      border: 0.1rem solid #494950;
+      border-radius: $radius-sm;
+      background: #212124;
+      color: #888891;
+      font-size: 1.2rem;
+      font-weight: 450;
       cursor: pointer;
-      transition: all $duration-fast ease;
-
-      &:hover:not(:disabled) {
-        border-color: $color-text-muted;
-        color: $color-text;
-      }
 
       &.is-active {
-        border-color: $color-primary;
-        background: rgba(119, 116, 255, 0.12);
-        color: $color-primary;
-        font-weight: $weight-semibold;
+        border-color: #494950;
+        background: #1b1b1d;
+        color: #fafafa;
       }
 
       &:disabled {
@@ -270,4 +425,191 @@
       }
     }
   }
+
+  &__page-summary {
+    justify-self: start;
+    white-space: nowrap;
+  }
+
+  &__pages {
+    @include flex(center, center);
+    gap: $space-6;
+  }
+
+  &__pages &__page-arrow {
+    @include flex-center;
+    width: 2.8rem;
+    border-color: transparent;
+    background: transparent;
+
+    svg {
+      display: block;
+      width: var(--icon-size, 1em);
+      height: var(--icon-size, 1em);
+      min-width: var(--icon-size, 1em);
+      min-height: var(--icon-size, 1em);
+
+      &.is-next {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &__page-size {
+    @include flex(center);
+    justify-self: end;
+    gap: $space-12;
+    white-space: nowrap;
+
+    select {
+      padding-right: $space-6;
+      border: 0;
+      outline: 0;
+      color: #888891;
+      background: transparent;
+      font-size: 1.2rem;
+      font-weight: 450;
+      cursor: pointer;
+    }
+  }
+
+}
+
+@keyframes market-sparkline-tick {
+  0% {
+    opacity: 1;
+    transform: scale(0.8);
+  }
+
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(2.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .markets-page__sparkline circle {
+    animation: none;
+  }
+}
+
+@media (max-width: 76.8rem) {
+  .markets-page {
+    &__content {
+      padding: $space-20 $space-16 0;
+    }
+
+    &__pagination {
+      padding-inline: $space-16;
+    }
+
+    &__page-summary,
+    &__page-size span {
+      display: none;
+    }
+  }
+}
+
+.markets-page + .status {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.market-category-tabs {
+  @include flex(center);
+  min-height: 2.8rem;
+  margin-left: $space-6;
+  flex-wrap: nowrap;
+  gap: 0.528rem;
+  overflow-x: auto;
+  color: #888891;
+  font-family: "Satoshi", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.3;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  > button {
+    @include flex(center);
+    justify-content: center;
+    width: max-content;
+    height: 2.8rem;
+    flex: 0 0 auto;
+    gap: 0.416rem;
+    padding-inline: $space-10;
+    border: 0.1rem solid transparent;
+    border-radius: 999rem;
+    color: inherit;
+    background: transparent;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    white-space: nowrap;
+
+    &.is-active {
+      color: #fafafa;
+      border-color: #494950;
+      background: #1b1b1d;
+    }
+
+    small {
+      padding: $space-2 $space-4;
+      border-radius: $radius-xs;
+      color: #8b88ff;
+      background: #303052;
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+  }
+
+  &__toggle-wrap {
+    @include flex(center);
+    gap: $space-8;
+    flex: 0 0 auto;
+    color: #cacace;
+    white-space: nowrap;
+  }
+
+  &__toggle {
+    position: relative;
+    width: 3.2rem;
+    height: 1.8rem;
+    flex: 0 0 auto;
+    border-radius: 999rem;
+    background: #494950;
+
+    i {
+      position: absolute;
+      top: 0.2rem;
+      left: 0.2rem;
+      width: 1.4rem;
+      height: 1.4rem;
+      border-radius: 50%;
+      background: #f4f3f8;
+      transition: transform $duration-fast ease;
+    }
+
+    &.is-on {
+      background: #6966ff;
+
+      i {
+        transform: translateX(1.4rem);
+      }
+    }
+  }
+}
+
+.market-picker > .market-category-tabs {
+  min-height: 6.4rem;
+  margin-left: 0;
+  padding: $space-18 $space-8;
+  border-bottom: 0.1rem solid #494950;
 }
