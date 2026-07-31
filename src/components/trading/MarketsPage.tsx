@@ -1,24 +1,135 @@
-import { useMemo, useState } from "react";
-import { useLocale } from "../../i18n/Locale";
-import { SelectMenu } from "../ui/SelectMenu";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useLocale, type Lang } from "../../i18n/Locale";
+import { FavoriteStar } from "../ui/FavoriteStar";
+import { MarketCategoryTabs } from "../ui/MarketCategoryTabs";
+import { VolumeSortButton, type SortDirection } from "../ui/VolumeSortButton";
 import { markets, type Market } from "./MarketPanel";
 
 type MarketsPageProps = {
   selectedMarket: Market;
   onSelectMarket: (market: Market) => void;
+  favorites: Set<string>;
+  onToggleFavorite: (symbol: string) => void;
 };
 
-type SortValue = "volume" | "change" | "price";
+function formatMarketValue(value: string, lang: Lang) {
+  if (value === "—" || lang === "ko") return value;
 
-function StarIcon({ active }: { active: boolean }) {
+  const amount = Number(value.replace(/[^\d.]/g, ""))
+    * (value.includes("조")
+      ? 1_000_000_000_000
+      : value.includes("억")
+        ? 100_000_000
+        : value.includes("만")
+          ? 10_000
+          : 1);
+  const formats = {
+    en: [[1e12, "T"], [1e9, "B"], [1e6, "M"], [1e3, "K"]],
+    ja: [[1e12, "兆"], [1e8, "億"], [1e4, "万"]],
+    zh: [[1e12, "万亿"], [1e8, "亿"], [1e4, "万"]],
+    vi: [[1e12, " nghìn tỷ"], [1e9, " tỷ"], [1e6, " triệu"], [1e3, " nghìn"]],
+    fr: [[1e12, " Bn"], [1e9, " Md"], [1e6, " M"], [1e3, " k"]],
+  } as const;
+  const [divisor, suffix] = formats[lang].find(([threshold]) => amount >= threshold) ?? [1, ""];
+  return `US$${Number((amount / divisor).toPrecision(3))}${suffix}`;
+}
+
+function marketSeed(symbol: string) {
+  return [...symbol].reduce((seed, char) => seed + char.charCodeAt(0), 0);
+}
+
+function initialSparkline(symbol: string, change: number) {
+  const seed = marketSeed(symbol);
+  const trend = change / 24;
+  const volatility = 1.1 + (seed % 7) * 0.24;
+  let value = 48 + ((seed % 9) - 4);
+  let momentum = 0;
+
+  return Array.from({ length: 32 }, (_, index) => {
+    const wave = Math.sin((index + seed) * 0.47) * volatility;
+    const noise = (((seed * (index + 5) * 23) % 19) - 9) * 0.18 * volatility;
+    const impulse = (index + seed) % 17 === 0 ? ((seed % 2 ? 1 : -1) * volatility * 3.8) : 0;
+    momentum = momentum * 0.58 + wave * 0.24 + noise + trend;
+    value = Math.max(7, Math.min(91, value + momentum + impulse));
+    return value;
+  });
+}
+
+function MarketSparkline({ symbol, change }: { symbol: string; change: number }) {
+  const isPositive = change >= 0;
+  const seed = useMemo(() => marketSeed(symbol), [symbol]);
+  const tick = useRef(0);
+  const momentum = useRef(0);
+  const [values, setValues] = useState(() => initialSparkline(symbol, change));
+
+  useEffect(() => {
+    setValues(initialSparkline(symbol, change));
+    tick.current = 0;
+    momentum.current = 0;
+  }, [change, symbol]);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const timer = window.setInterval(() => {
+      if (document.hidden) return;
+      tick.current += 1;
+      setValues((current) => {
+        const previous = current[current.length - 1];
+        const volatility = 0.75 + (seed % 8) * 0.18;
+        const wave = Math.sin((seed + tick.current) * 0.63) * volatility;
+        const noise = (((seed + tick.current * 29) % 17) - 8) * 0.13 * volatility;
+        const impulse = (seed + tick.current * 7) % 41 === 0
+          ? (seed % 2 ? 1 : -1) * volatility * 5.2
+          : 0;
+        const centerPull = (50 - previous) * 0.012;
+        momentum.current = momentum.current * 0.62 + wave * 0.22 + noise + centerPull;
+        const next = Math.max(6, Math.min(94, previous + momentum.current + impulse));
+        return [...current.slice(1), next];
+      });
+    }, 720 + (seed % 5) * 55);
+
+    return () => window.clearInterval(timer);
+  }, [seed]);
+
+  const pointPairs = values
+    .map((value, index) => {
+      const x = (index / (values.length - 1)) * 76 + 1;
+      const y = 53 - (value / 100) * 50;
+      return `${x.toFixed(2)},${y.toFixed(2)}`;
+    });
+  const points = pointPairs.join(" ");
+  const [lastX, lastY] = pointPairs[pointPairs.length - 1].split(",").map(Number);
+
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
+    <svg
+      className={isPositive ? "is-positive" : "is-negative"}
+      viewBox="0 0 78 56"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <polyline points={points} fill="none" stroke="currentColor" strokeWidth="2" />
+      <circle className="markets-page__sparkline-tick" cx={lastX} cy={lastY} r="1.8" fill="currentColor" />
+    </svg>
+  );
+}
+
+function PaginationChevron({ next = false }: { next?: boolean }) {
+  return (
+    <svg
+      className={next ? "is-next" : undefined}
+      width="11"
+      height="19"
+      viewBox="0 0 11 19"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
       <path
-        d="m12 2.9 2.78 5.63 6.22.91-4.5 4.38 1.06 6.19L12 17.08 6.44 20l1.06-6.18L3 9.44l6.22-.91L12 2.9Z"
-        fill={active ? "currentColor" : "none"}
+        d="M9.5 2L2.70711 8.79289C2.31658 9.18342 2.31658 9.81658 2.70711 10.2071L9.5 17"
         stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
+        strokeWidth="3"
+        strokeLinecap="round"
       />
     </svg>
   );
@@ -27,40 +138,21 @@ function StarIcon({ active }: { active: boolean }) {
 export function MarketsPage({
   selectedMarket,
   onSelectMarket,
+  favorites,
+  onToggleFavorite,
 }: MarketsPageProps) {
-  const { t } = useLocale();
+  const { lang, t } = useLocale();
+  const formatMessage = (template: string, values: Record<string, string | number>) =>
+    Object.entries(values).reduce(
+      (message, [key, value]) => message.replace(`{${key}}`, String(value)),
+      template,
+    );
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("전체");
-  const [sort, setSort] = useState<SortValue>("volume");
-  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [showLaunchable, setShowLaunchable] = useState(true);
   const [page, setPage] = useState(1);
-  const pageSize = 10;
-
-  const categories = useMemo(
-    () => [
-      { value: "전체", label: t("all") },
-      { value: "최근에 나열됨", label: t("recentlyListed") },
-      { value: "시장 가능 신규", label: t("newMarkets") },
-      { value: "밈", label: t("meme") },
-      { value: "AI 및 빅 데이터", label: t("aiBigData") },
-      { value: "DeFi", label: "DeFi" },
-      { value: "레이어 1", label: t("layer1") },
-      { value: "레이어 2", label: t("layer2") },
-      { value: "RWA", label: "RWA" },
-      { value: "게이밍", label: t("gaming") },
-      { value: "외환", label: t("forex") },
-    ],
-    [t],
-  );
-
-  const toggleFavorite = (symbol: string) => {
-    setFavorites((current) => {
-      const next = new Set(current);
-      if (next.has(symbol)) next.delete(symbol);
-      else next.add(symbol);
-      return next;
-    });
-  };
+  const [pageSize, setPageSize] = useState(20);
+  const [volumeSort, setVolumeSort] = useState<SortDirection>("desc");
 
   const filteredMarkets = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -78,39 +170,32 @@ export function MarketsPage({
   }, [activeCategory, query]);
 
   const sortedMarkets = useMemo(() => {
-    const clone = [...filteredMarkets];
-    clone.sort((a, b) => {
-      if (sort === "change") return b.change - a.change;
-      if (sort === "price") {
-        const parsePrice = (value: string) =>
-          Number(value.replace(/[$,]/g, ""));
-        return parsePrice(a.price) - parsePrice(b.price);
-      }
-      const parseVolume = (value: string) => {
-        const amount = Number(value.replace(/[^\d.]/g, ""));
-        if (value.includes("조")) return amount * 1_000_000_000_000;
-        if (value.includes("억")) return amount * 100_000_000;
-        if (value.includes("만")) return amount * 10_000;
-        return amount;
-      };
-      return parseVolume(b.volume) - parseVolume(a.volume);
+    const parseVolume = (value: string) => {
+      const amount = Number(value.replace(/[^\d.]/g, ""));
+      if (value.includes("조")) return amount * 1_000_000_000_000;
+      if (value.includes("억")) return amount * 100_000_000;
+      if (value.includes("만")) return amount * 10_000;
+      return amount;
+    };
+
+    return [...filteredMarkets].sort((a, b) => {
+      const favoriteDifference =
+        Number(favorites.has(b.symbol)) - Number(favorites.has(a.symbol));
+      const volumeDifference = volumeSort === "asc"
+        ? parseVolume(a.volume) - parseVolume(b.volume)
+        : parseVolume(b.volume) - parseVolume(a.volume);
+      return favoriteDifference || volumeDifference;
     });
-    return clone;
-  }, [filteredMarkets, sort]);
+  }, [favorites, filteredMarkets, volumeSort]);
 
   const pageCount = Math.max(1, Math.ceil(sortedMarkets.length / pageSize));
+  const paginationNumbers =
+    pageCount <= 5
+      ? Array.from({ length: pageCount }, (_, i) => i + 1)
+      : [1, 2, 3, 4, pageCount];
   const visibleMarkets = sortedMarkets.slice(
     (page - 1) * pageSize,
     page * pageSize,
-  );
-
-  const sortOptions: Array<{ value: SortValue; label: string }> = useMemo(
-    () => [
-      { value: "volume", label: t("volume") },
-      { value: "change", label: t("change24h") },
-      { value: "price", label: t("price") },
-    ],
-    [t],
   );
 
   return (
@@ -130,57 +215,54 @@ export function MarketsPage({
               <input
                 id="market-search"
                 value={query}
-                onChange={(event) => setQuery(event.target.value)}
+                onChange={(event) => {
+                  setQuery(event.target.value);
+                  setPage(1);
+                }}
                 placeholder={t("searchMarkets")}
               />
             </label>
-            <SelectMenu<SortValue>
-              value={sort}
-              options={sortOptions}
-              onChange={setSort}
-              ariaLabel={t("sortMarkets")}
-              className="markets-page__sort"
-            />
           </div>
 
-          <div
-            className="markets-page__filters"
-            role="tablist"
-            aria-label={t("marketCategories")}
-          >
-            {categories.map((category) => (
-              <button
-                className={
-                  activeCategory === category.value ? "is-active" : undefined
-                }
-                type="button"
-                key={category.value}
-                onClick={() => {
-                  setActiveCategory(category.value);
-                  setPage(1);
-                }}
-              >
-                {category.label}
-              </button>
-            ))}
-          </div>
+          <MarketCategoryTabs
+            activeCategory={activeCategory}
+            onCategoryChange={(category) => {
+              setActiveCategory(category);
+              setPage(1);
+            }}
+            toggleLabel={t("availableMarkets")}
+            toggleValue={showLaunchable}
+            onToggleChange={() => setShowLaunchable((current) => !current)}
+          />
 
           <div className="markets-page__table">
             <div className="markets-page__head">
-              <div></div>
               <div>{t("market")}</div>
-              <div>{t("price")}</div>
+              <div>{t("oraclePrice")}</div>
+              <div>{t("last24Hours")}</div>
               <div>{t("change24h")}</div>
-              <div>{t("volume")}</div>
+              <VolumeSortButton
+                className="markets-page__sort"
+                label={t("volume24h")}
+                direction={volumeSort}
+                onToggle={() => setVolumeSort((value) => value === "desc" ? "asc" : "desc")}
+              />
               <div>{t("spotVolume24h")}</div>
               <div>{t("marketCap")}</div>
+              <div>{t("trades24h")}</div>
+              <div>{t("openInterest")}</div>
+              <div>{t("funding1h")}</div>
             </div>
             <div className="markets-page__body">
               {sortedMarkets.length === 0 ? (
                 <div className="markets-page__empty">{t("noMarkets")}</div>
               ) : (
-                visibleMarkets.map((market) => {
+                visibleMarkets.map((market, index) => {
                   const isActive = selectedMarket.symbol === market.symbol;
+                  const fundingRate = Math.max(
+                    0.00001,
+                    Math.abs(market.change) * 0.00004,
+                  ).toFixed(5);
                   return (
                     <div
                       className={`markets-page__row${
@@ -188,26 +270,34 @@ export function MarketsPage({
                       }`}
                       key={market.symbol}
                     >
-                      <button
-                        className={`markets-page__star${
-                          favorites.has(market.symbol) ? " is-favorite" : ""
-                        }`}
-                        type="button"
-                        aria-label={`${market.name} 즐겨찾기`}
-                        onClick={() => toggleFavorite(market.symbol)}
-                      >
-                        <StarIcon active={favorites.has(market.symbol)} />
-                      </button>
-                      <button
-                        className="markets-page__market"
-                        type="button"
-                        onClick={() => onSelectMarket(market)}
-                      >
-                        <img src={market.image} alt={`${market.symbol} logo`} />
-                        <strong>{market.name}</strong>
-                        <span>{market.leverage}</span>
-                      </button>
+                      <div className="markets-page__identity">
+                        <button
+                          className={`markets-page__star${
+                            favorites.has(market.symbol) ? " is-favorite" : ""
+                          }`}
+                          type="button"
+                          aria-label={`${market.name} ${t("favoriteMarket")}`}
+                          onClick={() => {
+                            onToggleFavorite(market.symbol);
+                            setPage(1);
+                          }}
+                        >
+                          <FavoriteStar active={favorites.has(market.symbol)} />
+                        </button>
+                        <button
+                          className="markets-page__market"
+                          type="button"
+                          onClick={() => onSelectMarket(market)}
+                        >
+                          <img src={market.image} alt={`${market.symbol} logo`} />
+                          <strong>{market.name.replace(/-USD$/, "")}</strong>
+                          <span>{market.leverage}</span>
+                        </button>
+                      </div>
                       <div className="markets-page__price">{market.price}</div>
+                      <div className="markets-page__sparkline">
+                        <MarketSparkline symbol={market.symbol} change={market.change} />
+                      </div>
                       <div
                         className={`markets-page__change${
                           market.change < 0 ? " is-negative" : " is-positive"
@@ -215,47 +305,75 @@ export function MarketsPage({
                       >
                         {market.change.toFixed(2)}%
                       </div>
-                      <div>{market.volume}</div>
-                      <div>{market.spotVolume}</div>
-                      <div>{market.marketCap}</div>
+                      <div>{formatMarketValue(market.volume, lang)}</div>
+                      <div>{formatMarketValue(market.spotVolume, lang)}</div>
+                      <div>{formatMarketValue(market.marketCap, lang)}</div>
+                      <div>{index + 1}</div>
+                      <div>{formatMarketValue(market.volume, lang)}</div>
+                      <div className="markets-page__funding">{fundingRate}%</div>
                     </div>
                   );
                 })
               )}
             </div>
           </div>
-        </div>
-      </div>
+          <div className="markets-page__pagination">
+          <div className="markets-page__page-summary">
+            {formatMessage(t("marketCountSummary"), {
+              total: sortedMarkets.length,
+              end: Math.min(page * pageSize, sortedMarkets.length),
+              start: sortedMarkets.length === 0 ? 0 : (page - 1) * pageSize + 1,
+            })}
+          </div>
 
-      <div className="markets-page__pagination">
-        <button
-          type="button"
-          disabled={page === 1}
-          onClick={() => setPage((p) => Math.max(1, p - 1))}
-          aria-label={t("previousPage")}
-        >
-          ‹
-        </button>
-        {Array.from({ length: pageCount }, (_, i) => i + 1)
-          .slice(0, 5)
-          .map((num) => (
+          <div className="markets-page__pages">
             <button
+              className="markets-page__page-arrow"
               type="button"
-              key={num}
-              className={page === num ? "is-active" : undefined}
-              onClick={() => setPage(num)}
+              disabled={page === 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              aria-label={t("previousPage")}
             >
-              {num}
+              <PaginationChevron />
             </button>
-          ))}
-        <button
-          type="button"
-          disabled={page === pageCount}
-          onClick={() => setPage((p) => Math.min(pageCount, p + 1))}
-          aria-label={t("nextPage")}
-        >
-          ›
-        </button>
+            {paginationNumbers.map((num) => (
+              <button
+                type="button"
+                key={num}
+                className={page === num ? "is-active" : undefined}
+                onClick={() => setPage(num)}
+              >
+                {num}
+              </button>
+            ))}
+            <button
+              className="markets-page__page-arrow"
+              type="button"
+              disabled={page === pageCount}
+              onClick={() => setPage((p) => Math.min(pageCount, p + 1))}
+              aria-label={t("nextPage")}
+            >
+              <PaginationChevron next />
+            </button>
+          </div>
+
+          <label className="markets-page__page-size">
+            <select
+              value={pageSize}
+              aria-label={t("marketsPerPage")}
+              onChange={(event) => {
+                setPageSize(Number(event.target.value));
+                setPage(1);
+              }}
+            >
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+            </select>
+            <span>{t("view")}</span>
+          </label>
+          </div>
+        </div>
       </div>
     </div>
   );
