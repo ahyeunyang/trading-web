@@ -36,6 +36,8 @@ import type { AppPage } from "../../App";
 import type { Lang } from "../../i18n/Locale";
 import { Modal } from "../ui/Modal";
 import { DiscordIcon, LiveChatIcon, SupportCenterIcon } from "../icons/HelpMenuIcons";
+import { ApiKeysModal } from "../account/ApiKeysModal";
+import { MobileAppModal } from "../account/MobileAppModal";
 
 const helpMenuCopy: Record<Lang, {
   title: string;
@@ -72,6 +74,8 @@ export function TradingHeader({
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [isApiDocsModalOpen, setIsApiDocsModalOpen] = useState(false);
   const [isHelpMenuOpen, setIsHelpMenuOpen] = useState(false);
+  const [isApiKeysModalOpen, setIsApiKeysModalOpen] = useState(false);
+  const [isMobileAppModalOpen, setIsMobileAppModalOpen] = useState(false);
   const accountMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -155,10 +159,10 @@ export function TradingHeader({
               <ApiDocIcon />
               {t("apiDocs")}
             </button>
-            <a href="#api-keys">
+            <button type="button" onClick={() => { setIsApiKeysModalOpen(true); document.querySelector<HTMLDetailsElement>(".more")?.removeAttribute("open"); }}>
               <ApiKeyIcon />
               {t("apiKeys")}
-            </a>
+            </button>
             <a href="#mintscan">
               <MintscanIcon />
               {t("mintscan")}
@@ -218,16 +222,18 @@ export function TradingHeader({
         <button
           className="icon-btn tip"
           type="button"
-          aria-label="모바일 앱"
-          data-tip="모바일 앱"
+          aria-label={t("mobileApp")}
+          data-tip={t("mobileApp")}
+          onClick={() => setIsMobileAppModalOpen(true)}
         >
           <DeviceIcon className="icon" />
         </button>
         <button
           className="icon-btn tip"
           type="button"
-          aria-label="도움말"
+          aria-label={t("help")}
           data-tip={t("help")}
+          onClick={openHelpMenu}
         >
           <HelpIcon className="icon" />
         </button>
@@ -402,6 +408,9 @@ export function TradingHeader({
             </button>
         </Modal>
       )}
+
+      {isApiKeysModalOpen && <ApiKeysModal onClose={() => setIsApiKeysModalOpen(false)} />}
+      {isMobileAppModalOpen && <MobileAppModal onClose={() => setIsMobileAppModalOpen(false)} />}
 
       {isHelpMenuOpen && (
         <Modal

@@ -8,6 +8,7 @@ import { SelectMenu } from "../ui/SelectMenu";
 import { Tooltip } from "../ui/Tooltip";
 import { Modal } from "../ui/Modal";
 import { useLocale } from "../../i18n/Locale";
+import { DepositModal } from "../account/DepositModal";
 
 type MarginMode = "cross" | "isolated";
 type OrderSide = "buy" | "sell";
@@ -48,20 +49,18 @@ export function OrderForm({
   const [leverage, setLeverage] = useState(50);
   const [draftLeverage, setDraftLeverage] = useState(50);
   const [isLeverageOpen, setIsLeverageOpen] = useState(false);
-  const [depositAmount, setDepositAmount] = useState("");
 
   useEffect(() => {
-    if (!isLeverageOpen && !isDepositOpen) return;
+    if (!isLeverageOpen) return;
 
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
       setIsLeverageOpen(false);
-      onDepositOpenChange(false);
     };
 
     window.addEventListener("keydown", closeOnEscape);
     return () => window.removeEventListener("keydown", closeOnEscape);
-  }, [isDepositOpen, isLeverageOpen, onDepositOpenChange]);
+  }, [isLeverageOpen]);
 
   const openLeverageModal = () => {
     setDraftLeverage(leverage);
@@ -120,11 +119,6 @@ export function OrderForm({
     : numericAmount / BTC_USD_PRICE;
   const positionMargin = amountInUsd / leverage;
   const estimatedFee = amountInUsd * 0.0005;
-  const numericDepositAmount = Number(depositAmount);
-  const hasValidDepositAmount =
-    depositAmount.trim() !== "" &&
-    Number.isFinite(numericDepositAmount) &&
-    numericDepositAmount > 0;
 
   return (
     <aside className="panel order" aria-labelledby="order-form-title">
@@ -500,60 +494,7 @@ export function OrderForm({
       )}
 
       {isDepositOpen && (
-        <Modal
-          className="deposit-modal"
-          backdropClassName="leverage-modal__backdrop"
-          labelledBy="deposit-modal-title"
-          onClose={() => onDepositOpenChange(false)}
-        >
-            <header className="deposit-modal__header">
-              <h2 id="deposit-modal-title">{t("deposit")}</h2>
-              <button
-                className="deposit-modal__close"
-                type="button"
-                aria-label="닫기"
-                onClick={() => onDepositOpenChange(false)}
-              >
-                <CloseIcon />
-              </button>
-            </header>
-
-            <p className="deposit-modal__description">
-              {t("depositDescription")}
-            </p>
-
-            <label className="deposit-modal__field">
-              <span>{t("asset")}</span>
-              <button type="button">
-                <span className="deposit-modal__asset">
-                  <BitcoinIcon />
-                  BTC
-                </span>
-                <ChevronDown />
-              </button>
-            </label>
-
-            <label className="deposit-modal__field">
-              <span>{t("amount")}</span>
-              <span className="deposit-modal__amount">
-                <input
-                  inputMode="decimal"
-                  placeholder="0.0000"
-                  value={depositAmount}
-                  onChange={(event) => setDepositAmount(event.target.value)}
-                />
-                <b>BTC</b>
-              </span>
-            </label>
-
-            <button
-              className="deposit-modal__submit"
-              type="button"
-              disabled={!hasValidDepositAmount}
-            >
-              {t("deposit")}
-            </button>
-        </Modal>
+        <DepositModal onClose={() => onDepositOpenChange(false)} />
       )}
     </aside>
   );
