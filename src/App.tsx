@@ -8,6 +8,11 @@ import { OrderForm } from "./components/trading/OrderForm";
 import { PositionsPanel } from "./components/trading/PositionsPanel";
 import { TradeChart } from "./components/trading/TradeChart";
 import { MarketsPage } from "./components/trading/MarketsPage";
+import { PortfolioPage } from "./components/portfolio/PortfolioPage";
+import { TermsPage } from "./components/legal/TermsPage";
+import { PrivacyPage } from "./components/legal/PrivacyPage";
+
+export type AppPage = "trade" | "markets" | "portfolio" | "terms" | "privacy";
 
 export function App() {
   const [loading, setLoading] = useState(true);
@@ -19,7 +24,7 @@ export function App() {
   const [mobileView, setMobileView] = useState<"chart" | "book" | "order">(
     "chart",
   );
-  const [activePage, setActivePage] = useState<"trade" | "markets">("trade");
+  const [activePage, setActivePage] = useState<AppPage>("trade");
 
   useEffect(() => {
     const timer = window.setTimeout(() => setLoading(false), 900);
@@ -50,6 +55,12 @@ export function App() {
           favorites={favoriteMarkets}
           onToggleFavorite={toggleFavoriteMarket}
         />
+      ) : activePage === "portfolio" ? (
+        <PortfolioPage onDepositClick={() => setIsDepositOpen(true)} />
+      ) : activePage === "terms" ? (
+        <TermsPage />
+      ) : activePage === "privacy" ? (
+        <PrivacyPage />
       ) : (
         <main
           className={`trade${isPositionsCollapsed ? " is-positions-collapsed" : ""}`}

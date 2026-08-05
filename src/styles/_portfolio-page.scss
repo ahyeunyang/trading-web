@@ -1,0 +1,145 @@
+@use "tokens" as *;
+@use "color-token" as *;
+@use "mixins" as *;
+
+.portfolio-page {
+  display: grid;
+  height: calc(100vh - #{$header-height} - #{$footer-height});
+  grid-template-columns: 31.8rem minmax(0, 1fr);
+  background: $color-surface;
+
+  &.is-sidebar-collapsed {
+    grid-template-columns: 5.2rem minmax(0, 1fr);
+  }
+
+  &__content {
+    min-width: 0;
+    border-left: 0.1rem solid $color-border;
+    background: $color-surface;
+  }
+}
+
+.portfolio-sidebar {
+  display: flex;
+  position: relative;
+  min-width: 0;
+  flex-direction: column;
+  padding: $space-12 $space-8 $space-20;
+  overflow: hidden;
+  color: $color-text-muted;
+  background: $color-surface;
+
+  &__heading {
+    @include flex(center, space-between);
+    min-height: 3.2rem;
+    margin-bottom: $space-8;
+    padding-left: $space-6;
+    color: $color-text-muted;
+    font-size: $font-base;
+
+    button {
+      height: 2.8rem;
+      padding-inline: $space-12;
+      border: 0.1rem solid $color-border;
+      border-radius: 999rem;
+      color: $color-text-muted;
+      font-size: $font-md;
+
+      &:hover {
+        color: $color-text;
+        background: $color-surface-hover;
+      }
+    }
+  }
+
+  &__nav {
+    display: grid;
+    gap: $space-2;
+
+    button {
+      @include flex(center);
+      min-height: 4.2rem;
+      gap: $space-10;
+      padding-inline: $space-6;
+      border-radius: $radius-md;
+      color: $color-text-muted;
+      font-size: $font-nav;
+      text-align: left;
+
+      i {
+        @include flex-center;
+        width: 2.4rem;
+        height: 2.4rem;
+        flex: 0 0 auto;
+        border-radius: 50%;
+        color: #aaaab2;
+        background: $color-surface-raised;
+      }
+
+      svg {
+        width: $icon-filter;
+        height: $icon-filter;
+      }
+
+      &:hover,
+      &.is-active {
+        color: $color-text;
+        background: #1b1b1d;
+      }
+    }
+  }
+
+  &__section-title {
+    margin: $space-20 $space-6 $space-8;
+    font-size: $font-base;
+  }
+
+  &__deposit {
+    width: calc(100% - #{$space-16});
+    height: 4.4rem;
+    margin: auto $space-8 0;
+    border-radius: $radius-md;
+    color: #fff;
+    background: $color-primary;
+    font-size: $font-nav;
+
+    &:hover {
+      background: $color-primary-hover;
+    }
+  }
+
+  &__expand {
+    display: grid;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3.2rem;
+    height: 3.2rem;
+    place-content: center;
+    gap: 0.3rem;
+    border-radius: $radius-sm;
+    transform: translate(-50%, -50%);
+
+    span {
+      display: block;
+      width: 1.5rem;
+      height: 0.15rem;
+      border-radius: 1rem;
+      background: $color-text;
+    }
+
+    &:hover {
+      background: $color-surface-hover;
+    }
+  }
+}
+
+@media (max-width: 76.8rem) {
+  .portfolio-page {
+    grid-template-columns: min(31.8rem, calc(100vw - 5.2rem)) minmax(0, 1fr);
+
+    &.is-sidebar-collapsed {
+      grid-template-columns: 5.2rem minmax(0, 1fr);
+    }
+  }
+}

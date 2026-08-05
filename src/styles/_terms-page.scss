@@ -1,0 +1,63 @@
+@use "tokens" as *;
+@use "color-token" as *;
+
+.terms-page {
+  height: calc(100vh - #{$header-height} - #{$footer-height});
+  padding: 6.4rem $space-24 8rem;
+  overflow-y: auto;
+  color: $color-text-button;
+  background: $color-surface;
+
+  &__document {
+    width: min(100%, 84rem);
+    margin-inline: auto;
+  }
+
+  &__header {
+    padding-bottom: $space-32;
+    border-bottom: 0.1rem solid $color-border;
+
+    h1 {
+      color: $color-text;
+      font-size: 3.2rem;
+      font-weight: $weight-medium;
+      line-height: 1.25;
+    }
+
+    p {
+      margin-top: $space-10;
+      color: $color-text-muted;
+      font-size: $font-detail;
+    }
+  }
+
+  &__sections {
+    display: grid;
+    gap: $space-20;
+    margin-top: $space-40;
+
+    h2 {
+      color: $color-text;
+      font-size: $font-xl;
+      font-weight: $weight-medium;
+      line-height: 1.4;
+    }
+
+    p {
+      margin-top: $space-12;
+      color: $color-text-button;
+      font-size: $font-base;
+      line-height: 1.8;
+    }
+  }
+}
+
+@media (max-width: 76.8rem) {
+  .terms-page {
+    padding: $space-40 $space-16 6.4rem;
+
+    &__header h1 {
+      font-size: 2.6rem;
+    }
+  }
+}

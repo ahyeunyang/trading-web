@@ -88,6 +88,16 @@ export function StatusBar() {
   }, [chatState]);
 
   useEffect(() => {
+    const openHelp = () => {
+      setHelpTab("home");
+      setIsHelpOpen(true);
+    };
+
+    window.addEventListener("open-ayxx-help", openHelp);
+    return () => window.removeEventListener("open-ayxx-help", openHelp);
+  }, []);
+
+  useEffect(() => {
     if (chatState !== "open") return;
     const list = messageListRef.current;
     if (list) list.scrollTo({ top: list.scrollHeight, behavior: "smooth" });

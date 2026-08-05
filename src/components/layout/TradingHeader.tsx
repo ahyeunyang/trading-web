@@ -15,6 +15,7 @@ import {
 } from "../icons/MoreIcons";
 import { BrandLogo } from "../icons/BrandLogo";
 import { BellIcon, DeviceIcon } from "../icons/HeaderIcons";
+import { CloseIcon } from "../icons/CloseIcon";
 import { SolanaIcon } from "../icons/SolanaIcon";
 import {
   AccountIcon,
@@ -31,11 +32,35 @@ import ayxxCoinImage from "../../assets/images/coins/ayxx.png";
 import usdcCoinImage from "../../assets/images/coins/usdc.png";
 import appStoreBadge from "../../assets/images/stores/app-store-badge.png";
 import googlePlayBadge from "../../assets/images/stores/google-play-badge.png";
+import type { AppPage } from "../../App";
+import type { Lang } from "../../i18n/Locale";
+import { Modal } from "../ui/Modal";
+import { DiscordIcon, LiveChatIcon, SupportCenterIcon } from "../icons/HelpMenuIcons";
+
+const helpMenuCopy: Record<Lang, {
+  title: string;
+  supportCenter: string;
+  supportDescription: string;
+  liveChat: string;
+  chatDescription: string;
+  community: string;
+  communityDescription: string;
+  disclaimerPrefix: string;
+  disclaimerMiddle: string;
+  disclaimerSuffix: string;
+}> = {
+  ko: { title: "도움말", supportCenter: "고객 지원 센터", supportDescription: "튜토리얼 및 도움말 게시글 둘러보기", liveChat: "라이브 채팅", chatDescription: "실시간 지원 및 도움 받기", community: "커뮤니티", communityDescription: "다른 트레이더들과 대화", disclaimerPrefix: "이 사이트는 AYXX에서 운영되며, ", disclaimerMiddle: "과 ", disclaimerSuffix: "에 따라 운영됩니다." },
+  en: { title: "Help", supportCenter: "Support Center", supportDescription: "Browse tutorials and help articles", liveChat: "Live Chat", chatDescription: "Get real-time support and help", community: "Community", communityDescription: "Chat with other traders", disclaimerPrefix: "This site is operated by AYXX and is subject to our ", disclaimerMiddle: " and ", disclaimerSuffix: "." },
+  ja: { title: "ヘルプ", supportCenter: "サポートセンター", supportDescription: "チュートリアルとヘルプ記事を見る", liveChat: "ライブチャット", chatDescription: "リアルタイムでサポートを受ける", community: "コミュニティ", communityDescription: "ほかのトレーダーと交流", disclaimerPrefix: "本サイトはAYXXが運営し、", disclaimerMiddle: "および", disclaimerSuffix: "が適用されます。" },
+  zh: { title: "帮助", supportCenter: "客户支持中心", supportDescription: "浏览教程和帮助文章", liveChat: "在线聊天", chatDescription: "获取实时支持和帮助", community: "社区", communityDescription: "与其他交易者交流", disclaimerPrefix: "本网站由AYXX运营，并受", disclaimerMiddle: "和", disclaimerSuffix: "约束。" },
+  vi: { title: "Trợ giúp", supportCenter: "Trung tâm hỗ trợ", supportDescription: "Xem hướng dẫn và bài viết trợ giúp", liveChat: "Trò chuyện trực tiếp", chatDescription: "Nhận hỗ trợ theo thời gian thực", community: "Cộng đồng", communityDescription: "Trò chuyện với các nhà giao dịch khác", disclaimerPrefix: "Trang này do AYXX vận hành và tuân theo ", disclaimerMiddle: " cùng ", disclaimerSuffix: "." },
+  fr: { title: "Aide", supportCenter: "Centre d’assistance", supportDescription: "Parcourir les tutoriels et articles d’aide", liveChat: "Chat en direct", chatDescription: "Obtenir une assistance en temps réel", community: "Communauté", communityDescription: "Échanger avec d’autres traders", disclaimerPrefix: "Ce site est exploité par AYXX et soumis à nos ", disclaimerMiddle: " et à notre ", disclaimerSuffix: "." },
+};
 
 type TradingHeaderProps = {
   onDepositClick: () => void;
-  activePage: "trade" | "markets";
-  onPageChange: (page: "trade" | "markets") => void;
+  activePage: AppPage;
+  onPageChange: (page: AppPage) => void;
 };
 
 export function TradingHeader({
@@ -43,8 +68,10 @@ export function TradingHeader({
   activePage,
   onPageChange,
 }: TradingHeaderProps) {
-  const { t } = useLocale();
+  const { t, lang } = useLocale();
   const [isAccountOpen, setIsAccountOpen] = useState(false);
+  const [isApiDocsModalOpen, setIsApiDocsModalOpen] = useState(false);
+  const [isHelpMenuOpen, setIsHelpMenuOpen] = useState(false);
   const accountMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -67,6 +94,18 @@ export function TradingHeader({
     };
   }, [isAccountOpen]);
 
+  const openApiDocsModal = () => {
+    setIsApiDocsModalOpen(true);
+    document.querySelector<HTMLDetailsElement>(".more")?.removeAttribute("open");
+  };
+
+  const openHelpMenu = () => {
+    setIsHelpMenuOpen(true);
+    document.querySelector<HTMLDetailsElement>(".more")?.removeAttribute("open");
+  };
+
+  const helpCopy = helpMenuCopy[lang];
+
   return (
     <header className="topbar">
       <a className="topbar__brand" href="/" aria-label="홈">
@@ -87,7 +126,6 @@ export function TradingHeader({
         >
           {t("trade")}
         </button>
-        <a href="#spot">{t("spot")}</a>
         <button
           className={activePage === "markets" ? "is-active" : undefined}
           type="button"
@@ -95,7 +133,13 @@ export function TradingHeader({
         >
           {t("markets")}
         </button>
-        <a href="#portfolio">{t("portfolio")}</a>
+        <button
+          className={activePage === "portfolio" ? "is-active" : undefined}
+          type="button"
+          onClick={() => onPageChange("portfolio")}
+        >
+          {t("portfolio")}
+        </button>
         <a href="#megavault">MegaVault</a>
         <a href="#rewards">{t("rewards")}</a>
         <a className="topbar__ayxx" href="#ayxx">
@@ -107,10 +151,10 @@ export function TradingHeader({
             <ChevronDown />
           </summary>
           <div className="more__menu">
-            <a href="#api-docs">
+            <button type="button" onClick={openApiDocsModal}>
               <ApiDocIcon />
               {t("apiDocs")}
-            </a>
+            </button>
             <a href="#api-keys">
               <ApiKeyIcon />
               {t("apiKeys")}
@@ -130,18 +174,30 @@ export function TradingHeader({
               {t("community")}
               <ExternalIcon className="more__ext" />
             </a>
-            <a href="#terms">
+            <button
+              type="button"
+              onClick={() => {
+                onPageChange("terms");
+                document.querySelector<HTMLDetailsElement>(".more")?.removeAttribute("open");
+              }}
+            >
               <TermsIcon />
               {t("terms")}
-            </a>
-            <a href="#privacy">
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                onPageChange("privacy");
+                document.querySelector<HTMLDetailsElement>(".more")?.removeAttribute("open");
+              }}
+            >
               <PrivacyIcon />
               {t("privacy")}
-            </a>
-            <a href="#help">
+            </button>
+            <button type="button" onClick={openHelpMenu}>
               <HelpIcon />
               {t("help")}
-            </a>
+            </button>
             <a href="#stats">
               <ChartIcon />
               {t("stats")}
@@ -311,6 +367,86 @@ export function TradingHeader({
           )}
         </div>
       </div>
+
+      {isApiDocsModalOpen && (
+        <Modal
+          className="external-site-modal"
+          backdropClassName="external-site-modal__backdrop"
+          labelledBy="external-site-modal-title"
+          onClose={() => setIsApiDocsModalOpen(false)}
+        >
+            <header className="external-site-modal__header">
+              <h2 id="external-site-modal-title">웹사이트에서 나가는 중</h2>
+              <button
+                className="external-site-modal__close"
+                type="button"
+                aria-label="닫기"
+                onClick={() => setIsApiDocsModalOpen(false)}
+              >
+                <CloseIcon />
+              </button>
+            </header>
+            <p>
+              계속하면 당사 웹사이트를 떠나 당사와 독립적이며 관련이 없는 제3자가
+              제공하는 웹사이트에 가입하게 됩니다.
+            </p>
+            <strong>
+              당사는 타사 웹 사이트에서 취한 조치나 콘텐츠에 대해 책임을 지지
+              않습니다.
+            </strong>
+            <button
+              className="external-site-modal__continue"
+              type="button"
+            >
+              계속하기
+            </button>
+        </Modal>
+      )}
+
+      {isHelpMenuOpen && (
+        <Modal
+          className="help-menu-modal"
+          backdropClassName="help-menu-modal__backdrop"
+          labelledBy="help-menu-modal-title"
+          onClose={() => setIsHelpMenuOpen(false)}
+        >
+            <header className="help-menu-modal__header">
+              <h2 id="help-menu-modal-title">{helpCopy.title}</h2>
+              <button type="button" aria-label={t("close")} onClick={() => setIsHelpMenuOpen(false)}><CloseIcon /></button>
+            </header>
+            <div className="help-menu-modal__actions">
+              <button type="button">
+                <SupportCenterIcon />
+                <span><strong>{helpCopy.supportCenter}</strong><small>{helpCopy.supportDescription}</small></span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsHelpMenuOpen(false);
+                  window.dispatchEvent(new Event("open-ayxx-help"));
+                }}
+              >
+                <LiveChatIcon />
+                <span><strong>{helpCopy.liveChat}</strong><small>{helpCopy.chatDescription}</small></span>
+              </button>
+              <button
+                type="button"
+                onClick={() => window.open("https://discord.com/", "_blank", "noopener,noreferrer")}
+              >
+                <DiscordIcon />
+                <span><strong>{helpCopy.community}</strong><small>{helpCopy.communityDescription}</small></span>
+              </button>
+            </div>
+            <div className="help-menu-modal__version">Release - 64e4587<br />Version - 2.19.8</div>
+            <p>
+              {helpCopy.disclaimerPrefix}
+              <button type="button" onClick={() => { setIsHelpMenuOpen(false); onPageChange("terms"); }}>{t("terms")}</button>
+              {helpCopy.disclaimerMiddle}
+              <button type="button" onClick={() => { setIsHelpMenuOpen(false); onPageChange("privacy"); }}>{t("privacy")}</button>
+              {helpCopy.disclaimerSuffix}
+            </p>
+        </Modal>
+      )}
     </header>
   );
 }

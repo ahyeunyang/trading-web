@@ -578,14 +578,18 @@
     box-shadow: 0 $space-12 $footer-height $color-shadow;
     transform: translateX(-50%);
 
-    a {
+    a,
+    button {
       @include flex(center);
+      width: 100%;
       gap: $space-12;
       min-height: 4rem;
       padding: $space-0 $space-12;
       border-radius: $radius-sm;
+      color: inherit;
       font-size: $font-base;
       font-weight: $weight-medium;
+      text-align: left;
 
       &::after {
         display: none;
@@ -605,6 +609,188 @@
       .more__ext {
         flex-basis: 1.5rem;
         margin-left: auto;
+      }
+    }
+  }
+}
+
+.external-site-modal {
+  width: min(48.2rem, calc(100vw - 3.2rem));
+  padding: $space-24;
+  border: 0.1rem solid $color-border;
+  border-radius: $radius-lg;
+  color: $color-text;
+  background: #29292c;
+  box-shadow: 0 1.6rem 4rem rgb(0 0 0 / 40%);
+
+  &__backdrop {
+    @include flex-center;
+    position: fixed;
+    z-index: 120;
+    inset: 0;
+    padding: $space-16;
+    background: rgb(8 8 10 / 64%);
+  }
+
+  &__header {
+    @include flex-between;
+    gap: $space-16;
+
+    h2 {
+      font-size: 2.2rem;
+      font-weight: $weight-regular;
+      line-height: 1.25;
+    }
+  }
+
+  &__close {
+    @include flex-center;
+    width: $space-28;
+    height: $space-28;
+    flex: 0 0 auto;
+    color: $color-text-muted;
+
+    svg {
+      width: $icon-md;
+      height: $icon-md;
+    }
+
+    &:hover {
+      color: $color-text;
+    }
+  }
+
+  p {
+    margin-top: $space-8;
+    color: $color-text-muted;
+    font-size: $font-base;
+    line-height: 1.5;
+  }
+
+  > strong {
+    display: block;
+    margin-top: $space-16;
+    color: $color-text;
+    font-size: $font-base;
+    font-weight: $weight-regular;
+    line-height: 1.5;
+  }
+
+  &__continue {
+    width: 100%;
+    height: 4.4rem;
+    margin-top: $space-16;
+    border-radius: $radius-md;
+    color: #fff;
+    background: $color-primary;
+    font-size: $font-base;
+
+    &:hover {
+      background: $color-primary-hover;
+    }
+  }
+}
+
+.help-menu-modal {
+  width: min(31rem, calc(100vw - 3.2rem));
+  padding: $space-24 $space-0;
+  border: 0.1rem solid $color-border;
+  border-radius: $radius-lg;
+  color: $color-text-muted;
+  background: #212124;
+  box-shadow: 0 1.6rem 4rem rgb(0 0 0 / 40%);
+
+  &__backdrop {
+    @include flex-center;
+    position: fixed;
+    z-index: 120;
+    inset: 0;
+    padding: $space-16;
+    background: rgb(8 8 10 / 64%);
+  }
+
+  &__header {
+    @include flex-between;
+    padding-inline: $space-24;
+
+    h2 {
+      color: $color-text;
+      font-size: 2.2rem;
+      font-weight: $weight-regular;
+    }
+
+    button {
+      @include flex-center;
+      width: $space-28;
+      height: $space-28;
+      color: $color-text-muted;
+
+      svg {
+        width: $icon-md;
+        height: $icon-md;
+      }
+
+      &:hover { color: $color-text; }
+    }
+  }
+
+  &__actions {
+    display: grid;
+    gap: $space-4;
+    margin-top: $space-24;
+
+    > button {
+      display: grid;
+      width: 100%;
+      grid-template-columns: $icon-xl 1fr;
+      gap: $space-8;
+      padding: $space-8 $space-24;
+      color: $color-text-muted;
+      text-align: left;
+      transition: background $duration-fast ease;
+
+      > svg {
+        width: $icon-md;
+        height: $icon-md;
+        margin-top: $space-2;
+      }
+
+      span { display: grid; gap: $space-2; }
+      strong { color: $color-text-button; font-size: $font-nav; font-weight: $weight-regular; }
+      small { color: $color-text-muted; font-size: $font-md; line-height: 1.4; }
+
+      &:hover {
+        background: $color-surface-hover;
+
+        strong { color: $color-text; }
+      }
+    }
+  }
+
+  &__version {
+    margin-top: $space-20;
+    padding-inline: $space-24;
+    font-size: $font-detail;
+    line-height: 1.6;
+  }
+
+  > p {
+    margin-top: $space-16;
+    padding-inline: $space-24;
+    color: $color-text-muted;
+    font-size: $font-sm;
+    line-height: 1.55;
+
+    button {
+      display: inline;
+      padding: 0;
+      color: $color-text-button;
+      font: inherit;
+      text-decoration: underline;
+      text-underline-offset: 0.2rem;
+
+      &:hover {
+        color: $color-text;
       }
     }
   }

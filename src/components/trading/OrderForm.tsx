@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
 import { BitcoinIcon } from "../icons/BitcoinIcon";
 import { ChevronDown } from "../icons/ChevronDown";
 import { WarningIcon } from "../icons/WarningIcon";
@@ -7,6 +6,7 @@ import { CloseIcon } from "../icons/CloseIcon";
 import { CheckboxField } from "../ui/CheckboxField";
 import { SelectMenu } from "../ui/SelectMenu";
 import { Tooltip } from "../ui/Tooltip";
+import { Modal } from "../ui/Modal";
 import { useLocale } from "../../i18n/Locale";
 
 type MarginMode = "cross" | "isolated";
@@ -448,19 +448,13 @@ export function OrderForm({
         </button>
       </div>
 
-      {isLeverageOpen && createPortal(
-        <div
-          className="leverage-modal__backdrop"
-          onMouseDown={(event) => {
-            if (event.currentTarget === event.target) setIsLeverageOpen(false);
-          }}
+      {isLeverageOpen && (
+        <Modal
+          className="leverage-modal"
+          backdropClassName="leverage-modal__backdrop"
+          labelledBy="leverage-modal-title"
+          onClose={() => setIsLeverageOpen(false)}
         >
-          <div
-            className="leverage-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="leverage-modal-title"
-          >
             <header className="leverage-modal__header">
               <h2 id="leverage-modal-title">{t("setMarketLeverage")}</h2>
               <button
@@ -502,24 +496,16 @@ export function OrderForm({
             >
               {t("save")}
             </button>
-          </div>
-        </div>,
-        document.body,
+        </Modal>
       )}
 
-      {isDepositOpen && createPortal(
-        <div
-          className="leverage-modal__backdrop"
-          onMouseDown={(event) => {
-            if (event.currentTarget === event.target) onDepositOpenChange(false);
-          }}
+      {isDepositOpen && (
+        <Modal
+          className="deposit-modal"
+          backdropClassName="leverage-modal__backdrop"
+          labelledBy="deposit-modal-title"
+          onClose={() => onDepositOpenChange(false)}
         >
-          <div
-            className="deposit-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="deposit-modal-title"
-          >
             <header className="deposit-modal__header">
               <h2 id="deposit-modal-title">{t("deposit")}</h2>
               <button
@@ -567,9 +553,7 @@ export function OrderForm({
             >
               {t("deposit")}
             </button>
-          </div>
-        </div>,
-        document.body,
+        </Modal>
       )}
     </aside>
   );

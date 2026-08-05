@@ -21,7 +21,7 @@
     gap: $space-12;
     width: min(100%, 130.2rem);
     margin-inline: auto;
-    padding: $space-24 0 0;
+    padding: $space-24 0 $space-24;
   }
 
   &__controls {
@@ -475,6 +475,17 @@
 
 }
 
+.markets-page:has(+ .status .demo-chat) {
+  .markets-page__content {
+    padding-bottom: calc(
+      min(
+        57rem,
+        calc(100vh - #{$header-height} - #{$footer-height} - #{$space-20})
+      ) + 10rem
+    );
+  }
+}
+
 @keyframes market-sparkline-tick {
   0% {
     opacity: 1;
@@ -497,7 +508,7 @@
 @media (max-width: 76.8rem) {
   .markets-page {
     &__content {
-      padding: $space-20 $space-16 0;
+      padding: $space-20 $space-16 $space-24;
     }
 
     &__pagination {
