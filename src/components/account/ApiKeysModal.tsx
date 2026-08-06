@@ -4,6 +4,8 @@ import { CloseIcon } from "../icons/CloseIcon";
 import { Modal } from "../ui/Modal";
 import { CheckboxField } from "../ui/CheckboxField";
 import { LoadingButton } from "../ui/LoadingButton";
+import { BackButton } from "../ui/BackButton";
+import { CopyButton } from "../ui/CopyButton";
 
 const copy: Record<Lang, {
   title: string; description: string; address: string; create: string; empty: string;
@@ -21,30 +23,7 @@ const copy: Record<Lang, {
 const accountAddress = "ayxx1ygq9v2m4r7k8n3x6c8ah";
 const apiAddress = "ayxx1qu28z3yjmujp2hnhp9wfn02rz033ntlk83fw";
 const privateKey = "0x803d5ac0c43fb8f2f69ld072e357d491bd268ad2";
-
-function CopyButton({ value, label }: { value: string; label: string }) {
-  const [isCopied, setIsCopied] = useState(false);
-
-  const copyValue = async () => {
-    try {
-      await navigator.clipboard.writeText(value);
-      setIsCopied(true);
-      window.setTimeout(() => setIsCopied(false), 1600);
-    } catch {
-      setIsCopied(false);
-    }
-  };
-
-  return (
-    <button className={`api-keys-modal__copy${isCopied ? " is-copied" : ""}`} type="button" aria-label={label} onClick={() => void copyValue()}>
-      {isCopied ? (
-        <svg viewBox="0 0 17 17" fill="none" aria-hidden="true"><path d="m3.5 8.7 3.1 3.1 6.9-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-      ) : (
-        <svg viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13.5004 6.40039H8.40039C7.29582 6.40039 6.40039 7.29582 6.40039 8.40039V13.5004C6.40039 14.605 7.29582 15.5004 8.40039 15.5004H13.5004C14.605 15.5004 15.5004 14.605 15.5004 13.5004V8.40039C15.5004 7.29582 14.605 6.40039 13.5004 6.40039Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" /><path d="M3.6 10.6H2.9C2.1268 10.6 1.5 9.9732 1.5 9.2V2.9C1.5 2.1268 2.1268 1.5 2.9 1.5H9.2C9.9732 1.5 10.6 2.1268 10.6 2.9V3.6" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" /></svg>
-      )}
-    </button>
-  );
-}
+const backLabels: Record<Lang, string> = { ko: "뒤로", en: "Back", ja: "戻る", zh: "返回", vi: "Quay lại", fr: "Retour" };
 
 export function ApiKeysModal({ onClose }: { onClose: () => void }) {
   const { lang } = useLocale();
@@ -67,7 +46,7 @@ export function ApiKeysModal({ onClose }: { onClose: () => void }) {
     <Modal className="api-keys-modal" backdropClassName="api-keys-modal__backdrop" labelledBy="api-keys-modal-title" onClose={onClose}>
       <header className="api-keys-modal__header">
         <div>
-          {step === "create" && <button className="api-keys-modal__back" type="button" aria-label="Back" onClick={() => setStep("list")}><svg viewBox="0 0 11 19" fill="none" aria-hidden="true"><path d="M9.5 2 2.70711 8.79289a1 1 0 0 0 0 1.41421L9.5 17" stroke="currentColor" strokeWidth="3" strokeLinecap="round" /></svg></button>}
+          {step === "create" && <BackButton className="api-keys-modal__back" label={backLabels[lang]} onClick={() => setStep("list")} />}
           <h2 id="api-keys-modal-title">{step === "list" ? text.title : text.newTitle}</h2>
         </div>
         <button className="api-keys-modal__close" type="button" aria-label="Close" onClick={onClose}><CloseIcon /></button>
@@ -77,7 +56,7 @@ export function ApiKeysModal({ onClose }: { onClose: () => void }) {
         <>
           <p className="api-keys-modal__description">{text.description}</p>
           <div className="api-keys-modal__toolbar">
-            <div className="api-keys-modal__value"><span>{text.address}</span><strong>{accountAddress.slice(0, 9)}...{accountAddress.slice(-4)}</strong><CopyButton value={accountAddress} label={text.copyLabel} /></div>
+            <div className="api-keys-modal__value"><span>{text.address}</span><strong>{accountAddress.slice(0, 9)}...{accountAddress.slice(-4)}</strong><CopyButton className="api-keys-modal__copy" value={accountAddress} label={text.copyLabel} /></div>
             <button className="api-keys-modal__create" type="button" onClick={() => setStep("create")}>{text.create}</button>
           </div>
           <div className="api-keys-modal__list">
@@ -88,8 +67,8 @@ export function ApiKeysModal({ onClose }: { onClose: () => void }) {
         <>
           <p className="api-keys-modal__description">{text.newDescription}</p>
           <div className="api-keys-modal__fields">
-            <div className="api-keys-modal__value"><span>{text.walletAddress}</span><strong>{apiAddress}</strong><CopyButton value={apiAddress} label={text.copyLabel} /></div>
-            <div className="api-keys-modal__value is-private"><span>{text.privateKey}</span><strong>{privateKey}</strong><CopyButton value={privateKey} label={text.copyLabel} /></div>
+            <div className="api-keys-modal__value"><span>{text.walletAddress}</span><strong>{apiAddress}</strong><CopyButton className="api-keys-modal__copy" value={apiAddress} label={text.copyLabel} /></div>
+            <div className="api-keys-modal__value is-private"><span>{text.privateKey}</span><strong>{privateKey}</strong><CopyButton className="api-keys-modal__copy" value={privateKey} label={text.copyLabel} /></div>
           </div>
           <CheckboxField className="api-keys-modal__warning" checked={isAcknowledged} label={text.warning} onChange={setIsAcknowledged} />
           <LoadingButton

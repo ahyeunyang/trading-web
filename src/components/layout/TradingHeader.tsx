@@ -24,7 +24,6 @@ import {
   DisconnectIcon,
   GiftIcon,
   HeaderDepositIcon,
-  MoonIcon,
   QrIcon,
   SettingsIcon,
 } from "../icons/AccountMenuIcons";
@@ -38,8 +37,17 @@ import { Modal } from "../ui/Modal";
 import { DiscordIcon, LiveChatIcon, SupportCenterIcon } from "../icons/HelpMenuIcons";
 import { ApiKeysModal } from "../account/ApiKeysModal";
 import { MobileAppModal } from "../account/MobileAppModal";
+import { MobileAppDownloadModal } from "../account/MobileAppDownloadModal";
+import { MobileLoginModal } from "../account/MobileLoginModal";
+import { SecretPhraseModal } from "../account/SecretPhraseModal";
 import { DepositModal } from "../account/DepositModal";
 import { NotificationsPanel } from "../account/NotificationsPanel";
+import { AccountManagementModal } from "../account/AccountManagementModal";
+import { NotificationSettingsModal } from "../account/NotificationSettingsModal";
+import { DisplaySettingsModal } from "../account/DisplaySettingsModal";
+import { AffiliateProgramModal } from "../account/AffiliateProgramModal";
+import { ThemeModeIcon } from "../icons/ThemeModeIcon";
+import { Tooltip } from "../ui/Tooltip";
 
 const helpMenuCopy: Record<Lang, {
   title: string;
@@ -76,9 +84,37 @@ export function TradingHeader({
   const [isHelpMenuOpen, setIsHelpMenuOpen] = useState(false);
   const [isApiKeysModalOpen, setIsApiKeysModalOpen] = useState(false);
   const [isMobileAppModalOpen, setIsMobileAppModalOpen] = useState(false);
+  const [isMobileAppDownloadOpen, setIsMobileAppDownloadOpen] = useState(false);
+  const [isMobileLoginOpen, setIsMobileLoginOpen] = useState(false);
+  const [isDisconnectOpen, setIsDisconnectOpen] = useState(false);
   const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isAccountManagementOpen, setIsAccountManagementOpen] = useState(false);
+  const [isPreferencesOpen, setIsPreferencesOpen] = useState(false);
+  const [isDisplaySettingsOpen, setIsDisplaySettingsOpen] = useState(false);
+  const [isAffiliateProgramOpen, setIsAffiliateProgramOpen] = useState(false);
   const accountMenuRef = useRef<HTMLDivElement>(null);
+  const moreMenuRef = useRef<HTMLDetailsElement>(null);
+
+  useEffect(() => {
+    const closeOnOutsidePress = (event: PointerEvent) => {
+      if (!moreMenuRef.current?.contains(event.target as Node)) {
+        moreMenuRef.current?.removeAttribute("open");
+      }
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        moreMenuRef.current?.removeAttribute("open");
+      }
+    };
+
+    document.addEventListener("pointerdown", closeOnOutsidePress);
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsidePress);
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, []);
 
   useEffect(() => {
     if (!isAccountOpen) return;
@@ -151,7 +187,7 @@ export function TradingHeader({
         <a className="topbar__ayxx" href="#ayxx">
           AYXX <i />
         </a>
-        <details className="more">
+        <details className="more" ref={moreMenuRef}>
           <summary>
             {t("more")}
             <ChevronDown />
@@ -221,35 +257,28 @@ export function TradingHeader({
           <HeaderDepositIcon />
           <span>{t("deposit")}</span>
         </button>
-        <button
-          className="icon-btn tip"
-          type="button"
-          aria-label={t("mobileApp")}
-          data-tip={t("mobileApp")}
-          onClick={() => setIsMobileAppModalOpen(true)}
-        >
-          <DeviceIcon className="icon" />
-        </button>
-        <button
-          className="icon-btn tip"
-          type="button"
-          aria-label={t("help")}
-          data-tip={t("help")}
-          onClick={openHelpMenu}
-        >
-          <HelpIcon className="icon" />
-        </button>
-        <button
-          className={`icon-btn tip${isNotificationsOpen ? " is-active" : ""}`}
-          type="button"
-          aria-label={t("notifications")}
-          aria-haspopup="dialog"
-          aria-expanded={isNotificationsOpen}
-          data-tip={t("notifications")}
-          onClick={() => setIsNotificationsOpen((isOpen) => !isOpen)}
-        >
-          <BellIcon className="icon" />
-        </button>
+        <Tooltip className="hint--control" content={t("mobileApp")} portal>
+          <button className="icon-btn" type="button" aria-label={t("mobileApp")} onClick={() => setIsMobileAppModalOpen(true)}>
+            <DeviceIcon className="icon" />
+          </button>
+        </Tooltip>
+        <Tooltip className="hint--control" content={t("help")} portal>
+          <button className="icon-btn" type="button" aria-label={t("help")} onClick={openHelpMenu}>
+            <HelpIcon className="icon" />
+          </button>
+        </Tooltip>
+        <Tooltip className="hint--control" content={t("notifications")} portal>
+          <button
+            className={`icon-btn${isNotificationsOpen ? " is-active" : ""}`}
+            type="button"
+            aria-label={t("notifications")}
+            aria-haspopup="dialog"
+            aria-expanded={isNotificationsOpen}
+            onClick={() => setIsNotificationsOpen((isOpen) => !isOpen)}
+          >
+            <BellIcon className="icon" />
+          </button>
+        </Tooltip>
         <div className="topbar__account-wrap" ref={accountMenuRef}>
           <button
             className="topbar__account"
@@ -332,32 +361,32 @@ export function TradingHeader({
               </div>
 
               <nav className="account-menu__links" aria-label="계정 메뉴">
-                <button type="button">
+                <button type="button" onClick={() => { setIsAccountOpen(false); setIsAccountManagementOpen(true); }}>
                   <AccountIcon />
                   <span>{t("accountManagement")}</span>
                 </button>
-                <button type="button">
+                <button type="button" onClick={() => { setIsAccountOpen(false); setIsAffiliateProgramOpen(true); }}>
                   <GiftIcon />
                   <span>{t("inviteFriends")}</span>
                   <b>{t("earnFees")}</b>
                 </button>
-                <button type="button">
+                <button type="button" onClick={() => { setIsAccountOpen(false); setIsPreferencesOpen(true); }}>
                   <SettingsIcon />
                   <span>{t("preferences")}</span>
                 </button>
-                <button type="button">
-                  <MoonIcon />
+                <button type="button" onClick={() => { setIsAccountOpen(false); setIsDisplaySettingsOpen(true); }}>
+                  <ThemeModeIcon />
                   <span>{t("displaySettings")}</span>
                 </button>
-                <button type="button">
+                <button type="button" onClick={() => { setIsAccountOpen(false); setIsMobileAppDownloadOpen(true); }}>
                   <QrIcon />
                   <span>{t("downloadMobileApp")}</span>
                 </button>
-                <button type="button">
+                <button type="button" onClick={() => { setIsAccountOpen(false); setIsMobileLoginOpen(true); }}>
                   <QrIcon />
                   <span>{t("loginWithMobile")}</span>
                 </button>
-                <button type="button">
+                <button type="button" onClick={() => { setIsAccountOpen(false); setIsDisconnectOpen(true); }}>
                   <DisconnectIcon />
                   <span>{t("disconnect")}</span>
                 </button>
@@ -416,8 +445,29 @@ export function TradingHeader({
 
       {isApiKeysModalOpen && <ApiKeysModal onClose={() => setIsApiKeysModalOpen(false)} />}
       {isMobileAppModalOpen && <MobileAppModal onClose={() => setIsMobileAppModalOpen(false)} />}
+      {isMobileAppDownloadOpen && <MobileAppDownloadModal onClose={() => setIsMobileAppDownloadOpen(false)} />}
+      {isMobileLoginOpen && (
+        <MobileLoginModal
+          onClose={() => setIsMobileLoginOpen(false)}
+          onContinue={() => {
+            setIsMobileLoginOpen(false);
+            setIsMobileAppModalOpen(true);
+          }}
+        />
+      )}
       {isDepositModalOpen && <DepositModal onClose={() => setIsDepositModalOpen(false)} />}
       {isNotificationsOpen && <NotificationsPanel onClose={() => setIsNotificationsOpen(false)} />}
+      {isAccountManagementOpen && <AccountManagementModal onClose={() => setIsAccountManagementOpen(false)} />}
+      {isPreferencesOpen && <NotificationSettingsModal onClose={() => setIsPreferencesOpen(false)} />}
+      {isDisplaySettingsOpen && <DisplaySettingsModal onClose={() => setIsDisplaySettingsOpen(false)} />}
+      {isAffiliateProgramOpen && <AffiliateProgramModal onClose={() => setIsAffiliateProgramOpen(false)} />}
+      {isDisconnectOpen && (
+        <SecretPhraseModal
+          kind="ayxx"
+          initialDisconnect
+          onClose={() => setIsDisconnectOpen(false)}
+        />
+      )}
 
       {isHelpMenuOpen && (
         <Modal

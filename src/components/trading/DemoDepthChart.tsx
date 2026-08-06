@@ -22,6 +22,11 @@ export function DemoDepthChart() {
   const { t } = useLocale();
   const rootRef = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState<HoverDepth | null>(null);
+  const formatPrice = (price: number, fractionDigits = 0) =>
+    price.toLocaleString("en-US", {
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: fractionDigits,
+    });
   const model = useMemo(() => {
     const bids = Array.from({ length: 34 }, (_, index) => {
       const progress = index / 33;
@@ -86,7 +91,12 @@ export function DemoDepthChart() {
       </div>
       {hover && (
         <>
-          <span className={`depth-chart__price depth-chart__price--${hover.side}`} style={{ left: `${hover.x / 10}%` }}>${Math.round(hover.price).toLocaleString("en-US")}</span>
+          <span
+            className={`depth-chart__price depth-chart__price--${hover.side}`}
+            style={{ left: `clamp(4.8rem, ${hover.x / 10}%, calc(100% - 4.8rem))` }}
+          >
+            ${formatPrice(hover.price, 2)}
+          </span>
           <span className={`depth-chart__size depth-chart__size--${hover.side}`} style={{ top: `${hover.y / 4}%` }}>{hover.size.toFixed(4)} BTC</span>
           <div
             className={`depth-chart__tooltip depth-chart__tooltip--${hover.side}`}
@@ -94,7 +104,7 @@ export function DemoDepthChart() {
           >
             <strong>{hover.side === "bid" ? t("buyOrders") : t("sellOrders")}</strong>
             <dl>
-              <div><dt>{t("price")}</dt><dd>{hover.side === "bid" ? "≥" : "≤"} ${Math.round(hover.price).toLocaleString("en-US")}</dd></div>
+              <div><dt>{t("price")}</dt><dd>{hover.side === "bid" ? "≥" : "≤"} ${formatPrice(hover.price)}</dd></div>
               <div><dt>{t("totalSize")}</dt><dd>{hover.size.toFixed(4)} BTC</dd></div>
               <div><dt>{t("totalValue")}</dt><dd>${Math.round(hover.size * hover.price).toLocaleString("en-US")}</dd></div>
               <div><dt>{t("priceImpact")}</dt><dd>{Math.abs((hover.price - BASE_PRICE) / BASE_PRICE * 100).toFixed(2)}%</dd></div>

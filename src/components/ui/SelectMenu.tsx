@@ -1,11 +1,12 @@
+import { useEffect, useRef } from "react";
 import { ChevronDown } from "../icons/ChevronDown";
 
-export type SelectOption<T extends string> = {
+export type SelectOption<T extends string | number> = {
   value: T;
   label: string;
 };
 
-type SelectMenuProps<T extends string> = {
+type SelectMenuProps<T extends string | number> = {
   value: T;
   options: SelectOption<T>[];
   onChange: (value: T) => void;
@@ -13,11 +14,32 @@ type SelectMenuProps<T extends string> = {
   ariaLabel: string;
 };
 
-export function SelectMenu<T extends string>({ value, options, onChange, className = "", ariaLabel }: SelectMenuProps<T>) {
+export function SelectMenu<T extends string | number>({ value, options, onChange, className = "", ariaLabel }: SelectMenuProps<T>) {
   const selected = options.find((option) => option.value === value) ?? options[0];
+  const ref = useRef<HTMLDetailsElement>(null);
+
+  useEffect(() => {
+    const closeOnOutsidePress = (event: PointerEvent) => {
+      if (!ref.current?.contains(event.target as Node)) {
+        ref.current?.removeAttribute("open");
+      }
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        ref.current?.removeAttribute("open");
+      }
+    };
+
+    document.addEventListener("pointerdown", closeOnOutsidePress);
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsidePress);
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, []);
 
   return (
-    <details className={`select-menu${className ? ` ${className}` : ""}`}>
+    <details className={`select-menu${className ? ` ${className}` : ""}`} ref={ref}>
       <summary aria-label={ariaLabel}>
         <span>{selected.label}</span>
         <ChevronDown />

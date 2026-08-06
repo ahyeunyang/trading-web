@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ChevronDown, MarketDown } from "../icons/ChevronDown";
+import { MarketDown } from "../icons/ChevronDown";
 import { Tooltip } from "../ui/Tooltip";
 import { FavoriteStar } from "../ui/FavoriteStar";
 import { MarketCategoryTabs } from "../ui/MarketCategoryTabs";
 import { VolumeSortButton } from "../ui/VolumeSortButton";
+import { SelectMenu } from "../ui/SelectMenu";
 import { useLocale } from "../../i18n/Locale";
 import avaxImage from "../../assets/images/coins/avax.png";
 import algoImage from "../../assets/images/coins/algo.png";
@@ -301,23 +302,16 @@ export function MarketPanel({ quantityUnit, selected, onSelect, favorites, onTog
               <button type="button" aria-label={t("nextPage")} disabled={page === pageCount} onClick={() => setPage((value) => Math.min(pageCount, value + 1))}>›</button>
             </nav>
             <div className="market-picker__page-size">
-              <details>
-                <summary>
-                  <span>{pageSize}</span>
-                  <ChevronDown />
-                </summary>
-                <div className="market-picker__page-size-menu">
-                  {[5, 10, 15, 20, 50].map((size) => (
-                    <button className={pageSize === size ? "is-active" : undefined} type="button" key={size} onClick={(event) => {
-                      setPageSize(size);
-                      event.currentTarget.closest("details")?.removeAttribute("open");
-                    }}>
-                      <span>{size}</span>
-                      {pageSize === size && <i aria-hidden="true">✓</i>}
-                    </button>
-                  ))}
-                </div>
-              </details>
+              <SelectMenu
+                className="market-picker__page-size-select"
+                ariaLabel={t("view")}
+                value={pageSize}
+                options={[5, 10, 15, 20, 50].map((size) => ({ value: size, label: String(size) }))}
+                onChange={(size) => {
+                  setPageSize(size);
+                  setPage(1);
+                }}
+              />
               <span>{t("view")}</span>
             </div>
           </div>

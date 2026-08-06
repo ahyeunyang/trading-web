@@ -63,42 +63,19 @@
   min-height: var(--icon-size, #{$icon-md});
 }
 
-.tip {
-  position: relative;
-
-  &::after {
-    position: absolute;
-    z-index: $z-tip;
-    top: calc(100% + #{$space-8});
-    left: 50%;
-    padding: $space-6 $space-8;
-    border: .1rem solid $color-border;
-    border-radius: $radius-sm;
-    color: $color-text-muted;
-    background: $color-surface-raised;
-    box-shadow: 0 $space-8 $space-20 $color-shadow-soft;
-    content: attr(data-tip);
-    font-size: $font-md;
-    opacity: 0;
-    pointer-events: none;
-    transform: translate(-50%, -$space-3);
-    transition: opacity $duration-fast ease, transform $duration-fast ease;
-    white-space: nowrap;
-  }
-
-  &:hover::after,
-  &:focus-visible::after {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-}
-
 .hint {
   position: relative;
   width: max-content;
   border-bottom: .1rem dashed currentColor;
   cursor: help;
   font-weight: $weight-regular;
+
+  &--control {
+    display: inline-flex;
+    width: auto;
+    border-bottom: 0;
+    cursor: inherit;
+  }
 
   &__pop {
     display: block;
@@ -170,6 +147,11 @@
       left: 0;
       width: 27rem;
       transform: translateY(-$space-3);
+      white-space: normal;
+    }
+
+    &--margin {
+      width: 21rem;
       white-space: normal;
     }
 

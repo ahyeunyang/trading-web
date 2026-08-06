@@ -47,6 +47,7 @@
     display: block;
     width: 1.8rem;
     height: 1.9rem;
+    color: $color-text;
   }
 
   &__nav {
@@ -168,7 +169,7 @@
     gap: $space-6;
     padding-inline: $space-12;
     border-radius: 1.4rem;
-    color: $color-text;
+    color: #fff;
     background: $color-primary;
     font-size: $font-md;
     font-weight: $weight-medium;
@@ -176,6 +177,11 @@
     svg {
       width: 1.4rem;
       height: 1.4rem;
+      color: #fff;
+    }
+
+    span {
+      color: #fff;
     }
 
     &:hover,
@@ -224,10 +230,10 @@
   right: 0;
   width: 26.2rem;
   overflow: hidden;
-  border: 0.1rem solid rgb(73 73 80 / 55%);
+  border: 0.1rem solid $color-border;
   border-radius: $radius-lg;
   color: $color-text-muted;
-  background: #252528;
+  background: $color-surface-button;
   box-shadow: 0 $space-12 $space-32 $color-shadow-strong;
   font-size: $font-md;
 
@@ -620,8 +626,8 @@
   border: 0.1rem solid $color-border;
   border-radius: $radius-lg;
   color: $color-text;
-  background: #29292c;
-  box-shadow: 0 1.6rem 4rem rgb(0 0 0 / 40%);
+  background: $color-surface-button;
+  box-shadow: 0 1.6rem 4rem $color-shadow-strong;
 
   &__backdrop {
     @include flex-center;
@@ -670,7 +676,7 @@
   > strong {
     display: block;
     margin-top: $space-16;
-    color: $color-text;
+    color: $color-text-muted;
     font-size: $font-base;
     font-weight: $weight-regular;
     line-height: 1.5;
@@ -697,8 +703,8 @@
   border: 0.1rem solid $color-border;
   border-radius: $radius-lg;
   color: $color-text-muted;
-  background: #212124;
-  box-shadow: 0 1.6rem 4rem rgb(0 0 0 / 40%);
+  background: $color-surface;
+  box-shadow: 0 1.6rem 4rem $color-shadow-strong;
 
   &__backdrop {
     @include flex-center;
@@ -802,8 +808,8 @@
   border: 0.1rem solid $color-border;
   border-radius: $radius-lg;
   color: $color-text-muted;
-  background: #29292c;
-  box-shadow: 0 1.6rem 4rem rgb(0 0 0 / 40%);
+  background: $color-surface-button;
+  box-shadow: 0 1.6rem 4rem $color-shadow-strong;
 
   &__backdrop {
     @include flex-center;
@@ -865,7 +871,7 @@
     gap: $space-10;
     padding-inline: $space-16;
     border-radius: $radius-md;
-    background: #1b1b1d;
+    background: $color-surface;
 
     span { white-space: nowrap; }
     strong { overflow: hidden; color: $color-text; font-weight: $weight-regular; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
@@ -942,7 +948,7 @@
       height: $space-20;
       margin-top: $space-2;
       border-color: $color-border;
-      background: #050506;
+      background: $color-surface;
 
       &::after { top: 0.3rem; left: 0.65rem; }
     }
@@ -976,8 +982,8 @@
   border: 0.1rem solid $color-border;
   border-radius: $radius-lg;
   color: $color-text-muted;
-  background: #29292c;
-  box-shadow: 0 1.6rem 4rem rgb(0 0 0 / 40%);
+  background: $color-surface-button;
+  box-shadow: 0 1.6rem 4rem $color-shadow-strong;
 
   &__backdrop {
     @include flex-center;
@@ -1010,7 +1016,7 @@
     padding-inline: $space-16;
     border-radius: $radius-md;
     color: $color-text-muted;
-    background: #1b1b1d;
+    background: $color-surface;
     text-align: left;
 
     > span { display: grid; gap: $space-2; }
@@ -1029,7 +1035,7 @@
     padding: $space-6;
     border: 0.1rem solid $color-border;
     border-radius: $radius-md;
-    background: #1f1f21;
+    background: $color-surface-raised;
     box-shadow: 0 $space-12 $space-32 $color-shadow-strong;
 
     button {
@@ -1094,7 +1100,8 @@
     svg { width: $icon-md; height: $icon-md; }
   }
 
-  &__qr { width: 16rem; height: 16rem; color: #d4d4db; }
+  &__qr { width: 16rem; height: 16rem; color: $color-text-button; }
+  &__brand { color: $color-text; }
 
   &__warning {
     margin-top: $space-16;
@@ -1385,7 +1392,8 @@
         position: absolute;
         width: 0.6rem;
         height: 0.9rem;
-        color: rgb(255 255 255 / 22%);
+        color: color-mix(in srgb, #{$color-text-muted} 45%, transparent);
+        transition: color $duration-fast ease;
 
         &:first-child {
           top: 0;
@@ -1401,6 +1409,15 @@
         &.is-active {
           color: $color-text;
         }
+      }
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: $color-text;
+
+      > i svg:not(.is-active) {
+        color: $color-text-muted;
       }
     }
   }
@@ -1559,7 +1576,7 @@
     justify-self: end;
     gap: $space-6;
 
-    > details > summary {
+    > .market-picker__page-size-select > summary {
       @include flex(center);
       min-width: 4rem;
       justify-content: flex-end;
@@ -1589,7 +1606,7 @@
       }
     }
 
-    > details[open] > summary {
+    > .market-picker__page-size-select[open] > summary {
       color: $color-text;
       background: rgb(255 255 255 / 5%);
 
@@ -1599,7 +1616,7 @@
     }
   }
 
-  &__page-size-menu {
+  &__page-size-select .select-menu__options {
     display: grid;
     position: absolute;
     z-index: $z-menu;
@@ -1613,25 +1630,8 @@
     box-shadow: 0 $space-12 $footer-height $color-shadow-strong;
     overflow: hidden;
 
-    button {
-      @include flex-between;
-      min-height: 3.6rem;
-      padding-inline: $space-12;
-      border-radius: $radius-sm;
-      color: $color-text-muted;
-      font-size: $font-md;
-
-      &:hover,
-      &.is-active {
-        color: $color-text;
-        background: $color-surface-hover;
-      }
-
-      i {
-        color: $color-text;
-        font-style: normal;
-      }
-    }
+    top: auto;
+    left: auto;
   }
 }
 
@@ -1747,8 +1747,9 @@
   padding: $space-20 $space-24 $space-24;
   border: 0.1rem solid $color-border;
   border-radius: $radius-lg;
-  background: #29292c;
-  box-shadow: 0 1.6rem 4rem rgb(0 0 0 / 40%);
+  color: $color-text;
+  background: $color-surface-button;
+  box-shadow: 0 1.6rem 4rem $color-shadow-strong;
 
   &__backdrop {
     @include flex-center;
@@ -1832,7 +1833,7 @@
           repeating-linear-gradient(
             to right,
             transparent 0 0.1rem,
-            #29292c 0.1rem 0.3rem
+            $color-surface-button 0.1rem 0.3rem
           ),
           linear-gradient(to right, rgb(136 136 145 / 25%), $color-text-muted);
       }
@@ -1845,7 +1846,7 @@
         border: 0.1rem solid $color-text-muted;
         border-radius: 50%;
         background: $color-border;
-        box-shadow: 0 0 0 0.2rem #29292c;
+        box-shadow: 0 0 0 0.2rem $color-surface-button;
       }
 
       &::-moz-range-track {
@@ -1854,7 +1855,7 @@
           repeating-linear-gradient(
             to right,
             transparent 0 0.1rem,
-            #29292c 0.1rem 0.3rem
+            $color-surface-button 0.1rem 0.3rem
           ),
           linear-gradient(to right, rgb(136 136 145 / 25%), $color-text-muted);
       }
@@ -1870,7 +1871,7 @@
         border: 0.1rem solid $color-text-muted;
         border-radius: 50%;
         background: $color-border;
-        box-shadow: 0 0 0 0.2rem #29292c;
+        box-shadow: 0 0 0 0.2rem $color-surface-button;
       }
     }
 
@@ -1907,8 +1908,9 @@
   padding: $space-20 $space-24 $space-24;
   border: 0.1rem solid $color-border;
   border-radius: $radius-lg;
-  background: #29292c;
-  box-shadow: 0 1.6rem 4rem rgb(0 0 0 / 40%);
+  color: $color-text;
+  background: $color-surface-button;
+  box-shadow: 0 1.6rem 4rem $color-shadow-strong;
 
   &__header {
     @include flex-between;
@@ -2301,6 +2303,7 @@
 .funding-chart {
   position: absolute;
   inset: 0;
+  background: $color-surface;
 
   svg {
     display: block;
@@ -2322,11 +2325,13 @@
       border: 0.1rem solid $color-border;
       border-radius: $radius-lg;
       color: $color-text-muted;
+      background: $color-surface-button;
       font-size: $font-md;
 
       &.is-active {
         border-color: $color-primary;
         color: $color-text;
+        background: $color-surface-raised;
       }
     }
   }
@@ -2364,13 +2369,13 @@
   }
 
   &__grid {
-    stroke: rgba($color-text-muted, 0.08);
+    stroke: color-mix(in srgb, #{$color-text-muted} 8%, transparent);
     stroke-width: 0.1rem;
     vector-effect: non-scaling-stroke;
   }
 
   &__zero {
-    stroke: rgba($color-text-muted, 0.55);
+    stroke: color-mix(in srgb, #{$color-text-muted} 55%, transparent);
     stroke-dasharray: 0.4rem 0.4rem;
     stroke-width: 0.1rem;
     vector-effect: non-scaling-stroke;
@@ -2378,7 +2383,7 @@
 
   &__line {
     fill: none;
-    stroke: rgba($color-text, 0.75);
+    stroke: color-mix(in srgb, #{$color-text} 75%, transparent);
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 0.16rem;
@@ -2389,7 +2394,7 @@
     pointer-events: none;
 
     line {
-      stroke: rgba($color-text, 0.48);
+      stroke: color-mix(in srgb, #{$color-text} 48%, transparent);
       stroke-dasharray: 0.4rem 0.4rem;
       stroke-width: 0.1rem;
       vector-effect: non-scaling-stroke;
@@ -2426,6 +2431,7 @@
     height: 3rem;
     border-top: 0.1rem solid $color-border;
     color: $color-text-muted;
+    background: $color-surface;
     font-size: $font-md;
     pointer-events: none;
   }
@@ -2436,7 +2442,7 @@
     z-index: $z-chart + 1;
     padding: $space-3 $space-6;
     border-radius: $radius-sm;
-    color: $color-surface;
+    color: $color-text-inverse;
     background: $color-book-bid;
     font-size: $font-md;
     font-weight: $weight-medium;
@@ -2468,6 +2474,7 @@
     border-radius: $radius-md;
     color: $color-text-muted;
     background: $color-surface-raised;
+    box-shadow: 0 $space-8 $space-20 $color-shadow-soft;
     font-size: $font-md;
     pointer-events: none;
     transform: translate($space-10, -50%);
@@ -2514,6 +2521,7 @@
   position: absolute;
   inset: 0;
   color: $color-text-muted;
+  background: $color-surface;
 
   svg {
     display: block;
@@ -2522,18 +2530,18 @@
   }
 
   &__grid {
-    stroke: rgba($color-text-muted, 0.22);
+    stroke: color-mix(in srgb, #{$color-text-muted} 22%, transparent);
     stroke-width: 0.1rem;
     vector-effect: non-scaling-stroke;
   }
 
   &__area {
     &--bid {
-      fill: rgba($color-book-bid, 0.17);
+      fill: color-mix(in srgb, #{$color-book-bid} 17%, transparent);
     }
 
     &--ask {
-      fill: rgba($color-book-ask, 0.17);
+      fill: color-mix(in srgb, #{$color-book-ask} 17%, transparent);
     }
   }
 
@@ -2559,7 +2567,9 @@
     left: $space-0;
     height: 2.8rem;
     border-top: 0.1rem solid $color-border;
-    color: $color-text;
+    z-index: $z-chart;
+    color: $color-text-muted;
+    background: $color-surface;
     font-size: $font-md;
     font-variant-numeric: tabular-nums;
   }
@@ -2568,7 +2578,7 @@
     pointer-events: none;
 
     line {
-      stroke: rgba($color-text, 0.62);
+      stroke: color-mix(in srgb, #{$color-text} 62%, transparent);
       stroke-dasharray: 0.4rem 0.4rem;
       stroke-width: 0.1rem;
       vector-effect: non-scaling-stroke;
@@ -2589,7 +2599,7 @@
     z-index: $z-chart + 1;
     padding: $space-3 $space-6;
     border-radius: $radius-sm;
-    color: $color-text;
+    color: $color-text-inverse;
     font-size: $font-md;
     font-weight: $weight-medium;
     transform: translateX(-50%);
@@ -2605,11 +2615,12 @@
   }
 
   &__price {
-    bottom: $space-0;
+    bottom: $space-3;
   }
 
   &__size {
-    left: $space-0;
+    right: $space-8;
+    left: auto;
     transform: translateY(-50%);
   }
 
@@ -2621,6 +2632,7 @@
     border-radius: $radius-md;
     color: $color-text-muted;
     background: $color-surface-raised;
+    box-shadow: 0 $space-8 $space-20 $color-shadow-soft;
     font-size: $font-md;
     pointer-events: none;
 
@@ -2669,13 +2681,13 @@
   }
 
   &__grid {
-    stroke: rgba($color-text-muted, 0.14);
+    stroke: color-mix(in srgb, #{$color-text-muted} 14%, transparent);
     stroke-width: 0.1rem;
     vector-effect: non-scaling-stroke;
   }
 
   &__axis-line {
-    stroke: rgba($color-text-muted, 0.24);
+    stroke: color-mix(in srgb, #{$color-text-muted} 24%, transparent);
     stroke-width: 0.1rem;
     vector-effect: non-scaling-stroke;
   }
@@ -2765,7 +2777,7 @@
     pointer-events: none;
 
     > line {
-      stroke: rgba($color-text, 0.5);
+      stroke: color-mix(in srgb, #{$color-text} 50%, transparent);
       stroke-dasharray: 0.2rem 0.2rem;
       stroke-width: 0.1rem;
       vector-effect: non-scaling-stroke;
@@ -4507,8 +4519,8 @@
   &__rows--ask &__row::before {
     background: linear-gradient(
       to right,
-      rgba($color-book-ask, 0.22),
-      rgba($color-book-ask, 0.02)
+      color-mix(in srgb, #{$color-book-ask} 22%, transparent),
+      color-mix(in srgb, #{$color-book-ask} 2%, transparent)
     );
   }
 
@@ -4519,8 +4531,8 @@
   &__rows--bid &__row::before {
     background: linear-gradient(
       to right,
-      rgba($color-book-bid, 0.22),
-      rgba($color-book-bid, 0.02)
+      color-mix(in srgb, #{$color-book-bid} 22%, transparent),
+      color-mix(in srgb, #{$color-book-bid} 2%, transparent)
     );
   }
 
@@ -4596,8 +4608,8 @@
       width: var(--trade-depth);
       background: linear-gradient(
         to right,
-        rgba($color-book-bid, 0.22),
-        rgba($color-book-bid, 0.02)
+        color-mix(in srgb, #{$color-book-bid} 22%, transparent),
+        color-mix(in srgb, #{$color-book-bid} 2%, transparent)
       );
       content: "";
       pointer-events: none;
@@ -4630,8 +4642,8 @@
     &.is-sell::before {
       background: linear-gradient(
         to right,
-        rgba($color-book-ask, 0.22),
-        rgba($color-book-ask, 0.02)
+        color-mix(in srgb, #{$color-book-ask} 22%, transparent),
+        color-mix(in srgb, #{$color-book-ask} 2%, transparent)
       );
     }
   }
@@ -4707,7 +4719,7 @@
   }
 
   &__deposit {
-    color: $color-text;
+    color: #fff;
     background: $color-primary;
     font-size: $font-base;
     font-weight: $weight-medium;
@@ -4770,32 +4782,6 @@
       }
     }
 
-    &:hover .order__margin-tip,
-    &:focus-within .order__margin-tip {
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
-  }
-
-  &__margin-tip {
-    position: absolute;
-    z-index: $z-tooltip;
-    top: calc(100% + #{$space-8});
-    left: 50%;
-    width: 21rem;
-    padding: $space-8 $space-10;
-    border-radius: $radius-sm;
-    color: $color-text;
-    background: $color-surface-raised;
-    box-shadow: 0 $space-8 $space-20 $color-shadow-soft;
-    font-size: $font-md;
-    line-height: 1.45;
-    opacity: 0;
-    pointer-events: none;
-    transform: translate(-50%, -$space-3);
-    transition:
-      opacity $duration-fast ease,
-      transform $duration-fast ease;
   }
 
   &__leverage,
@@ -5172,7 +5158,7 @@
       left: 0.5rem;
       width: 0.4rem;
       height: 0.8rem;
-      border: solid $color-text;
+      border: solid #fff;
       border-width: 0 0.2rem 0.2rem 0;
       content: "";
       opacity: 0;
@@ -5294,9 +5280,9 @@
     display: grid;
     gap: $space-10;
     padding: $space-12;
-    border: 0.1rem solid rgba(73, 73, 80, 0.28);
+    border: 0.1rem solid $color-border;
     border-radius: $radius-md;
-    background: #1b1b1e;
+    background: $color-surface-button;
 
     div {
       @include flex(null, space-between);
@@ -5586,9 +5572,9 @@
     min-width: 19.2rem;
     gap: $space-10;
     padding: $space-12;
-    border: 0.1rem solid rgb(73 73 80 / 55%);
+    border: 0.1rem solid $color-border;
     border-radius: $radius-md;
-    background: #252528;
+    background: $color-surface-button;
     box-shadow: 0 $space-8 $space-20 $color-shadow-strong;
     font-size: $font-md;
 

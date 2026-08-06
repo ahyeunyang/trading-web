@@ -15,7 +15,7 @@
 
   &__backdrop {
     position: fixed;
-    z-index: $z-tooltip + 3;
+    z-index: $z-tooltip + 5;
     inset: 0;
     background: rgb(0 0 0 / 48%);
   }
@@ -40,7 +40,7 @@
     }
 
     button:hover { color: $color-text; }
-    svg { width: 2rem; height: 2rem; }
+    svg { width: 1.8rem; height: 1.8rem; }
   }
 
   &__search {

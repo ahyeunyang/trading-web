@@ -6,6 +6,7 @@ import { DemoDepthChart } from "./DemoDepthChart";
 import { DemoFundingChart } from "./DemoFundingChart";
 import { MarketDetails } from "./MarketDetails";
 import type { Market } from "./MarketPanel";
+import { Tooltip } from "../ui/Tooltip";
 
 type ToggleProps = {
   label: string;
@@ -76,9 +77,9 @@ export function TradeChart({ market }: { market: Market }) {
         <button className={activeTab === "funding" ? "is-active" : undefined} type="button" onClick={() => setActiveTab("funding")}>{t("fundingTab")}</button>
         <button className={activeTab === "details" ? "is-active" : undefined} type="button" onClick={() => setActiveTab("details")}>{t("details")}</button>
         <nav className="chart__resources" aria-label={t("marketResources")}>
-          <a className="tip" href="https://coinmarketcap.com/currencies/bitcoin/" target="_blank" rel="noopener noreferrer" aria-label={t("marketData")} data-tip={t("marketData")}><MarketDataIcon /></a>
-          <a className="tip" href="https://bitcoin.org/bitcoin.pdf" target="_blank" rel="noopener noreferrer" aria-label={t("whitepaper")} data-tip={t("whitepaper")}><WhitepaperIcon /></a>
-          <a className="tip" href="https://bitcoin.org/" target="_blank" rel="noopener noreferrer" aria-label={t("officialWebsite")} data-tip={t("officialWebsite")}><WebsiteIcon /></a>
+          <Tooltip className="hint--control" content={t("marketData")} portal><a href="https://coinmarketcap.com/currencies/bitcoin/" target="_blank" rel="noopener noreferrer" aria-label={t("marketData")}><MarketDataIcon /></a></Tooltip>
+          <Tooltip className="hint--control" content={t("whitepaper")} portal><a href="https://bitcoin.org/bitcoin.pdf" target="_blank" rel="noopener noreferrer" aria-label={t("whitepaper")}><WhitepaperIcon /></a></Tooltip>
+          <Tooltip className="hint--control" content={t("officialWebsite")} portal><a href="https://bitcoin.org/" target="_blank" rel="noopener noreferrer" aria-label={t("officialWebsite")}><WebsiteIcon /></a></Tooltip>
         </nav>
       </div>
       {activeTab === "price" && <header className="panel__header">

@@ -1,0 +1,150 @@
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-primary: #7774ff;
+  --color-primary-hover: #8986ff;
+  --color-bg: #212124;
+  --color-surface: #212124;
+  --color-surface-button: #29292c;
+  --color-surface-raised: #303033;
+  --color-surface-hover: rgb(250 250 250 / 6%);
+  --color-surface-hover-soft: rgb(250 250 250 / 5%);
+  --color-surface-light-hover: #e9e9eb;
+  --color-border: #494950;
+  --color-text: #fff;
+  --color-text-button: #c8c7d8;
+  --color-text-muted: #888891;
+  --color-text-inverse: #fff;
+  --color-shadow: rgb(0 0 0 / 35%);
+  --color-shadow-soft: rgb(0 0 0 / 30%);
+  --color-shadow-strong: rgb(0 0 0 / 40%);
+  --color-grid: rgb(73 73 80 / 55%);
+  --color-skeleton: #303033;
+  --color-skeleton-highlight: #3b3b40;
+}
+
+:root[data-theme="classic"] {
+  color-scheme: dark;
+  --color-primary: #6966ff;
+  --color-primary-hover: #7e7aff;
+  --color-bg: #0d0d10;
+  --color-surface: #111114;
+  --color-surface-button: #18181d;
+  --color-surface-raised: #202025;
+  --color-surface-hover: rgb(255 255 255 / 7%);
+  --color-surface-hover-soft: rgb(255 255 255 / 4%);
+  --color-surface-light-hover: #e9e9eb;
+  --color-border: #303037;
+  --color-text: #fff;
+  --color-text-button: #c8c7d8;
+  --color-text-muted: #777781;
+  --color-text-inverse: #fff;
+  --color-shadow: rgb(0 0 0 / 48%);
+  --color-shadow-soft: rgb(0 0 0 / 42%);
+  --color-shadow-strong: rgb(0 0 0 / 56%);
+  --color-grid: rgb(48 48 55 / 62%);
+  --color-skeleton: #202025;
+  --color-skeleton-highlight: #2b2b31;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-primary: #625eff;
+  --color-primary-hover: #504cf0;
+  --color-bg: #f5f5f7;
+  --color-surface: #fff;
+  --color-surface-button: #f0f0f3;
+  --color-surface-raised: #e9e9ee;
+  --color-surface-hover: rgb(25 25 35 / 7%);
+  --color-surface-hover-soft: rgb(25 25 35 / 4%);
+  --color-surface-light-hover: #e4e4e9;
+  --color-border: #d4d4dc;
+  --color-text: #18181d;
+  --color-text-button: #3e3e48;
+  --color-text-muted: #74747f;
+  --color-text-inverse: #fff;
+  --color-shadow: rgb(30 30 45 / 18%);
+  --color-shadow-soft: rgb(30 30 45 / 12%);
+  --color-shadow-strong: rgb(30 30 45 / 24%);
+  --color-grid: rgb(180 180 192 / 55%);
+  --color-skeleton: #e7e7ec;
+  --color-skeleton-highlight: #f2f2f5;
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="system"] {
+    color-scheme: light;
+    --color-primary: #625eff;
+    --color-primary-hover: #504cf0;
+    --color-bg: #f5f5f7;
+    --color-surface: #fff;
+    --color-surface-button: #f0f0f3;
+    --color-surface-raised: #e9e9ee;
+    --color-surface-hover: rgb(25 25 35 / 7%);
+    --color-surface-hover-soft: rgb(25 25 35 / 4%);
+    --color-surface-light-hover: #e4e4e9;
+    --color-border: #d4d4dc;
+    --color-text: #18181d;
+    --color-text-button: #3e3e48;
+    --color-text-muted: #74747f;
+    --color-text-inverse: #fff;
+    --color-shadow: rgb(30 30 45 / 18%);
+    --color-shadow-soft: rgb(30 30 45 / 12%);
+    --color-shadow-strong: rgb(30 30 45 / 24%);
+    --color-grid: rgb(180 180 192 / 55%);
+    --color-skeleton: #e7e7ec;
+    --color-skeleton-highlight: #f2f2f5;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="system"] {
+    color-scheme: dark;
+    --color-primary: #7774ff;
+    --color-primary-hover: #8986ff;
+    --color-bg: #212124;
+    --color-surface: #212124;
+    --color-surface-button: #29292c;
+    --color-surface-raised: #303033;
+    --color-surface-hover: rgb(250 250 250 / 6%);
+    --color-surface-hover-soft: rgb(250 250 250 / 5%);
+    --color-surface-light-hover: #e9e9eb;
+    --color-border: #494950;
+    --color-text: #fff;
+    --color-text-button: #c8c7d8;
+    --color-text-muted: #888891;
+    --color-text-inverse: #fff;
+    --color-shadow: rgb(0 0 0 / 35%);
+    --color-shadow-soft: rgb(0 0 0 / 30%);
+    --color-shadow-strong: rgb(0 0 0 / 40%);
+    --color-grid: rgb(73 73 80 / 55%);
+    --color-skeleton: #303033;
+    --color-skeleton-highlight: #3b3b40;
+  }
+}
+
+:root {
+  --color-positive: #00d6a3;
+  --color-negative: #ff535b;
+  --color-positive-soft: rgb(0 214 163 / 12%);
+  --color-negative-soft: rgb(255 83 91 / 12%);
+  --color-positive-chart: rgb(0 214 163 / 80%);
+  --color-positive-chart-soft: rgb(0 214 163 / 75%);
+  --color-negative-chart: rgb(255 83 91 / 80%);
+  --color-negative-chart-soft: rgb(255 83 91 / 70%);
+  --color-book-ask: #ff5c5c;
+  --color-book-bid: #1affb9;
+}
+
+:root[data-market-colors="red"] {
+  --color-positive: #ff535b;
+  --color-negative: #00d6a3;
+  --color-positive-soft: rgb(255 83 91 / 12%);
+  --color-negative-soft: rgb(0 214 163 / 12%);
+  --color-positive-chart: rgb(255 83 91 / 80%);
+  --color-positive-chart-soft: rgb(255 83 91 / 70%);
+  --color-negative-chart: rgb(0 214 163 / 80%);
+  --color-negative-chart-soft: rgb(0 214 163 / 75%);
+  --color-book-ask: #1affb9;
+  --color-book-bid: #ff5c5c;
+}

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useLocale, type Lang } from "../../i18n/Locale";
 import { CloseIcon } from "../icons/CloseIcon";
+import { BrandLogo } from "../icons/BrandLogo";
 import { Modal } from "../ui/Modal";
+import { CopyButton } from "../ui/CopyButton";
 import ethImage from "../../assets/images/coins/eth.png";
 import avaxImage from "../../assets/images/coins/avax.png";
 import solImage from "../../assets/images/coins/sol.png";
@@ -48,15 +50,7 @@ function DepositQr() {
     <svg className="deposit-wallet-modal__qr" viewBox="0 0 160 160" aria-label="Deposit QR code">
       <g fill="currentColor">{modules}</g>
       {[[16, 16], [112, 16], [16, 112]].map(([x, y]) => <g key={`${x}-${y}`} fill="none" stroke="currentColor" strokeWidth="6"><rect x={x} y={y} width="32" height="32" rx="5" /><rect x={x + 9} y={y + 9} width="14" height="14" rx="2" fill="currentColor" stroke="none" /></g>)}
-      <g transform="translate(61.1 59.7) scale(.28)">
-        <path d="M100.986 0 0 144.988h31.005L132.514 0h-31.528Z" fill="#fff" />
-        <path d="m34.235 0 29.712 42.723-15.502 23.304L2.584 0h31.65Z" fill="url(#deposit-logo-top)" />
-        <path d="M103.995 145 71.053 97.746 86.555 75.09 135 145h-31.005Z" fill="url(#deposit-logo-bottom)" />
-      </g>
-      <defs>
-        <linearGradient id="deposit-logo-top" x1="27.129" y1="9.063" x2="69.773" y2="60.432" gradientUnits="userSpaceOnUse"><stop stopColor="#fff" /><stop offset="1" stopColor="#fff" stopOpacity=".55" /></linearGradient>
-        <linearGradient id="deposit-logo-bottom" x1="111.1" y1="133.996" x2="58.696" y2="63.5" gradientUnits="userSpaceOnUse"><stop stopColor="#6966ff" /><stop offset="1" stopColor="#6966ff" stopOpacity=".36" /></linearGradient>
-      </defs>
+      <BrandLogo className="deposit-wallet-modal__brand" x="61.1" y="59.7" width="37.8" height="40.6" />
     </svg>
   );
 }
@@ -66,16 +60,7 @@ export function DepositModal({ onClose }: { onClose: () => void }) {
   const text = copy[lang];
   const [network, setNetwork] = useState<Network>("Ethereum");
   const [isNetworkOpen, setIsNetworkOpen] = useState(false);
-  const [isCopied, setIsCopied] = useState(false);
   const selected = networks.find((item) => item.name === network) ?? networks[0];
-
-  const copyAddress = async () => {
-    try {
-      await navigator.clipboard.writeText(depositAddress);
-      setIsCopied(true);
-      window.setTimeout(() => setIsCopied(false), 1600);
-    } catch { setIsCopied(false); }
-  };
 
   return (
     <Modal className="deposit-wallet-modal" backdropClassName="deposit-wallet-modal__backdrop" labelledBy="deposit-wallet-modal-title" onClose={onClose}>
@@ -108,9 +93,7 @@ export function DepositModal({ onClose }: { onClose: () => void }) {
             </div>
             <div className="deposit-wallet-modal__address">
               <strong>{depositAddress.slice(0, 14)}<br />{depositAddress.slice(14, 28)}<br />{depositAddress.slice(28)}</strong>
-              <button className={isCopied ? "is-copied" : undefined} type="button" aria-label={text.copyAddress} onClick={() => void copyAddress()}>
-                {isCopied ? <svg viewBox="0 0 17 17" fill="none"><path d="m3.5 8.7 3.1 3.1 6.9-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg> : <svg viewBox="0 0 17 17" fill="none"><path d="M13.5 6.4H8.4a2 2 0 0 0-2 2v5.1a2 2 0 0 0 2 2h5.1a2 2 0 0 0 2-2V8.4a2 2 0 0 0-2-2Z" stroke="currentColor" strokeWidth="1.5" /><path d="M3.6 10.6h-.7a1.4 1.4 0 0 1-1.4-1.4V2.9a1.4 1.4 0 0 1 1.4-1.4h6.3a1.4 1.4 0 0 1 1.4 1.4v.7" stroke="currentColor" strokeWidth="1.5" /></svg>}
-              </button>
+              <CopyButton value={depositAddress} label={text.copyAddress} />
             </div>
           </div>
           <DepositQr />

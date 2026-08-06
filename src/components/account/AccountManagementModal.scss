@@ -1,0 +1,83 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/color-token" as *;
+@use "../../styles/mixins" as *;
+
+.account-management-modal {
+  width: min(63.4rem, calc(100vw - 3.2rem));
+  padding: $space-20 $space-24 $space-24;
+  border: 0.1rem solid $color-border;
+  border-radius: $radius-lg;
+  color: $color-text-muted;
+  background: $color-surface;
+  box-shadow: 0 1.6rem 4rem rgb(0 0 0 / 40%);
+
+  &__backdrop {
+    @include flex-center;
+    position: fixed;
+    z-index: $z-tooltip + 6;
+    inset: 0;
+    padding: $space-16;
+    background: rgb(0 0 0 / 64%);
+  }
+
+  &__header {
+    @include flex(center, space-between);
+    margin-bottom: $space-16;
+
+    h2 { color: $color-text; font-size: 2rem; font-weight: $weight-regular; }
+
+    button {
+      @include flex-center;
+      width: $space-32;
+      height: $space-32;
+      color: $color-text-muted;
+    }
+
+    button:hover { color: $color-text; }
+    svg { width: 1.8rem; height: 1.8rem; }
+  }
+
+  section h3 { color: $color-text; font-size: 1.6rem; font-weight: $weight-medium; }
+  section > p { margin-top: $space-4; font-size: $font-base; line-height: 1.45; }
+
+  &__email {
+    @include flex(center);
+    min-height: 4.4rem;
+    gap: $space-12;
+    margin-top: $space-16;
+    padding: 0 $space-16;
+    border-radius: $radius-md;
+    background: $color-surface-hover;
+
+    svg { width: $space-20; height: $space-20; flex: 0 0 auto; }
+    strong { color: $color-text; font-size: 1.6rem; font-weight: $weight-medium; }
+  }
+
+  &__export { margin-top: $space-24; }
+
+  &__secret {
+    @include flex(center, space-between);
+    width: 100%;
+    min-height: 4.4rem;
+    margin-top: $space-16;
+    padding: 0 $space-16;
+    border-radius: $radius-md;
+    color: $color-text;
+    background: $color-surface-hover;
+    text-align: left;
+
+    &:hover { background: $color-surface-raised; }
+
+    b {
+      margin-left: $space-4;
+      padding: $space-2 $space-6;
+      border-radius: 999rem;
+      color: $color-negative;
+      background: $color-negative-soft;
+      font-size: $font-xs;
+      font-weight: $weight-regular;
+    }
+
+    i { color: $color-text-muted; font-size: 2.4rem; font-style: normal; }
+  }
+}

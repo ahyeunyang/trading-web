@@ -8,8 +8,8 @@
   border: 0.1rem solid $color-border;
   border-radius: $radius-lg;
   color: $color-text-button;
-  background: #29292c;
-  box-shadow: 0 1.6rem 4rem rgb(0 0 0 / 40%);
+  background: $color-surface-button;
+  box-shadow: 0 1.6rem 4rem $color-shadow-strong;
 
   &__backdrop {
     @include flex-center;
@@ -43,11 +43,12 @@
     overflow: hidden;
     border: 0.3rem solid transparent;
     border-radius: $radius-lg;
-    color: #d6d6dc;
-    background: #303033;
+    color: $color-text-button;
+    background: $color-surface-raised;
 
     > span { width: 100%; height: 100%; transition: filter $duration-base ease, opacity $duration-base ease; }
     > span svg { width: 100%; height: 100%; }
+    .mobile-app-qr__brand { color: $color-text; }
     > strong { position: absolute; z-index: 1; color: $color-text; font-size: 2rem; font-weight: $weight-regular; }
 
     &:not(.is-visible) > span { filter: blur(1.2rem); opacity: 0.48; }

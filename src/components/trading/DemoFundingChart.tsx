@@ -122,7 +122,12 @@ export function DemoFundingChart() {
       {hover && (
         <>
           <span className={`funding-chart__value${hover.raw < 0 ? " is-negative" : ""}`} style={{ top: `${hover.y / 4}%` }}>{percentage(hover.raw * scale)}</span>
-          <span className="funding-chart__date" style={{ left: `${hover.x / 10}%` }}>{axisTime(hover.time)}</span>
+          <span
+            className="funding-chart__date"
+            style={{ left: `clamp(5.6rem, ${hover.x / 10}%, calc(100% - 5.6rem))` }}
+          >
+            {axisTime(hover.time)}
+          </span>
           <div
             className={`funding-chart__tooltip${hover.raw < 0 ? " is-negative" : ""}${hover.x > WIDTH * .76 ? " is-left" : ""}`}
             style={{ left: `${hover.x / 10}%`, top: `${Math.max(14, Math.min(72, hover.y / 4))}%` }}

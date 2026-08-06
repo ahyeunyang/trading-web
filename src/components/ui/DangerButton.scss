@@ -9,7 +9,7 @@
 
   &:not(:disabled):hover,
   &:not(:disabled):focus-visible {
-    color: $color-text;
+    color: #fff;
     background: $color-negative;
   }
 

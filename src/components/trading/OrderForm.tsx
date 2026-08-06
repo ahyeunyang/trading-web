@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BitcoinIcon } from "../icons/BitcoinIcon";
 import { ChevronDown } from "../icons/ChevronDown";
 import { WarningIcon } from "../icons/WarningIcon";
@@ -46,6 +46,27 @@ export function OrderForm({
   const [leverage, setLeverage] = useState(50);
   const [draftLeverage, setDraftLeverage] = useState(50);
   const [isLeverageOpen, setIsLeverageOpen] = useState(false);
+  const advancedSelectRef = useRef<HTMLDetailsElement>(null);
+
+  useEffect(() => {
+    const closeOnOutsidePress = (event: PointerEvent) => {
+      if (!advancedSelectRef.current?.contains(event.target as Node)) {
+        advancedSelectRef.current?.removeAttribute("open");
+      }
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        advancedSelectRef.current?.removeAttribute("open");
+      }
+    };
+
+    document.addEventListener("pointerdown", closeOnOutsidePress);
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsidePress);
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, []);
 
   useEffect(() => {
     if (!isLeverageOpen) return;
@@ -177,30 +198,18 @@ export function OrderForm({
       <div className="order__margin">
         <div className="order__margin-mode" role="group" aria-label="마진 모드">
           <span className="order__margin-option">
-            <button
-              className={marginMode === "cross" ? "is-active" : undefined}
-              type="button"
-              aria-pressed={marginMode === "cross"}
-              onClick={() => setMarginMode("cross")}
-            >
-              {t("cross")}
-            </button>
-            <span className="order__margin-tip" role="tooltip">
-              {t("crossTip")}
-            </span>
+            <Tooltip className="hint--control" content={t("crossTip")} tooltipClassName="hint__pop--margin" portal>
+              <button className={marginMode === "cross" ? "is-active" : undefined} type="button" aria-pressed={marginMode === "cross"} onClick={() => setMarginMode("cross")}>
+                {t("cross")}
+              </button>
+            </Tooltip>
           </span>
           <span className="order__margin-option">
-            <button
-              className={marginMode === "isolated" ? "is-active" : undefined}
-              type="button"
-              aria-pressed={marginMode === "isolated"}
-              onClick={() => setMarginMode("isolated")}
-            >
-              {t("isolated")}
-            </button>
-            <span className="order__margin-tip" role="tooltip">
-              {t("isolatedTip")}
-            </span>
+            <Tooltip className="hint--control" content={t("isolatedTip")} tooltipClassName="hint__pop--margin" portal>
+              <button className={marginMode === "isolated" ? "is-active" : undefined} type="button" aria-pressed={marginMode === "isolated"} onClick={() => setMarginMode("isolated")}>
+                {t("isolated")}
+              </button>
+            </Tooltip>
           </span>
         </div>
         <button
@@ -237,7 +246,7 @@ export function OrderForm({
       <div className="order__types">
         <button className={orderType === "limit" ? "is-active" : undefined} type="button" onClick={() => setOrderType("limit")}>{t("limit")}</button>
         <button className={orderType === "market" ? "is-active" : undefined} type="button" onClick={() => setOrderType("market")}>{t("market")}</button>
-        <details className="order__advanced-select">
+        <details className="order__advanced-select" ref={advancedSelectRef}>
           <summary>{t("advanced")}<ChevronDown /></summary>
           <div>
             {[t("stopLoss"), t("stopLoss"), t("scale")].map((option, index) => (

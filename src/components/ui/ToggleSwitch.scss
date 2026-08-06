@@ -1,0 +1,54 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/color-token" as *;
+
+.toggle-switch {
+  position: relative;
+  width: 4.2rem;
+  height: 2.4rem;
+  flex: 0 0 auto;
+  border-radius: 999rem;
+  background: #050506;
+  transition: background $duration-base ease;
+
+  span {
+    position: absolute;
+    top: 0.2rem;
+    left: 0.2rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: $color-text-muted;
+    transition: transform $duration-base ease, background $duration-base ease;
+  }
+
+  &.is-checked {
+    background: $color-primary;
+
+    span {
+      background: #fff;
+      transform: translateX(1.8rem);
+    }
+  }
+
+  &:focus-visible { outline: 0.2rem solid $color-text; outline-offset: 0.2rem; }
+}
+
+:root[data-theme="light"] .toggle-switch:not(.is-checked) {
+  background: $color-border;
+
+  span {
+    background: $color-surface;
+    box-shadow: 0 0.1rem 0.3rem $color-shadow-soft;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="system"] .toggle-switch:not(.is-checked) {
+    background: $color-border;
+
+    span {
+      background: $color-surface;
+      box-shadow: 0 0.1rem 0.3rem $color-shadow-soft;
+    }
+  }
+}

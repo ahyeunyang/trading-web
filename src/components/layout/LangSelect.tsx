@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { type Lang, useLocale } from "../../i18n/Locale";
 import { ChevronDown } from "../icons/ChevronDown";
 import { TranslateIcon } from "../icons/HeaderIcons";
@@ -15,6 +15,26 @@ const langs: Array<{ id: Lang; label: string }> = [
 export function LangSelect() {
   const { lang, setLang } = useLocale();
   const ref = useRef<HTMLDetailsElement>(null);
+
+  useEffect(() => {
+    const closeOnOutsidePress = (event: PointerEvent) => {
+      if (!ref.current?.contains(event.target as Node)) {
+        ref.current?.removeAttribute("open");
+      }
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        ref.current?.removeAttribute("open");
+      }
+    };
+
+    document.addEventListener("pointerdown", closeOnOutsidePress);
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsidePress);
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, []);
 
   const select = (next: Lang) => {
     setLang(next);

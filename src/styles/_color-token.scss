@@ -1,41 +1,41 @@
 /* brand */
-$color-primary: #7774ff;
-$color-primary-hover: #8986ff;
+$color-primary: var(--color-primary);
+$color-primary-hover: var(--color-primary-hover);
 
 /* background */
-$color-bg: #212124;
-$color-surface: #212124;
-$color-surface-button: #29292c;
-$color-surface-raised: #303033;
-$color-surface-hover: rgba(250, 250, 250, .06);
-$color-surface-hover-soft: rgba(250, 250, 250, .05);
-$color-surface-light-hover: #e9e9eb;
+$color-bg: var(--color-bg);
+$color-surface: var(--color-surface);
+$color-surface-button: var(--color-surface-button);
+$color-surface-raised: var(--color-surface-raised);
+$color-surface-hover: var(--color-surface-hover);
+$color-surface-hover-soft: var(--color-surface-hover-soft);
+$color-surface-light-hover: var(--color-surface-light-hover);
 
 /* border */
-$color-border: #494950;
+$color-border: var(--color-border);
 
 /* text */
-$color-text: #ffffff;
-$color-text-button: #c8c7d8;
-$color-text-muted: #888891;
-$color-text-inverse: #ffffff;
+$color-text: var(--color-text);
+$color-text-button: var(--color-text-button);
+$color-text-muted: var(--color-text-muted);
+$color-text-inverse: var(--color-text-inverse);
 
 /* state */
-$color-positive: #00d6a3;
-$color-negative: #ff535b;
-$color-positive-soft: rgba(0, 214, 163, .12);
-$color-negative-soft: rgba(255, 83, 91, .12);
-$color-positive-chart: rgba(0, 214, 163, .8);
-$color-positive-chart-soft: rgba(0, 214, 163, .75);
-$color-negative-chart: rgba(255, 83, 91, .8);
-$color-negative-chart-soft: rgba(255, 83, 91, .7);
-$color-book-ask: #ff5c5c;
-$color-book-bid: #1affb9;
+$color-positive: var(--color-positive);
+$color-negative: var(--color-negative);
+$color-positive-soft: var(--color-positive-soft);
+$color-negative-soft: var(--color-negative-soft);
+$color-positive-chart: var(--color-positive-chart);
+$color-positive-chart-soft: var(--color-positive-chart-soft);
+$color-negative-chart: var(--color-negative-chart);
+$color-negative-chart-soft: var(--color-negative-chart-soft);
+$color-book-ask: var(--color-book-ask);
+$color-book-bid: var(--color-book-bid);
 
 /* effect */
-$color-shadow: rgba(0, 0, 0, .35);
-$color-shadow-soft: rgba(0, 0, 0, .3);
-$color-shadow-strong: rgba(0, 0, 0, .4);
-$color-grid: rgba(73, 73, 80, .55);
-$color-skeleton: #303033;
-$color-skeleton-highlight: #3b3b40;
+$color-shadow: var(--color-shadow);
+$color-shadow-soft: var(--color-shadow-soft);
+$color-shadow-strong: var(--color-shadow-strong);
+$color-grid: var(--color-grid);
+$color-skeleton: var(--color-skeleton);
+$color-skeleton-highlight: var(--color-skeleton-highlight);

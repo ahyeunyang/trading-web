@@ -84,7 +84,7 @@
       &:hover,
       &.is-active {
         color: $color-text;
-        background: #1b1b1d;
+        background: $color-surface-raised;
       }
     }
   }

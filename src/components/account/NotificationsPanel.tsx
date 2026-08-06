@@ -5,6 +5,7 @@ import { CloseIcon } from "../icons/CloseIcon";
 import { SettingsIcon } from "../icons/AccountMenuIcons";
 import { DangerButton } from "../ui/DangerButton";
 import { LoadingButton } from "../ui/LoadingButton";
+import { NotificationSettingsModal } from "./NotificationSettingsModal";
 import "./NotificationsPanel.scss";
 
 type NotificationKind = "notice" | "maintenance" | "trading";
@@ -102,16 +103,17 @@ export function NotificationsPanel({ onClose }: { onClose: () => void }) {
     return storedPreference === null ? true : storedPreference === "true";
   });
   const [isPushLoading, setIsPushLoading] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const pushTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape" && !isSettingsOpen) onClose();
     };
 
     window.addEventListener("keydown", closeOnEscape);
     return () => window.removeEventListener("keydown", closeOnEscape);
-  }, [onClose]);
+  }, [isSettingsOpen, onClose]);
 
   useEffect(() => {
     if (!isPushEnabled) {
@@ -181,7 +183,7 @@ export function NotificationsPanel({ onClose }: { onClose: () => void }) {
         <header className="notifications-panel__header">
           <h2 id="notifications-panel-title">{t("notifications")}</h2>
           <div>
-            <button type="button" aria-label={text.settings}><SettingsIcon /></button>
+            <button type="button" aria-label={text.settings} onClick={() => setIsSettingsOpen(true)}><SettingsIcon /></button>
             <button type="button" aria-label={t("close")} onClick={onClose}><CloseIcon /></button>
           </div>
         </header>
@@ -222,6 +224,7 @@ export function NotificationsPanel({ onClose }: { onClose: () => void }) {
           <DangerButton disabled={notifications.length === 0} onClick={() => setNotifications([])}>{text.clearAll}</DangerButton>
         </footer>
       </aside>
+      {isSettingsOpen && <NotificationSettingsModal onClose={() => setIsSettingsOpen(false)} />}
     </div>,
     document.body,
   );
