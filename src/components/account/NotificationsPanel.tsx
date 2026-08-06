@@ -97,7 +97,10 @@ export function NotificationsPanel({ onClose }: { onClose: () => void }) {
   const text = copy[lang];
   const [query, setQuery] = useState("");
   const [notifications, setNotifications] = useState<NotificationItem[]>(loadNotifications);
-  const [isPushEnabled, setIsPushEnabled] = useState(() => localStorage.getItem(PUSH_KEY) === "true");
+  const [isPushEnabled, setIsPushEnabled] = useState(() => {
+    const storedPreference = localStorage.getItem(PUSH_KEY);
+    return storedPreference === null ? true : storedPreference === "true";
+  });
   const [isPushLoading, setIsPushLoading] = useState(false);
   const pushTimerRef = useRef<number | null>(null);
 
