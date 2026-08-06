@@ -176,17 +176,22 @@ export function TradingHeader({
           {t("markets")}
         </button>
         <button
-          className={activePage === "portfolio" ? "is-active" : undefined}
           type="button"
-          onClick={() => onPageChange("portfolio")}
+          disabled
         >
           {t("portfolio")}
         </button>
-        <a href="#megavault">MegaVault</a>
-        <a href="#rewards">{t("rewards")}</a>
-        <a className="topbar__ayxx" href="#ayxx">
+        <button
+          className={activePage === "megaayxx" ? "is-active" : undefined}
+          type="button"
+          onClick={() => onPageChange("megaayxx")}
+        >
+          Megaayxx
+        </button>
+        <button type="button" disabled>{t("rewards")}</button>
+        <button className="topbar__ayxx" type="button" disabled>
           AYXX <i />
-        </a>
+        </button>
         <details className="more" ref={moreMenuRef}>
           <summary>
             {t("more")}

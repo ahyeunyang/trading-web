@@ -63,7 +63,7 @@ export function MarketDetails({ market }: { market: Market }) {
             <dt>
               {tip ? (
                 <Tooltip content={tip} portal>
-                  <span className="market-details__label-tip">{label}</span>
+                  {label}
                 </Tooltip>
               ) : label}
             </dt>

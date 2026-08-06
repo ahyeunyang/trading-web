@@ -101,6 +101,17 @@
           content: "";
         }
       }
+
+      &:disabled {
+        color: $color-text-muted;
+        cursor: not-allowed;
+        opacity: 0.55;
+
+        &:hover,
+        &:focus-visible {
+          color: $color-text-muted;
+        }
+      }
     }
 
     > a,
@@ -2285,11 +2296,6 @@
     gap: $space-6;
   }
 
-  &__label-tip {
-    border-bottom: 0.1rem dashed $color-text-muted;
-    color: inherit;
-    cursor: help;
-  }
 }
 
 @media (max-width: 76rem) {

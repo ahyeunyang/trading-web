@@ -1,0 +1,782 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/color-token" as *;
+@use "../../styles/mixins" as *;
+
+.megaayxx-page {
+  height: calc(100vh - #{$header-height} - #{$footer-height});
+  min-height: calc(100vh - #{$header-height} - #{$footer-height});
+  overflow-y: auto;
+  color: $color-text;
+  background: $color-surface;
+
+  button,
+  input {
+    font: inherit;
+  }
+
+  &__layout {
+    display: grid;
+    width: min(100%, 132rem);
+    min-height: 100%;
+    margin-inline: auto;
+    padding: $space-24 $space-20 0;
+    grid-template-columns: minmax(0, 84rem) 40rem;
+    gap: $space-40;
+    align-items: start;
+  }
+
+  &__main {
+    min-width: 0;
+  }
+
+  &__warning {
+    padding-block: $space-16;
+    color: $color-text-muted;
+    font-size: 1.5rem;
+    line-height: 1.55;
+  }
+}
+
+.megaayxx-hero {
+  @include flex(center, flex-start);
+  min-height: 9rem;
+  padding-bottom: $space-16;
+  border-bottom: 0.1rem solid $color-border;
+
+  &__identity {
+    @include flex(center);
+    gap: $space-20;
+    padding-right: $space-32;
+    border-right: 0.1rem solid $color-border;
+
+    h1 {
+      margin: 0;
+      font-size: 3rem;
+      font-weight: $weight-medium;
+      letter-spacing: -0.02em;
+    }
+  }
+
+  &__logo {
+    @include flex-center;
+    width: 5.6rem;
+    height: 5.6rem;
+    border: 0.1rem solid $color-border;
+    border-radius: 50%;
+    color: $color-text;
+    background: $color-surface-button;
+    box-shadow: inset 0 0 0 0.3rem color-mix(in srgb, #6966ff 7%, transparent);
+
+    svg {
+      width: 3.1rem;
+      height: 3.3rem;
+    }
+  }
+
+  dl {
+    @include flex(center);
+    margin: 0;
+
+    > div {
+      display: grid;
+      min-width: 12.6rem;
+      gap: $space-8;
+      padding-inline: $space-32;
+      border-left: 0.1rem solid $color-border;
+
+      &:first-child {
+        border-left: 0;
+      }
+    }
+
+    dt {
+      color: $color-text-muted;
+      font-size: 1.5rem;
+    }
+
+    dd {
+      margin: 0;
+      font-size: 2.6rem;
+      font-weight: $weight-medium;
+
+      &.is-positive {
+        color: $color-positive;
+      }
+    }
+  }
+}
+
+.megaayxx-chart {
+  padding-top: $space-16;
+
+  &__toolbar {
+    @include flex(center, space-between);
+    gap: $space-12;
+  }
+
+  &__metrics,
+  &__periods {
+    @include flex(center);
+    gap: $space-6;
+
+    button {
+      height: 3.6rem;
+      padding-inline: $space-10;
+      border: 0.1rem solid $color-border;
+      border-radius: 999rem;
+      color: $color-text-muted;
+      background: transparent;
+      font-size: $font-base;
+      transition: color $duration-fast, border-color $duration-fast, background $duration-fast;
+
+      &:hover,
+      &:focus-visible {
+        color: $color-text;
+      }
+
+      &.is-active {
+        border-color: $color-border;
+        color: $color-text;
+        background: $color-surface-button;
+      }
+    }
+  }
+
+  &__summary {
+    display: grid;
+    gap: $space-3;
+    margin-top: $space-12;
+    color: $color-text-muted;
+    font-size: $font-detail;
+
+    strong {
+      color: $color-text;
+      font-size: $font-lg;
+      font-weight: $weight-medium;
+    }
+
+    em {
+      margin-left: $space-5;
+      font-style: normal;
+
+      &.is-pnl {
+        color: #00d6a3;
+      }
+
+      &.is-tvl {
+        color: #ff535b;
+      }
+    }
+  }
+
+  &__plot {
+    position: relative;
+    height: 33.7rem;
+    margin-top: -$space-10;
+    padding: 0 6rem $space-32 0;
+    border-bottom: 0.1rem solid $color-border;
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    &.is-pnl .megaayxx-chart__line {
+      color: #00d6a3;
+    }
+
+    &.is-tvl .megaayxx-chart__line {
+      color: #ff535b;
+    }
+  }
+
+  &__grid {
+    color: color-mix(in srgb, #7f7f8d 14%, transparent);
+  }
+
+  &__grid-dot {
+    fill: color-mix(in srgb, $color-text-muted 20%, transparent);
+  }
+
+  &__line {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+
+  &__crosshair {
+    pointer-events: none;
+
+    line {
+      stroke: color-mix(in srgb, $color-text-muted 80%, transparent);
+      stroke-width: 1;
+      stroke-dasharray: 5 5;
+      vector-effect: non-scaling-stroke;
+    }
+
+    circle {
+      fill: $color-text-button;
+      stroke: $color-surface;
+      stroke-width: 1.5;
+      vector-effect: non-scaling-stroke;
+    }
+  }
+
+  &__hit-area {
+    cursor: crosshair;
+    touch-action: none;
+  }
+
+  &__axis {
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: $space-32;
+    width: 6rem;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-block: $space-10;
+    border-left: 0.1rem solid $color-border;
+    color: $color-text-muted;
+    font-size: $font-xs;
+
+    span {
+      padding-left: $space-5;
+      white-space: nowrap;
+    }
+  }
+
+  &__dates {
+    @include flex(center, space-around);
+    position: absolute;
+    right: 6rem;
+    bottom: 0;
+    left: 0;
+    height: $space-32;
+    color: $color-text-muted;
+    font-size: $font-sm;
+  }
+}
+
+.megaayxx-assets {
+  > header {
+    @include flex(center, space-between);
+    margin-bottom: $space-16;
+
+    h2 {
+      @include flex(center);
+      gap: $space-6;
+      margin: 0;
+      font-size: 2.2rem;
+      font-weight: $weight-medium;
+
+      span {
+        padding: $space-2 $space-6;
+        border-radius: $radius-xs;
+        color: $color-text-button;
+        background: $color-surface-raised;
+        font-size: 1.2rem;
+      }
+    }
+
+    a {
+      @include flex(center);
+      gap: $space-4;
+      color: $color-text-muted;
+      font-size: 1.6rem;
+
+      &:hover,
+      &:focus-visible {
+        color: $color-text;
+      }
+
+      svg {
+        width: 1.6rem;
+        height: 1.6rem;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    }
+  }
+
+  &__search {
+    @include flex(center);
+    min-width: 20rem;
+    height: 4rem;
+    gap: $space-6;
+    padding-inline: $space-12;
+    border: 0.1rem solid $color-border;
+    border-radius: 999rem;
+    color: $color-text-muted;
+    background: $color-surface-raised;
+
+    svg {
+      width: 1.6rem;
+      height: 1.8rem;
+      flex: 0 0 auto;
+    }
+
+    input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      color: $color-text;
+      background: transparent;
+      font-size: 1.5rem;
+      font-weight: 450;
+
+      &::placeholder {
+        color: $color-text-muted;
+      }
+    }
+  }
+
+  &__table-wrap {
+    margin-top: $space-12;
+    overflow: visible;
+  }
+
+  &__table {
+    min-width: 62rem;
+    overflow: visible;
+  }
+
+  &__head,
+  &__row {
+    display: grid;
+    grid-template-columns: 2.1fr 1.5fr 1.35fr 1fr;
+    align-items: center;
+  }
+
+  &__head {
+    min-height: 4.6rem;
+    padding-inline: $space-20;
+    border-bottom: 0.1rem solid $color-border;
+    color: $color-text-muted;
+    font-size: 1.2rem;
+    font-weight: 450;
+    background: $color-surface;
+
+    > span:nth-child(n + 3) {
+      text-align: right;
+    }
+
+  }
+
+  &__head > &__sort {
+    width: max-content;
+    margin-left: auto;
+    justify-self: end;
+    justify-content: flex-end;
+    color: $color-text-muted;
+    font-size: inherit;
+    text-align: right;
+
+    > span {
+      color: inherit;
+      font: inherit;
+    }
+  }
+
+  &__row {
+    min-height: 6.4rem;
+    padding-inline: $space-20;
+    border-bottom: 0.1rem solid $color-border;
+    font-size: 1.35008rem;
+    font-weight: 450;
+    transition: background $duration-fast;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    &:hover {
+      background: $color-surface-hover-soft;
+    }
+  }
+
+  &__market {
+    @include flex(center);
+    min-width: 0;
+    gap: $space-10;
+
+    > span:last-child,
+    strong,
+    small {
+      min-width: 0;
+    }
+
+    > span:last-child {
+      display: grid;
+      gap: $space-2;
+    }
+
+    strong {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 1.8rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    small {
+      color: $color-text-muted;
+    }
+  }
+
+  &__coin {
+    @include flex-center;
+    height: 3.2rem;
+    width: 3.2rem;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border-radius: 50%;
+
+    img,
+    > span {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+    }
+
+    img {
+      object-fit: cover;
+    }
+
+    > span {
+      @include flex-center;
+      color: #fff;
+      font-size: $font-xs;
+      font-weight: $weight-semibold;
+    }
+  }
+
+  &__size {
+    display: grid;
+    gap: $space-2;
+
+    strong {
+      font-size: 1.35008rem;
+      font-weight: $weight-medium;
+    }
+
+    small {
+      color: $color-text-muted;
+
+      b {
+        padding: $space-1 $space-4;
+        border-radius: $radius-xs;
+        color: $color-text-button;
+        background: $color-surface-raised;
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  &__pnl {
+    @include flex(center, flex-end);
+    gap: $space-6;
+
+    i {
+      width: 4rem;
+      height: 0.1rem;
+      background: $color-negative;
+    }
+
+    strong {
+      font-size: 1.35008rem;
+      font-weight: $weight-medium;
+    }
+  }
+
+  &__equity {
+    text-align: right;
+    font-size: 1.35008rem;
+    font-weight: $weight-medium;
+  }
+
+}
+
+.megaayxx-funding {
+  display: grid;
+  position: sticky;
+  top: $space-20;
+  gap: $space-20;
+
+  &__balances {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $space-12;
+
+    > div {
+      display: grid;
+      min-height: 6.4rem;
+      padding: $space-10 $space-12;
+      gap: $space-5;
+      border: 0.1rem solid $color-border;
+      border-radius: $radius-md;
+      color: $color-text-muted;
+
+      > .hint {
+        width: fit-content;
+        font-size: $font-detail;
+      }
+
+      strong {
+        color: $color-text;
+        font-size: $font-base;
+        font-weight: $weight-medium;
+      }
+    }
+  }
+
+  &__card {
+    display: grid;
+    padding: $space-24;
+    gap: $space-20;
+    border-radius: $radius-lg;
+    background: $color-surface-button;
+  }
+
+  &__tabs {
+    @include flex(center);
+    gap: $space-8;
+
+    button {
+      height: 4.4rem;
+      padding-inline: $space-20;
+      border-radius: $radius-md;
+      color: $color-text-muted;
+      background: transparent;
+      font-size: $font-xl;
+
+      &:hover,
+      &:focus-visible {
+        color: $color-text;
+      }
+
+      &.is-active {
+        color: $color-text;
+        background: color-mix(in srgb, $color-bg 70%, #000 10%);
+      }
+    }
+  }
+
+  &__amount {
+    display: grid;
+    min-height: 5.6rem;
+    padding: $space-5 $space-12;
+    border-radius: $radius-md $radius-md 0 0;
+    color: $color-text-muted;
+    background: $color-surface-raised;
+    font-size: $font-md;
+  }
+
+  &__amount-group,
+  &__result-group {
+    display: grid;
+  }
+
+  &__free {
+    @include flex(center, space-between);
+    min-height: 4rem;
+    padding-inline: $space-12;
+    border-radius: 0 0 $radius-md $radius-md;
+    color: $color-text-muted;
+    background: color-mix(in srgb, $color-bg 78%, #000 8%);
+    font-size: $font-detail;
+
+    strong {
+      color: $color-text;
+      font-weight: $weight-regular;
+    }
+  }
+
+  &__input {
+    @include flex(center, space-between);
+
+    input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      color: $color-text;
+      background: transparent;
+      font-size: $font-lg;
+
+      &::placeholder {
+        color: $color-text-muted;
+      }
+    }
+
+    button {
+      min-width: 4rem;
+      height: 2.9rem;
+      padding-inline: $space-10;
+      border-radius: $radius-xs;
+      color: #fff;
+      background: $color-primary;
+      font-size: $font-md;
+      white-space: nowrap;
+
+      &:hover {
+        background: $color-primary-hover;
+      }
+    }
+  }
+
+  &__details {
+    display: grid;
+    min-height: 6.4rem;
+    padding: $space-12;
+    gap: $space-10;
+    border-radius: $radius-md $radius-md 0 0;
+    background: color-mix(in srgb, $color-bg 78%, #000 8%);
+    font-size: $font-detail;
+
+    div {
+      @include flex(center, space-between);
+    }
+
+    dt {
+      width: fit-content;
+      color: $color-text-muted;
+    }
+
+    dd {
+      margin: 0;
+      color: $color-text;
+    }
+
+    &.is-remove {
+      min-height: 9.6rem;
+      gap: $space-10;
+    }
+  }
+
+  &__submit {
+    height: 4.4rem;
+    border: 0.1rem solid $color-primary;
+    border-radius: 0 0 $radius-md $radius-md;
+    color: #fff;
+    background: $color-primary;
+    font-size: $font-lg;
+
+    &:hover:not(:disabled) {
+      background: $color-primary-hover;
+    }
+
+    &:disabled {
+      border-color: $color-border;
+      color: $color-text-muted;
+      background: transparent;
+      cursor: not-allowed;
+    }
+  }
+
+  &__empty {
+    @include flex-center;
+    min-height: 10.4rem;
+    flex-direction: column;
+    gap: $space-16;
+    border: 0.1rem solid $color-border;
+    border-radius: $radius-md;
+    color: $color-text-muted;
+    font-size: $font-lg;
+  }
+
+  &__spinner {
+    width: 2.6rem;
+    height: 2.6rem;
+    border: 0.2rem dashed $color-text-muted;
+    border-radius: 50%;
+    animation: megaayxx-spin 1.4s linear infinite;
+  }
+}
+
+@keyframes megaayxx-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .megaayxx-funding__spinner {
+    animation: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .megaayxx-page__layout {
+    grid-template-columns: minmax(0, 1fr) 28rem;
+    gap: $space-20;
+  }
+}
+
+@media (max-width: 800px) {
+  .megaayxx-page {
+    &__layout {
+      padding: $space-16 $space-12 0;
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .megaayxx-funding {
+    position: static;
+    grid-row: 1;
+  }
+
+  .megaayxx-assets__table-wrap {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .megaayxx-hero {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: $space-16;
+
+    dl {
+      width: 100%;
+
+      > div {
+        flex: 1;
+        padding: 0 $space-16 0 0;
+        border-left: 0;
+
+        + div {
+          padding-left: $space-16;
+          border-left: 0.1rem solid $color-border;
+        }
+      }
+    }
+  }
+
+  .megaayxx-chart {
+    &__toolbar {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    &__plot {
+      height: 22rem;
+    }
+
+    &__dates span:nth-child(even) {
+      display: none;
+    }
+  }
+
+  .megaayxx-assets__footer {
+    grid-template-columns: 1fr auto;
+
+    nav {
+      display: none;
+    }
+  }
+}

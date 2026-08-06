@@ -64,11 +64,13 @@
 }
 
 .hint {
+  display: inline-block;
   position: relative;
   width: max-content;
-  border-bottom: .1rem dashed currentColor;
+  border-bottom: 0.1rem dashed currentColor;
   cursor: help;
   font-weight: $weight-regular;
+  line-height: inherit;
 
   &--control {
     display: inline-flex;

@@ -8,9 +8,10 @@ type TooltipProps = {
   className?: string;
   tooltipClassName?: string;
   portal?: boolean;
+  placement?: "auto" | "top" | "bottom";
 };
 
-export function Tooltip({ children, content, title, className = "", tooltipClassName = "", portal = false }: TooltipProps) {
+export function Tooltip({ children, content, title, className = "", tooltipClassName = "", portal = false, placement = "auto" }: TooltipProps) {
   const triggerRef = useRef<HTMLSpanElement>(null);
   const popRef = useRef<HTMLSpanElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -26,11 +27,12 @@ export function Tooltip({ children, content, title, className = "", tooltipClass
       Math.max(8, triggerRect.right - popRect.width),
     );
     const preferredTop = triggerRect.top - popRect.height - 8;
+    const showBelow = placement === "bottom" || (placement === "auto" && preferredTop < 8);
     setPosition({
       left,
-      top: preferredTop >= 8 ? preferredTop : triggerRect.bottom + 8,
+      top: showBelow ? triggerRect.bottom + 8 : preferredTop,
     });
-  }, []);
+  }, [placement]);
 
   useLayoutEffect(() => {
     if (portal && isVisible) updatePosition();

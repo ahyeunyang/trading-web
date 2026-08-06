@@ -9,11 +9,12 @@ import { PositionsPanel } from "./components/trading/PositionsPanel";
 import { TradeChart } from "./components/trading/TradeChart";
 import { MarketsPage } from "./components/trading/MarketsPage";
 import { PortfolioPage } from "./components/portfolio/PortfolioPage";
+import { MegaAyxxPage } from "./components/megaayxx/MegaAyxxPage";
 import { TermsPage } from "./components/legal/TermsPage";
 import { PrivacyPage } from "./components/legal/PrivacyPage";
 import { DepositModal } from "./components/account/DepositModal";
 
-export type AppPage = "trade" | "markets" | "portfolio" | "terms" | "privacy";
+export type AppPage = "trade" | "markets" | "portfolio" | "megaayxx" | "terms" | "privacy";
 
 export function App() {
   const [loading, setLoading] = useState(true);
@@ -57,6 +58,8 @@ export function App() {
         />
       ) : activePage === "portfolio" ? (
         <PortfolioPage onDepositClick={() => setIsDepositOpen(true)} />
+      ) : activePage === "megaayxx" ? (
+        <MegaAyxxPage />
       ) : activePage === "terms" ? (
         <TermsPage />
       ) : activePage === "privacy" ? (

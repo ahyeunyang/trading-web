@@ -4,6 +4,7 @@ import { useLocale, type Lang } from "../../i18n/Locale";
 import { FavoriteStar } from "../ui/FavoriteStar";
 import { MarketCategoryTabs } from "../ui/MarketCategoryTabs";
 import { VolumeSortButton, type SortDirection } from "../ui/VolumeSortButton";
+import { DataTable, DataTableBody, DataTableHead, DataTablePagination, TableSearch } from "../ui/DataTable";
 import { markets, type Market } from "./MarketPanel";
 
 type MarketsPageProps = {
@@ -115,27 +116,6 @@ function MarketSparkline({ symbol, change }: { symbol: string; change: number })
   );
 }
 
-function PaginationChevron({ next = false }: { next?: boolean }) {
-  return (
-    <svg
-      className={next ? "is-next" : undefined}
-      width="11"
-      height="19"
-      viewBox="0 0 11 19"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <path
-        d="M9.5 2L2.70711 8.79289C2.31658 9.18342 2.31658 9.81658 2.70711 10.2071L9.5 17"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
 export function MarketsPage({
   selectedMarket,
   onSelectMarket,
@@ -190,10 +170,6 @@ export function MarketsPage({
   }, [favorites, filteredMarkets, volumeSort]);
 
   const pageCount = Math.max(1, Math.ceil(sortedMarkets.length / pageSize));
-  const paginationNumbers =
-    pageCount <= 5
-      ? Array.from({ length: pageCount }, (_, i) => i + 1)
-      : [1, 2, 3, 4, pageCount];
   const visibleMarkets = sortedMarkets.slice(
     (page - 1) * pageSize,
     page * pageSize,
@@ -204,25 +180,16 @@ export function MarketsPage({
       <div className="markets-page__container">
         <div className="markets-page__content" aria-label={t("markets")}>
           <div className="markets-page__controls">
-            <label className="markets-page__search" htmlFor="market-search">
-              <svg viewBox="0 0 12 15" fill="none" aria-hidden="true">
-                <path
-                  fill="currentColor"
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M10.5 6.5C10.5 8.98528 8.48528 11 6 11C3.51472 11 1.5 8.98528 1.5 6.5C1.5 4.01472 3.51472 2 6 2C8.48528 2 10.5 4.01472 10.5 6.5ZM12 6.5C12 9.81371 9.31371 12.5 6 12.5C5.0458 12.5 4.14363 12.2773 3.34264 11.8809L2.04742 14.0142C1.83245 14.3683 1.37116 14.4811 1.0171 14.2661C0.663032 14.0511 0.550271 13.5898 0.765239 13.2358L2.09105 11.0521C0.810824 9.95171 0 8.32054 0 6.5C0 3.18629 2.68629 0.5 6 0.5C9.31371 0.5 12 3.18629 12 6.5Z"
-                />
-              </svg>
-              <input
-                id="market-search"
-                value={query}
-                onChange={(event) => {
-                  setQuery(event.target.value);
-                  setPage(1);
-                }}
-                placeholder={t("searchMarkets")}
-              />
-            </label>
+            <TableSearch
+              id="market-search"
+              className="markets-page__search"
+              value={query}
+              onChange={(value) => {
+                setQuery(value);
+                setPage(1);
+              }}
+              placeholder={t("searchMarkets")}
+            />
           </div>
 
           <MarketCategoryTabs
@@ -236,8 +203,8 @@ export function MarketsPage({
             onToggleChange={() => setShowLaunchable((current) => !current)}
           />
 
-          <div className="markets-page__table">
-            <div className="markets-page__head">
+          <DataTable className="markets-page__table">
+            <DataTableHead className="markets-page__head">
               <div>{t("market")}</div>
               <div>{t("oraclePrice")}</div>
               <div>{t("last24Hours")}</div>
@@ -253,8 +220,8 @@ export function MarketsPage({
               <div>{t("trades24h")}</div>
               <div>{t("openInterest")}</div>
               <div>{t("funding1h")}</div>
-            </div>
-            <div className="markets-page__body">
+            </DataTableHead>
+            <DataTableBody className="markets-page__body">
               {sortedMarkets.length === 0 ? (
                 <div className="markets-page__empty">{t("noMarkets")}</div>
               ) : (
@@ -316,64 +283,27 @@ export function MarketsPage({
                   );
                 })
               )}
-            </div>
-          </div>
-          <div className="markets-page__pagination">
-          <div className="markets-page__page-summary">
-            {formatMessage(t("marketCountSummary"), {
+            </DataTableBody>
+          <DataTablePagination
+            summary={formatMessage(t("marketCountSummary"), {
               total: sortedMarkets.length,
               end: Math.min(page * pageSize, sortedMarkets.length),
               start: sortedMarkets.length === 0 ? 0 : (page - 1) * pageSize + 1,
             })}
-          </div>
-
-          <div className="markets-page__pages">
-            <button
-              className="markets-page__page-arrow"
-              type="button"
-              disabled={page === 1}
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-              aria-label={t("previousPage")}
-            >
-              <PaginationChevron />
-            </button>
-            {paginationNumbers.map((num) => (
-              <button
-                type="button"
-                key={num}
-                className={page === num ? "is-active" : undefined}
-                onClick={() => setPage(num)}
-              >
-                {num}
-              </button>
-            ))}
-            <button
-              className="markets-page__page-arrow"
-              type="button"
-              disabled={page === pageCount}
-              onClick={() => setPage((p) => Math.min(pageCount, p + 1))}
-              aria-label={t("nextPage")}
-            >
-              <PaginationChevron next />
-            </button>
-          </div>
-
-          <label className="markets-page__page-size">
-            <select
-              value={pageSize}
-              aria-label={t("marketsPerPage")}
-              onChange={(event) => {
-                setPageSize(Number(event.target.value));
-                setPage(1);
-              }}
-            >
-              <option value={10}>10</option>
-              <option value={20}>20</option>
-              <option value={50}>50</option>
-            </select>
-            <span>{t("view")}</span>
-          </label>
-          </div>
+            page={page}
+            pageCount={pageCount}
+            pageSize={pageSize}
+            onPageChange={setPage}
+            onPageSizeChange={(size) => {
+              setPageSize(size);
+              setPage(1);
+            }}
+            previousLabel={t("previousPage")}
+            nextLabel={t("nextPage")}
+            pageSizeLabel={t("marketsPerPage")}
+            viewLabel={t("view")}
+          />
+          </DataTable>
         </div>
       </div>
     </div>
