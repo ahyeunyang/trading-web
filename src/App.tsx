@@ -11,6 +11,7 @@ import { MarketsPage } from "./components/trading/MarketsPage";
 import { PortfolioPage } from "./components/portfolio/PortfolioPage";
 import { TermsPage } from "./components/legal/TermsPage";
 import { PrivacyPage } from "./components/legal/PrivacyPage";
+import { DepositModal } from "./components/account/DepositModal";
 
 export type AppPage = "trade" | "markets" | "portfolio" | "terms" | "privacy";
 
@@ -43,7 +44,6 @@ export function App() {
   return (
     <div className={`app${loading ? " is-loading" : ""}`} aria-busy={loading}>
       <TradingHeader
-        onDepositClick={() => setIsDepositOpen(true)}
         activePage={activePage}
         onPageChange={setActivePage}
       />
@@ -83,8 +83,7 @@ export function App() {
           <OrderForm
             quantityUnit={quantityUnit}
             onQuantityUnitChange={setQuantityUnit}
-            isDepositOpen={isDepositOpen}
-            onDepositOpenChange={setIsDepositOpen}
+            onDepositClick={() => setIsDepositOpen(true)}
           />
           <PositionsPanel
             isCollapsed={isPositionsCollapsed}
@@ -92,6 +91,7 @@ export function App() {
           />
         </main>
       )}
+      {isDepositOpen && <DepositModal onClose={() => setIsDepositOpen(false)} />}
       <StatusBar />
     </div>
   );

@@ -8,7 +8,6 @@ import { SelectMenu } from "../ui/SelectMenu";
 import { Tooltip } from "../ui/Tooltip";
 import { Modal } from "../ui/Modal";
 import { useLocale } from "../../i18n/Locale";
-import { DepositModal } from "../account/DepositModal";
 
 type MarginMode = "cross" | "isolated";
 type OrderSide = "buy" | "sell";
@@ -19,8 +18,7 @@ type TimeUnit = "minute" | "hour" | "day" | "week";
 type OrderFormProps = {
   quantityUnit: "BTC" | "USD";
   onQuantityUnitChange: (unit: "BTC" | "USD") => void;
-  isDepositOpen: boolean;
-  onDepositOpenChange: (isOpen: boolean) => void;
+  onDepositClick: () => void;
 };
 
 const BTC_USD_PRICE = 65_379;
@@ -28,8 +26,7 @@ const BTC_USD_PRICE = 65_379;
 export function OrderForm({
   quantityUnit,
   onQuantityUnitChange,
-  isDepositOpen,
-  onDepositOpenChange,
+  onDepositClick,
 }: OrderFormProps) {
   const { t } = useLocale();
   const [marginMode, setMarginMode] = useState<MarginMode>("cross");
@@ -141,7 +138,7 @@ export function OrderForm({
           <button
             className="order__deposit"
             type="button"
-            onClick={() => onDepositOpenChange(true)}
+            onClick={onDepositClick}
           >
             {t("deposit")}
           </button>
@@ -149,7 +146,7 @@ export function OrderForm({
             className="order__deposit-icon"
             type="button"
             aria-label="입금 모달 열기"
-            onClick={() => onDepositOpenChange(true)}
+            onClick={onDepositClick}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -493,9 +490,6 @@ export function OrderForm({
         </Modal>
       )}
 
-      {isDepositOpen && (
-        <DepositModal onClose={() => onDepositOpenChange(false)} />
-      )}
     </aside>
   );
 }

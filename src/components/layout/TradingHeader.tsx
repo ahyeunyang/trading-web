@@ -38,6 +38,7 @@ import { Modal } from "../ui/Modal";
 import { DiscordIcon, LiveChatIcon, SupportCenterIcon } from "../icons/HelpMenuIcons";
 import { ApiKeysModal } from "../account/ApiKeysModal";
 import { MobileAppModal } from "../account/MobileAppModal";
+import { DepositModal } from "../account/DepositModal";
 
 const helpMenuCopy: Record<Lang, {
   title: string;
@@ -60,13 +61,11 @@ const helpMenuCopy: Record<Lang, {
 };
 
 type TradingHeaderProps = {
-  onDepositClick: () => void;
   activePage: AppPage;
   onPageChange: (page: AppPage) => void;
 };
 
 export function TradingHeader({
-  onDepositClick,
   activePage,
   onPageChange,
 }: TradingHeaderProps) {
@@ -76,6 +75,7 @@ export function TradingHeader({
   const [isHelpMenuOpen, setIsHelpMenuOpen] = useState(false);
   const [isApiKeysModalOpen, setIsApiKeysModalOpen] = useState(false);
   const [isMobileAppModalOpen, setIsMobileAppModalOpen] = useState(false);
+  const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
   const accountMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -214,7 +214,7 @@ export function TradingHeader({
         <button
           className="topbar__deposit"
           type="button"
-          onClick={onDepositClick}
+          onClick={() => setIsDepositModalOpen(true)}
         >
           <HeaderDepositIcon />
           <span>{t("deposit")}</span>
@@ -411,6 +411,7 @@ export function TradingHeader({
 
       {isApiKeysModalOpen && <ApiKeysModal onClose={() => setIsApiKeysModalOpen(false)} />}
       {isMobileAppModalOpen && <MobileAppModal onClose={() => setIsMobileAppModalOpen(false)} />}
+      {isDepositModalOpen && <DepositModal onClose={() => setIsDepositModalOpen(false)} />}
 
       {isHelpMenuOpen && (
         <Modal
