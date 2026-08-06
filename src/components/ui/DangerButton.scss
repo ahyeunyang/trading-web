@@ -1,0 +1,23 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/color-token" as *;
+
+.danger-button {
+  border: 0.1rem solid $color-negative;
+  border-radius: $radius-md;
+  color: $color-negative;
+  background: $color-negative-soft;
+
+  &:not(:disabled):hover,
+  &:not(:disabled):focus-visible {
+    color: $color-text;
+    background: $color-negative;
+  }
+
+  &:disabled {
+    border-color: $color-border;
+    color: $color-text-muted;
+    background: transparent;
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+}

@@ -1,5 +1,5 @@
-@use "tokens" as *;
-@use "color-token" as *;
+@use "../../styles/tokens" as *;
+@use "../../styles/color-token" as *;
 
 .terms-page {
   height: calc(100vh - #{$header-height} - #{$footer-height});

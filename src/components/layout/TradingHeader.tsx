@@ -39,6 +39,7 @@ import { DiscordIcon, LiveChatIcon, SupportCenterIcon } from "../icons/HelpMenuI
 import { ApiKeysModal } from "../account/ApiKeysModal";
 import { MobileAppModal } from "../account/MobileAppModal";
 import { DepositModal } from "../account/DepositModal";
+import { NotificationsPanel } from "../account/NotificationsPanel";
 
 const helpMenuCopy: Record<Lang, {
   title: string;
@@ -76,6 +77,7 @@ export function TradingHeader({
   const [isApiKeysModalOpen, setIsApiKeysModalOpen] = useState(false);
   const [isMobileAppModalOpen, setIsMobileAppModalOpen] = useState(false);
   const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const accountMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -173,7 +175,7 @@ export function TradingHeader({
               {t("funding")}
               <ExternalIcon className="more__ext" />
             </a>
-            <a href="#community">
+            <a href="https://discord.com/" target="_blank" rel="noopener noreferrer">
               <CommunityIcon />
               {t("community")}
               <ExternalIcon className="more__ext" />
@@ -238,10 +240,13 @@ export function TradingHeader({
           <HelpIcon className="icon" />
         </button>
         <button
-          className="icon-btn tip"
+          className={`icon-btn tip${isNotificationsOpen ? " is-active" : ""}`}
           type="button"
-          aria-label="알림"
-          data-tip="알림"
+          aria-label={t("notifications")}
+          aria-haspopup="dialog"
+          aria-expanded={isNotificationsOpen}
+          data-tip={t("notifications")}
+          onClick={() => setIsNotificationsOpen((isOpen) => !isOpen)}
         >
           <BellIcon className="icon" />
         </button>
@@ -412,6 +417,7 @@ export function TradingHeader({
       {isApiKeysModalOpen && <ApiKeysModal onClose={() => setIsApiKeysModalOpen(false)} />}
       {isMobileAppModalOpen && <MobileAppModal onClose={() => setIsMobileAppModalOpen(false)} />}
       {isDepositModalOpen && <DepositModal onClose={() => setIsDepositModalOpen(false)} />}
+      {isNotificationsOpen && <NotificationsPanel onClose={() => setIsNotificationsOpen(false)} />}
 
       {isHelpMenuOpen && (
         <Modal
@@ -425,7 +431,13 @@ export function TradingHeader({
               <button type="button" aria-label={t("close")} onClick={() => setIsHelpMenuOpen(false)}><CloseIcon /></button>
             </header>
             <div className="help-menu-modal__actions">
-              <button type="button">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsHelpMenuOpen(false);
+                  window.dispatchEvent(new CustomEvent("open-ayxx-help", { detail: { tab: "help" } }));
+                }}
+              >
                 <SupportCenterIcon />
                 <span><strong>{helpCopy.supportCenter}</strong><small>{helpCopy.supportDescription}</small></span>
               </button>
@@ -433,7 +445,7 @@ export function TradingHeader({
                 type="button"
                 onClick={() => {
                   setIsHelpMenuOpen(false);
-                  window.dispatchEvent(new Event("open-ayxx-help"));
+                  window.dispatchEvent(new CustomEvent("open-ayxx-help", { detail: { tab: "messages" } }));
                 }}
               >
                 <LiveChatIcon />

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import "./MarketsPage.scss";
 import { useLocale, type Lang } from "../../i18n/Locale";
 import { FavoriteStar } from "../ui/FavoriteStar";
 import { MarketCategoryTabs } from "../ui/MarketCategoryTabs";

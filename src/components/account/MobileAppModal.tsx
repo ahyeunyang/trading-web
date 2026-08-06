@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./MobileAppModal.scss";
 import { useLocale, type Lang } from "../../i18n/Locale";
 import { CloseIcon } from "../icons/CloseIcon";
 import { Modal } from "../ui/Modal";

@@ -1,4 +1,5 @@
 import { useState, type SVGProps } from "react";
+import "./PortfolioPage.scss";
 
 type SidebarIconProps = SVGProps<SVGSVGElement> & {
   kind: "overview" | "positions" | "orders" | "history" | "fees" | "tiers";

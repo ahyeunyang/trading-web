@@ -1,4 +1,5 @@
 import { useLocale, type Lang } from "../../i18n/Locale";
+import "./TermsPage.scss";
 
 type TermsDocument = {
   title: string;

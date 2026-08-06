@@ -3,6 +3,7 @@ import { useLocale, type Lang } from "../../i18n/Locale";
 import { CloseIcon } from "../icons/CloseIcon";
 import { Modal } from "../ui/Modal";
 import { CheckboxField } from "../ui/CheckboxField";
+import { LoadingButton } from "../ui/LoadingButton";
 
 const copy: Record<Lang, {
   title: string; description: string; address: string; create: string; empty: string;
@@ -91,15 +92,14 @@ export function ApiKeysModal({ onClose }: { onClose: () => void }) {
             <div className="api-keys-modal__value is-private"><span>{text.privateKey}</span><strong>{privateKey}</strong><CopyButton value={privateKey} label={text.copyLabel} /></div>
           </div>
           <CheckboxField className="api-keys-modal__warning" checked={isAcknowledged} label={text.warning} onChange={setIsAcknowledged} />
-          <button
-            className={`btn btn--primary btn--full api-keys-modal__approve${isApproving ? " is-loading" : ""}`}
-            type="button"
-            disabled={!isAcknowledged || isApproving}
-            aria-live="polite"
+          <LoadingButton
+            className="btn btn--primary btn--full api-keys-modal__approve"
+            disabled={!isAcknowledged}
+            isLoading={isApproving}
             onClick={approveKey}
           >
-            {isApproving ? <span className="api-keys-modal__loader" aria-label="Loading"><i /><i /><i /></span> : text.approve}
-          </button>
+            {text.approve}
+          </LoadingButton>
         </>
       )}
     </Modal>

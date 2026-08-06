@@ -88,8 +88,9 @@ export function StatusBar() {
   }, [chatState]);
 
   useEffect(() => {
-    const openHelp = () => {
-      setHelpTab("home");
+    const openHelp = (event: Event) => {
+      const requestedTab = (event as CustomEvent<{ tab?: "home" | "messages" | "help" }>).detail?.tab;
+      setHelpTab(requestedTab ?? "home");
       setIsHelpOpen(true);
     };
 

@@ -968,21 +968,6 @@
     }
   }
 
-  &__loader {
-    @include flex(center, center);
-    gap: $space-4;
-
-    i {
-      width: $space-4;
-      height: $space-4;
-      border-radius: 50%;
-      background: $color-text-muted;
-      animation: api-key-loading 0.9s ease-in-out infinite;
-
-      &:nth-child(2) { animation-delay: 0.15s; }
-      &:nth-child(3) { animation-delay: 0.3s; }
-    }
-  }
 }
 
 .deposit-wallet-modal {
@@ -1122,110 +1107,11 @@
   }
 }
 
-.mobile-app-modal {
-  width: min(48.2rem, calc(100vw - 3.2rem));
-  padding: $space-24;
-  border: 0.1rem solid $color-border;
-  border-radius: $radius-lg;
-  color: $color-text-button;
-  background: #29292c;
-  box-shadow: 0 1.6rem 4rem rgb(0 0 0 / 40%);
-
-  &__backdrop {
-    @include flex-center;
-    position: fixed;
-    z-index: 120;
-    inset: 0;
-    padding: $space-16;
-    background: rgb(8 8 10 / 64%);
-  }
-
-  &__header {
-    @include flex-between;
-
-    h2 { color: $color-text; font-size: 2.2rem; font-weight: $weight-regular; }
-    button { @include flex-center; width: $space-32; height: $space-32; color: $color-text-muted; }
-    button:hover { color: $color-text; }
-    svg { width: $icon-md; height: $icon-md; }
-  }
-
-  &__description { margin-top: $space-16; color: $color-text; font-size: $font-base; line-height: 1.5; }
-  &__key { margin-top: $space-12; font-size: $font-base; }
-  &__key strong { color: $color-text; font-weight: $weight-semibold; }
-
-  &__qr {
-    display: grid;
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1;
-    margin-top: $space-16;
-    place-items: center;
-    overflow: hidden;
-    border: 0.3rem solid transparent;
-    border-radius: $radius-lg;
-    color: #d6d6dc;
-    background: #303033;
-
-    > span { width: 100%; height: 100%; transition: filter $duration-base ease, opacity $duration-base ease; }
-    > span svg { width: 100%; height: 100%; }
-    > strong { position: absolute; z-index: 1; color: $color-text; font-size: 2rem; font-weight: $weight-regular; }
-
-    &:not(.is-visible) > span { filter: blur(1.2rem); opacity: 0.48; }
-    &.is-visible { border-color: $color-border; }
-  }
-
-  &__warning {
-    margin-top: $space-16;
-    padding: $space-10;
-    border-left: 0.3rem solid #ffd025;
-    color: $color-text;
-    background: rgb(255 208 37 / 14%);
-    font-size: $font-md;
-  }
-
-  &__footer {
-    @include flex(center, space-between);
-    gap: $space-12;
-    margin-top: $space-16;
-    min-height: 3.6rem;
-    color: $color-text;
-    font-size: $font-base;
-
-    > button {
-      @include flex(center);
-      height: 3.6rem;
-      gap: $space-6;
-      padding-inline: $space-10;
-      border: 0.1rem solid $color-border;
-      border-radius: $radius-md;
-      color: $color-text-muted;
-      white-space: nowrap;
-    }
-
-    > button:hover { color: $color-text; background: $color-surface-hover; }
-    svg { width: $icon-md; height: $icon-md; }
-  }
-}
-
-@media (max-height: 78rem) {
-  .mobile-app-modal {
-    max-height: calc(100vh - 3.2rem);
-    overflow-y: auto;
-
-    &__qr { max-height: 43rem; }
-  }
-}
-
 @media (max-width: 48rem) {
   .deposit-wallet-modal {
     &__card { grid-template-columns: 1fr; }
     &__qr { justify-self: center; margin-top: $space-16; }
   }
-}
-
-@keyframes api-key-loading {
-  0%, 60%, 100% { opacity: 0.35; transform: translateY(0); }
-  30% { opacity: 1; transform: translateY(-0.2rem); }
 }
 
 @media (max-width: 56rem) {

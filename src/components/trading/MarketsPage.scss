@@ -1,6 +1,6 @@
-@use "tokens" as *;
-@use "color-token" as *;
-@use "mixins" as *;
+@use "../../styles/tokens" as *;
+@use "../../styles/color-token" as *;
+@use "../../styles/mixins" as *;
 
 .markets-page {
   display: flex;
